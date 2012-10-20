@@ -117,6 +117,12 @@ set noequalalways
 "-----------------------------------------------------------------------------
 " Autocommands.
 "-----------------------------------------------------------------------------
+" Python mappings.
+augroup filetype_python
+    autocmd!
+    autocmd BufNewFile,BufRead *.py :nnoremap <leader>/ /^\s*def 
+augroup END
+
 " HTML.
 augroup filetype_html
     autocmd!
@@ -124,10 +130,10 @@ augroup filetype_html
     autocmd BufNewFile,BufRead *.html setlocal textwidth=0
 augroup END
 
-" Python mappings.
-augroup filetype_python
+" LaTeX.
+augroup filetype_tex
     autocmd!
-    autocmd BufNewFile,BufRead *.py :nnoremap <leader>/ /^\s*def 
+    autocmd BufNewFile,BufRead *.tex setlocal textwidth=0
 augroup END
 
 "-----------------------------------------------------------------------------
