@@ -134,6 +134,7 @@ augroup END
 augroup filetype_tex
     autocmd!
     autocmd BufNewFile,BufRead *.tex setlocal textwidth=0
+    autocmd BufNewFile,BufRead *.tex :nnoremap <leader>sp :setlocal spell<CR>:setlocal spelllang=pt<CR>
 augroup END
 
 "-----------------------------------------------------------------------------
