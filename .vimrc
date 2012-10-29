@@ -2,7 +2,9 @@
 " Globals.
 "-----------------------------------------------------------------------------
 " Be nice.
-echo ">^.^<"
+"echo ">^.^<"
+echo "(╯°□ °）╯︵┻━┻"
+echo "┬──┬ ノ( ゜-゜ノ) chill out bro"
 
 " Enable no vi compatibility mode.
 set nocompatible
