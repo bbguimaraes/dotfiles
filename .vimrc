@@ -25,6 +25,9 @@ set expandtab
 " Set number of characters on a line.
 set textwidth=79
 
+" Make bash shell parse .bashrc file.
+set shell=bash\ -l\ -i
+
 " Use forward slashes on file names.
 set shellslash
 
