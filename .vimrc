@@ -151,7 +151,7 @@ iabbr ipdb from IPython import embed; embed()
 let mapleader=","
 
 " Open and source vimrc.
-nnoremap <leader>ev :sp $MYVIMRC<cr>
+nnoremap <leader>ev :vi $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
 " Toggle paste mode.
