@@ -70,6 +70,9 @@ set history=100
 " Keep cursor 8 lines from the top and bottom of the screen when scrolling.
 set scrolloff=8
 
+" Disable annoying behavior of moveing to the start of line when using Ctrl-F and Ctrl-B.
+set nostartofline
+
 " Disable encryption.
 set key=
 
