@@ -25,8 +25,11 @@ set expandtab
 " Set number of characters on a line.
 set textwidth=79
 
-" Make bash shell parse .bashrc file.
-set shell=bash\ -l\ -i
+" Make bash shell parse .bashrc file. The default .bashrc of many systems has a
+" test to prevent parsing when not running interactively. To allow it, a test
+" can be included:
+" if [ -z "$VIM" ]; then
+let $BASH_ENV="~/.bashrc"
 
 " Use forward slashes on file names.
 set shellslash
