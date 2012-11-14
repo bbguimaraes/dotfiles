@@ -148,6 +148,12 @@ augroup filetype_tex
     autocmd BufNewFile,BufRead *.tex :nnoremap <leader>sp :setlocal spell<CR>:setlocal spelllang=pt<CR>
 augroup END
 
+" less
+augroup filetype_less
+    autocmd!
+    autocmd BufNewFile,BufRead *.less setlocal syntax=css
+augroup END
+
 "-----------------------------------------------------------------------------
 " Abbreviations.
 "-----------------------------------------------------------------------------
