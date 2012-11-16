@@ -199,3 +199,12 @@ noremap L $
 onoremap inp i(
 onoremap inq i'
 onoremap inQ i"
+
+"------------------------------------------------------------------------------
+" Matching.
+"------------------------------------------------------------------------------
+" Highlight trailing whitespace.
+match ErrorMsg / \+$/
+
+" Highlight lines with more than 80 characters.
+match ErrorMsg /.\{80\}/
