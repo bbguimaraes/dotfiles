@@ -132,6 +132,7 @@ set noequalalways
 augroup filetype_python
     autocmd!
     autocmd BufNewFile,BufRead *.py :nnoremap <leader>/ /^\\s*def.*
+    autocmd BufNewFile,BufRead *.py :match ErrorMsg /.\{80\}/
 augroup END
 
 " HTML.
@@ -205,6 +206,3 @@ onoremap inQ i"
 "------------------------------------------------------------------------------
 " Highlight trailing whitespace.
 match ErrorMsg / \+$/
-
-" Highlight lines with more than 80 characters.
-match ErrorMsg /.\{80\}/
