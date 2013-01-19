@@ -22,8 +22,10 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
-" Set number of characters on a line.
-set textwidth=79
+" Set number of characters on a line and a line on the column after textwidth limit (vim
+" 7.3).
+set textwidth=80
+set colorcolumn+=+1
 
 " Make bash shell parse .bashrc file. The default .bashrc of many systems has a
 " test to prevent parsing when not running interactively. To allow it, a test
