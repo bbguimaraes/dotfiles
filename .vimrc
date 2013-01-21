@@ -134,7 +134,6 @@ set noequalalways
 augroup filetype_python
     autocmd!
     autocmd BufNewFile,BufRead *.py :nnoremap <leader>/ /^\\s*def.*
-    autocmd BufNewFile,BufRead *.py :match ErrorMsg /.\{80\}/
 augroup END
 
 " HTML.
