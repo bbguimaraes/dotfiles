@@ -22,8 +22,8 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
-" Set number of characters on a line and a line on the column after textwidth limit (vim
-" 7.3).
+" Set number of characters on a line and a line on the column after textwidth
+" limit (vim 7.3).
 set textwidth=80
 set colorcolumn+=+1
 
@@ -75,7 +75,8 @@ set history=100
 " Keep cursor 8 lines from the top and bottom of the screen when scrolling.
 set scrolloff=8
 
-" Disable annoying behavior of moveing to the start of line when using Ctrl-F and Ctrl-B.
+" Disable annoying behavior of moving to the start of line when using Ctrl-F and
+" Ctrl-B.
 set nostartofline
 
 " Disable encryption.
@@ -167,8 +168,7 @@ iabbr ipdb from IPython import embed; embed()
 " Set leader to ','.
 let mapleader=","
 
-" Open a new tab with current file.
-nnoremap <c-w>t :tabedit %<cr>
+" Open a new tab with current file.  nnoremap <c-w>t :tabedit %<cr>
 
 " Open and source vimrc.
 nnoremap <leader>ev :vi $MYVIMRC<cr>
@@ -192,6 +192,9 @@ nnoremap <leader>N :set invhlsearch<cr>N
 
 " Highlight all instances of the word under the cursor.
 nnoremap <silent> <leader>h :set hls<cr>:let @/="<c-r><c-w>"<cr>
+
+" Resize split vertically to 80 columns.
+nnoremap <silent> <leader>80 :vertical resize 80<cr>
 
 " Quick 0 and $.
 noremap H 0
