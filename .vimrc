@@ -168,7 +168,8 @@ iabbr ipdb from IPython import embed; embed()
 " Set leader to ','.
 let mapleader=","
 
-" Open a new tab with current file.  nnoremap <c-w>t :tabedit %<cr>
+" Open a new tab with current file.
+nnoremap <c-w>t :tabedit %<cr>
 
 " Open and source vimrc.
 nnoremap <leader>ev :vi $MYVIMRC<cr>
