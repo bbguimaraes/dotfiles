@@ -210,4 +210,9 @@ onoremap inQ i"
 " Matching.
 "------------------------------------------------------------------------------
 " Highlight trailing whitespace.
-match ErrorMsg / \+$/
+highlight ExtraWhitespace ctermbg=red guibg=red
+call matchadd("ExtraWhitespace", " \\+$")
+
+" Highlight version control conflict marks.
+highlight VCConflict ctermbg=red guibg=red
+call matchadd("VCConflict", "<<<<<<<")
