@@ -129,7 +129,8 @@ set noequalalways
 " Python mappings.
 augroup filetype_python
     autocmd!
-    autocmd BufNewFile,BufRead *.py :nnoremap <leader>/ /^\\s*def.*
+    autocmd BufNewFile,BufRead *.py :nnoremap <leader>/ /^\\s*def .*.*:$<left><left><left><left>
+    autocmd BufNewFile,BufRead *.py :nnoremap <leader>c/ /^class .*.*:$<left><left><left><left>
 augroup END
 
 " HTML.
