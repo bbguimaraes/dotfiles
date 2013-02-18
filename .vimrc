@@ -215,4 +215,4 @@ call matchadd("ExtraWhitespace", " \\+$")
 
 " Highlight version control conflict marks.
 highlight VCConflict ctermbg=red guibg=red
-call matchadd("VCConflict", "<<<<<<<")
+call matchadd("VCConflict", "^<<<<<<<$")
