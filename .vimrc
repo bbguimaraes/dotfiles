@@ -163,6 +163,10 @@ iabbr ipdb from IPython import embed; embed()
 " Set leader to ','.
 let mapleader=","
 
+" Insert "very magic" caracter whenever '/' or "/" is used.
+nnoremap / /\v
+nnoremap ? ?\v
+
 " Open a new tab with current file.
 nnoremap <c-w>t :tabedit %<cr>
 
