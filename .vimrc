@@ -44,7 +44,7 @@ set backspace=2
 set hidden
 
 " Make 'c' commands put a '$' at the end of the string being replaced.
-set cpoptions=$
+set cpoptions+=$
 
 " Set the status line the way I like it.
 set stl=%f\ %m\ %r\ Line:%l/%L[%p%%]\ Col:%c\ Buf:%n\ [%b][0x%B]
