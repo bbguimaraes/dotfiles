@@ -131,6 +131,10 @@ augroup filetype_python
     autocmd!
     autocmd BufNewFile,BufRead *.py :set textwidth=80
     autocmd BufNewFile,BufRead *.py
+\       :iabbr ipython import IPython; IPython.embed()
+    autocmd BufNewFile,BufRead *.py
+\       :iabbr ipdb import ipdb; ipdb.set_trace()
+    autocmd BufNewFile,BufRead *.py
 \       :nnoremap <leader>/ /^\s*def .*.*:$<left><left><left><left>
     autocmd BufNewFile,BufRead *.py
 \       :nnoremap <leader>c/ /^class .*.*:$<left><left><left><left>
@@ -155,11 +159,6 @@ augroup filetype_less
     autocmd!
     autocmd BufNewFile,BufRead *.less setlocal syntax=css
 augroup END
-
-"-------------------------------------------------------------------------------
-" Abbreviations.
-"-------------------------------------------------------------------------------
-iabbr ipdb from IPython import embed; embed()
 
 "-------------------------------------------------------------------------------
 " Mappings.
