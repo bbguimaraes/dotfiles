@@ -47,7 +47,7 @@ set hidden
 set cpoptions+=$
 
 " Set the status line the way I like it.
-set stl=%f\ %m\ %r\ Line:%l/%L[%p%%]\ Col:%c\ Buf:%n\ [%b][0x%B]
+set stl=%f\ %m\ %r\ %l/%L[%p%%]\ Col:%c\ Buf:%n\ [%b][0x%B]
 
 " Always display status line, even when there is only one window.
 set laststatus=2
