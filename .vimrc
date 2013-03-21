@@ -1,6 +1,6 @@
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Globals.
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Enable no vi compatibility mode.
 set nocompatible
 
@@ -19,7 +19,7 @@ set expandtab
 
 " Set number of characters on a line and a line on the column after textwidth
 " limit (vim 7.3).
-set textwidth=80
+set textwidth=0
 set colorcolumn+=+1
 
 " Make bash shell parse .bashrc file. The default .bashrc of many systems has a
@@ -88,18 +88,18 @@ set showfulltag
 set formatoptions-=r
 set formatoptions-=o
 
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Global variables.
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " This is the default value.
 set path=.,/usr/include
 
 " Because it doesn't seem to be initialized for me.
 let MYVIMRC="~/.vimrc"
 
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Search.
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Allow search to wrap the end of the file.
 set wrapscan
 
@@ -114,23 +114,26 @@ set hlsearch
 " Enable incremental search.
 set incsearch
 
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Splits.
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Remove characters in window separators.
 set fillchars=""
 
 " Disable automatic resizing when opening or closing splits.
 set noequalalways
 
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Autocommands.
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Python mappings.
 augroup filetype_python
     autocmd!
-    autocmd BufNewFile,BufRead *.py :nnoremap <leader>/ /^\\s*def .*.*:$<left><left><left><left>
-    autocmd BufNewFile,BufRead *.py :nnoremap <leader>c/ /^class .*.*:$<left><left><left><left>
+    autocmd BufNewFile,BufRead *.py :set textwidth=80
+    autocmd BufNewFile,BufRead *.py
+\       :nnoremap <leader>/ /^\s*def .*.*:$<left><left><left><left>
+    autocmd BufNewFile,BufRead *.py
+\       :nnoremap <leader>c/ /^class .*.*:$<left><left><left><left>
 augroup END
 
 " HTML.
@@ -143,8 +146,8 @@ augroup END
 " LaTeX.
 augroup filetype_tex
     autocmd!
-    autocmd BufNewFile,BufRead *.tex setlocal textwidth=0
-    autocmd BufNewFile,BufRead *.tex :nnoremap <leader>sp :setlocal spell<CR>:setlocal spelllang=pt<CR>
+    autocmd BufNewFile,BufRead *.tex
+\       :nnoremap <leader>sp :setlocal spell<CR>:setlocal spelllang=pt<CR>
 augroup END
 
 " less
@@ -153,14 +156,14 @@ augroup filetype_less
     autocmd BufNewFile,BufRead *.less setlocal syntax=css
 augroup END
 
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Abbreviations.
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 iabbr ipdb from IPython import embed; embed()
 
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Mappings.
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Set leader to ','.
 let mapleader=","
 
@@ -206,9 +209,9 @@ onoremap inp i(
 onoremap inq i'
 onoremap inQ i"
 
-"------------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Matching.
-"------------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " Highlight trailing whitespace.
 highlight ExtraWhitespace ctermbg=red guibg=red
 call matchadd("ExtraWhitespace", " \\+$")
