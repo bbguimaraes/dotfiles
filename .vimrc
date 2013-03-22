@@ -168,7 +168,11 @@ augroup END
 " Set leader to ','.
 let mapleader=","
 
-" Insert "very magic" caracter whenever '/' or "/" is used.
+" Quick 0 and $.
+noremap H 0
+noremap L $
+
+" Insert "very magic" caracter whenever '/' or '?' is used.
 nnoremap / /\v
 nnoremap ? ?\v
 
@@ -188,27 +192,12 @@ nnoremap <leader>w :set invwrap<cr>:set wrap?<cr>
 " Clear search highlight.
 nnoremap <leader>nh :nohlsearch<cr>
 
-" Toggle search highlight.
-nnoremap <leader>th :set invhlsearch<cr>:set hlsearch?<cr>
-
-" Next or previous search result toggling search highlight,
-nnoremap <leader>n :set invhlsearch<cr>n
-nnoremap <leader>N :set invhlsearch<cr>N
-
 " Highlight all instances of the word under the cursor.
 nnoremap <silent> <leader>h :set hls<cr>:let @/="<c-r><c-w>"<cr>
 
 " Resize split vertically to 80 columns.
 nnoremap <silent> <leader>80 :vertical resize 80<cr>
 
-" Quick 0 and $.
-noremap H 0
-noremap L $
-
-" Create some movement operators.
-onoremap inp i(
-onoremap inq i'
-onoremap inQ i"
 
 "-------------------------------------------------------------------------------
 " Matching.
