@@ -138,6 +138,8 @@ augroup filetype_python
 \       :nnoremap <leader>/ /^\s*def .*.*:$<left><left><left><left>
     autocmd BufNewFile,BufRead *.py
 \       :nnoremap <leader>c/ /^class .*.*:$<left><left><left><left>
+    autocmd BufNewFile,BufRead *.py
+\       :nnoremap <silent> <leader>i :call PythonImport("<cword>")<cr>
 augroup END
 
 " HTML.
@@ -218,3 +220,12 @@ call matchadd("ExtraWhitespace", " \\+$")
 " Highlight version control conflict marks.
 highlight VCConflict ctermbg=red guibg=red
 call matchadd("VCConflict", "^<<<<<<<$")
+
+"-------------------------------------------------------------------------------
+" Functions.
+"-------------------------------------------------------------------------------
+function! PythonImport(module)
+    let cmd =
+\       "yoshi_grep -rh --color=no '^\\(from\\|import\\).*\\<" . a:module . "' . | head -1"
+    execute(". !" . cmd)
+endfunction
