@@ -198,6 +198,8 @@ nnoremap <silent> <leader>h :set hls<cr>:let @/="<c-r><c-w>"<cr>
 " Resize split vertically to 80 columns.
 nnoremap <silent> <leader>80 :vertical resize 80<cr>
 
+" Remove trailing spaces.
+nnoremap <silent> <leader>rt :call ClearTrailing()<cr>
 
 "-------------------------------------------------------------------------------
 " Matching.
@@ -217,4 +219,8 @@ function! PythonImport(module)
     let cmd =
 \       "yoshi_grep -rh --color=no '^\\(from\\|import\\).*\\<" . a:module . "' . | head -1"
     execute(". !" . cmd)
+endfunction
+
+function! ClearTrailing()
+    %s/\s\+$//
 endfunction
