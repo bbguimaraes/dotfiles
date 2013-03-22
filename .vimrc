@@ -183,6 +183,9 @@ nnoremap <c-w>t :tabedit %<cr>
 nnoremap <leader>ev :vi $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
+" Copy selected text to system clipboard.
+vnoremap <silent> <leader>y :w !xclip<cr>
+
 " Toggle paste mode.
 nnoremap <leader>p :set invpaste<cr>:set paste?<cr>
 
