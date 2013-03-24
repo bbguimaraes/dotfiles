@@ -225,3 +225,10 @@ endfunction
 function! ClearTrailing()
     %s/\s\+$//
 endfunction
+
+function! OpenPython()
+    let filename = expand("<cfile>")
+    let filename = substitute(filename, '\.', '/', 'g')
+    let filename = filename . '.py'
+    return filename
+endfunction
