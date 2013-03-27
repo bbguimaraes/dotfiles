@@ -124,6 +124,12 @@ set noequalalways
 "-------------------------------------------------------------------------------
 " Autocommands.
 "-------------------------------------------------------------------------------
+" Global commands.
+augroup globals
+    autocmd!
+    autocmd BufNewFile,BufRead,WinEnter * :call SetGlobalMatches()
+augroup END
+
 " Python mappings.
 augroup filetype_python
     autocmd!
@@ -209,11 +215,9 @@ nnoremap <silent> <leader>rt :call ClearTrailing()<cr>
 "-------------------------------------------------------------------------------
 " Highlight trailing whitespace.
 highlight ExtraWhitespace ctermbg=red guibg=red
-call matchadd("ExtraWhitespace", " \\+$")
 
 " Highlight version control conflict marks.
 highlight VCConflict ctermbg=red guibg=red
-call matchadd("VCConflict", "^<<<<<<<$")
 
 "-------------------------------------------------------------------------------
 " Functions.
@@ -235,4 +239,15 @@ function! OpenPython(module_file)
     let filename = filename . '.py'
     execute "vi " . expand(filename)
 endfunction
+
+function! AddMatch(name, regexp)
+    if index(map(getmatches(), "v:val['group']"), a:name) == -1
+        call matchadd(a:name, a:regexp)
+    endif
 endfunction
+
+function! SetGlobalMatches()
+    call AddMatch("ExtraWhitespace", " \\+$")
+   :call AddMatch("VCConflict", "^<<<<<<<$")
+endfunction
+call SetGlobalMatches()
