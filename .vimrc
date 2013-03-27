@@ -139,9 +139,9 @@ augroup filetype_python
     autocmd BufNewFile,BufRead *.py
 \       :iabbr ipdb import ipdb; ipdb.set_trace()
     autocmd BufNewFile,BufRead *.py
-\       :nnoremap <leader>/ /^\s*def .*.*<left><left><left><left>
+\       :nnoremap <leader>/ /^\s*def .*.*<left><left>
     autocmd BufNewFile,BufRead *.py
-\       :nnoremap <leader>c/ /^class .*.*<left><left><left><left>
+\       :nnoremap <leader>c/ /^class .*.*<left><left>
     autocmd BufNewFile,BufRead *.py
 \       :nnoremap <silent> gf :call OpenPython(expand("<cfile>"))<cr>
     autocmd BufNewFile,BufRead *.py
