@@ -137,6 +137,8 @@ augroup filetype_python
     autocmd BufNewFile,BufRead *.py
 \       :nnoremap <leader>c/ /^class .*.*<left><left><left><left>
     autocmd BufNewFile,BufRead *.py
+\       :nnoremap <silent> gf :call OpenPython(expand("<cfile>"))<cr>
+    autocmd BufNewFile,BufRead *.py
 \       :nnoremap <silent> <leader>i :call PythonImport("<cword>")<cr>
 augroup END
 
@@ -218,7 +220,9 @@ call matchadd("VCConflict", "^<<<<<<<$")
 "-------------------------------------------------------------------------------
 function! PythonImport(module)
     let cmd =
-\       "yoshi_grep -rh --color=no '^\\(from\\|import\\).*\\<" . a:module . "' . | head -1"
+\       "yoshi_grep -rh --color=no '^\\(from\\|import\\).*\\<" .
+\       a:module .
+\       "' . | head -1"
     execute(". !" . cmd)
 endfunction
 
@@ -226,9 +230,9 @@ function! ClearTrailing()
     %s/\s\+$//
 endfunction
 
-function! OpenPython()
-    let filename = expand("<cfile>")
-    let filename = substitute(filename, '\.', '/', 'g')
+function! OpenPython(module_file)
+    let filename = substitute(a:module_file, '\.', '/', 'g')
     let filename = filename . '.py'
-    return filename
+    execute "vi " . expand(filename)
+endfunction
 endfunction
