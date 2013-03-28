@@ -87,15 +87,6 @@ set formatoptions-=r
 set formatoptions-=o
 
 "-------------------------------------------------------------------------------
-" Global variables.
-"-------------------------------------------------------------------------------
-" This is the default value.
-set path=.,/usr/include
-
-" Because it doesn't seem to be initialized for me.
-let MYVIMRC="~/.vimrc"
-
-"-------------------------------------------------------------------------------
 " Search.
 "-------------------------------------------------------------------------------
 " Allow search to wrap the end of the file.
