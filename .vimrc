@@ -44,8 +44,9 @@ set hidden
 " Make 'c' commands put a '$' at the end of the string being replaced.
 set cpoptions+=$
 
-" Set the status line the way I like it.
-set stl=%f\ %m\ %r\ %l/%L[%p%%]\ Col:%c\ Buf:%n\ [%b][0x%B]
+" Set the status line the way I like it. The first item is that way to avoid
+" full paths when the path can be given based on the current directory.
+set stl=%{expand(\"%:.\")}\ %m\ %r\ %l/%L[%p%%]\ Col:%c\ Buf:%n\ [%b][0x%B]
 
 " Always display status line, even when there is only one window.
 set laststatus=2
