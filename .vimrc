@@ -240,6 +240,6 @@ endfunction
 
 function! SetGlobalMatches()
     call AddMatch("ExtraWhitespace", " \\+$")
-   :call AddMatch("VCConflict", "^<<<<<<<$")
+   :call AddMatch("VCConflict", "^<<<<<<<")
 endfunction
 call SetGlobalMatches()
