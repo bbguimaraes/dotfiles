@@ -46,7 +46,7 @@ set cpoptions+=$
 
 " Set the status line the way I like it. The first item is that way to avoid
 " full paths when the path can be given based on the current directory.
-set stl=%{expand(\"%:.\")}\ %m\ %r\ %l/%L[%p%%]\ Col:%c\ Buf:%n\ [%b][0x%B]
+set stl=%{NameCurrentBuffer()}\ %m\ %r\ %l/%L[%p%%]\ Col:%c\ Buf:%n\ [%b][0x%B]
 
 " Always display status line, even when there is only one window.
 set laststatus=2
@@ -243,3 +243,11 @@ function! SetGlobalMatches()
    :call AddMatch("VCConflict", "^<<<<<<<")
 endfunction
 call SetGlobalMatches()
+
+function! NameCurrentBuffer()
+    let l:name = expand("%:~:.")
+    if l:name !=# ""
+        return l:name
+    else
+        return "[No Name]"
+endfunction
