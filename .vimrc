@@ -125,7 +125,7 @@ augroup END
 " Python mappings.
 augroup filetype_python
     autocmd!
-    autocmd BufNewFile,BufRead *.py :set textwidth=80
+    autocmd BufNewFile,BufRead *.py setlocal textwidth=80
     autocmd BufNewFile,BufRead *.py
 \       :iabbr ipython import IPython; IPython.embed()
     autocmd BufNewFile,BufRead *.py
@@ -144,7 +144,6 @@ augroup END
 augroup filetype_html
     autocmd!
     autocmd BufNewFile,BufRead *.html setlocal nowrap
-    autocmd BufNewFile,BufRead *.html setlocal textwidth=0
 augroup END
 
 " LaTeX.
@@ -194,7 +193,7 @@ nnoremap <leader>w :set invwrap<cr>:set wrap?<cr>
 nnoremap <leader>nh :nohlsearch<cr>
 
 " Highlight all instances of the word under the cursor.
-nnoremap <silent> <leader>h :set hls<cr>:let @/="<c-r><c-w>"<cr>
+nnoremap <silent> <leader>h :set hlsearch<cr>:let @/="<c-r><c-w>"<cr>
 
 " Resize split vertically to 80 columns.
 nnoremap <silent> <leader>80 :vertical resize 80<cr>
@@ -215,11 +214,11 @@ highlight VCConflict ctermbg=red guibg=red
 " Functions.
 "-------------------------------------------------------------------------------
 function! PythonImport(module)
-    let cmd =
+    let l:cmd =
 \       "yoshi_grep -rh --color=no '^\\(from\\|import\\).*\\<" .
 \       a:module .
 \       "' . | head -1"
-    execute(". !" . cmd)
+    execute(". !" . l:cmd)
 endfunction
 
 function! ClearTrailing()
@@ -227,9 +226,9 @@ function! ClearTrailing()
 endfunction
 
 function! OpenPython(module_file)
-    let filename = substitute(a:module_file, '\.', '/', 'g')
-    let filename = filename . '.py'
-    execute "vi " . expand(filename)
+    let l:filename = substitute(a:module_file, '\.', '/', 'g')
+    let l:filename = l:filename . '.py'
+    execute "vi " . expand(l:filename)
 endfunction
 
 function! AddMatch(name, regexp)
@@ -240,7 +239,7 @@ endfunction
 
 function! SetGlobalMatches()
     call AddMatch("ExtraWhitespace", " \\+$")
-   :call AddMatch("VCConflict", "^<<<<<<<")
+    call AddMatch("VCConflict", "^<<<<<<<")
 endfunction
 call SetGlobalMatches()
 
