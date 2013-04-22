@@ -122,6 +122,12 @@ augroup globals
     autocmd BufNewFile,BufRead,WinEnter * :call SetGlobalMatches()
 augroup END
 
+" c/++ commands.
+augroup filetype_cpp
+    autocmd!
+    autocmd BufNewFile,BufRead *.{h,c,cpp} :set textwidth=80
+augroup END
+
 " Python mappings.
 augroup filetype_python
     autocmd!
