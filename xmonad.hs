@@ -8,7 +8,9 @@ import Graphics.X11.ExtraTypes.XF86
 alert = dzenConfig return . show
 
 main = xmonad defaultConfig {
-    borderWidth = 2,
+    borderWidth = 1,
+    normalBorderColor = "#000000",
+    focusedBorderColor = "#FF0000",
     modMask = mod4Mask,
     terminal = "gnome-terminal --hide-menubar",
     keys = keys defaultConfig `mappend` \c -> fromList [
