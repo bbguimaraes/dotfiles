@@ -171,10 +171,6 @@ augroup END
 " Set leader to ','.
 let mapleader=","
 
-" Quick 0 and $.
-noremap H 0
-noremap L $
-
 " Insert "very magic" caracter whenever '/' or '?' is used.
 nnoremap / /\v
 nnoremap ? ?\v
