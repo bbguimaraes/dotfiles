@@ -176,7 +176,7 @@ nnoremap / /\v
 nnoremap ? ?\v
 
 " Open a new tab with current file.
-nnoremap <c-w>t :tabedit %<cr>
+nnoremap <c-w>t :call DuplicateOnNewTab()<cr>
 
 " Open and source vimrc.
 nnoremap <leader>ev :vi $MYVIMRC<cr>
@@ -250,4 +250,8 @@ function! NameCurrentBuffer()
         return l:name
     else
         return "[No Name]"
+endfunction
+
+function! DuplicateOnNewTab()
+    execute("normal! \<c-w>s\<c-w>T")
 endfunction
