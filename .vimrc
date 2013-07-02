@@ -122,13 +122,13 @@ augroup globals
     autocmd BufNewFile,BufRead,WinEnter * :call SetGlobalMatches()
 augroup END
 
-" c/++ commands.
+" c/++.
 augroup filetype_cpp
     autocmd!
     autocmd BufNewFile,BufRead *.{h,c,cpp} :set textwidth=80
 augroup END
 
-" Python mappings.
+" python.
 augroup filetype_python
     autocmd!
     autocmd BufNewFile,BufRead *.py setlocal textwidth=80
@@ -159,10 +159,16 @@ augroup filetype_tex
 \       :nnoremap <leader>sp :setlocal spell<CR>:setlocal spelllang=pt<CR>
 augroup END
 
-" less
+" less.
 augroup filetype_less
     autocmd!
-    autocmd BufNewFile,BufRead *.less setlocal syntax=css
+    autocmd BufNewFile,BufRead *.less :setlocal syntax=css
+augroup END
+
+" svn commit message.
+augroup filetype_svn_commit
+    autocmd!
+    autocmd BufNewFile,BufRead svn-commit.tmp :setlocal tw=80
 augroup END
 
 "-------------------------------------------------------------------------------
