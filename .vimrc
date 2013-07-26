@@ -165,12 +165,6 @@ augroup filetype_less
     autocmd BufNewFile,BufRead *.less :setlocal syntax=css
 augroup END
 
-" svn commit message.
-augroup filetype_svn_commit
-    autocmd!
-    autocmd BufNewFile,BufRead svn-commit.tmp :setlocal tw=80
-augroup END
-
 "-------------------------------------------------------------------------------
 " Mappings.
 "-------------------------------------------------------------------------------
