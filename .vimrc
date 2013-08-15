@@ -152,6 +152,12 @@ augroup filetype_html
     autocmd BufNewFile,BufRead *.html setlocal nowrap
 augroup END
 
+" javascript.
+augroup filetype_js
+    autocmd!
+    autocmd BufNewFile,BufRead *.js setlocal textwidth=80
+augroup END
+
 " LaTeX.
 augroup filetype_tex
     autocmd!
