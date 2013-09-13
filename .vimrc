@@ -198,7 +198,7 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 vnoremap <silent> <leader>y :w !xclip<cr>
 
 " Toggle paste mode.
-nnoremap <leader>p :set invpaste<cr>:set paste?<cr>
+nnoremap <leader>p :r! xclip -o<cr>
 
 " Toggle wrap.
 nnoremap <leader>w :set invwrap<cr>:set wrap?<cr>
