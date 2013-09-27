@@ -125,13 +125,13 @@ augroup END
 " c/++.
 augroup filetype_cpp
     autocmd!
-    autocmd BufNewFile,BufRead *.{h,c,cpp} :set textwidth=80
+    autocmd BufNewFile,BufRead *.{h,c,cpp} :set textwidth=79
 augroup END
 
 " python.
 augroup filetype_python
     autocmd!
-    autocmd BufNewFile,BufRead *.py setlocal textwidth=80
+    autocmd BufNewFile,BufRead *.py setlocal textwidth=79
     autocmd BufNewFile,BufRead *.py
 \       iabbr ipython import IPython; IPython.embed()
     autocmd BufNewFile,BufRead *.py
@@ -155,7 +155,7 @@ augroup END
 " javascript.
 augroup filetype_js
     autocmd!
-    autocmd BufNewFile,BufRead *.js setlocal textwidth=80
+    autocmd BufNewFile,BufRead *.js setlocal textwidth=79
 augroup END
 
 " LaTeX.
