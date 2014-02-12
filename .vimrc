@@ -217,6 +217,9 @@ nnoremap <silent> <leader>80 :vertical resize 80<cr>
 " Remove trailing spaces.
 nnoremap <silent> <leader>rt :call ClearTrailing()<cr>
 
+" Reverse arguments.
+nnoremap <silent> <leader>ra :call ReverseArgs()<cr>
+
 "-------------------------------------------------------------------------------
 " Matching.
 "-------------------------------------------------------------------------------
@@ -229,6 +232,14 @@ highlight VCConflict ctermbg=red guibg=red
 "-------------------------------------------------------------------------------
 " Functions.
 "-------------------------------------------------------------------------------
+function! ReverseArgs()
+    let l:orig_a = @a
+    normal! "ayi(
+    let l:reversed = join(reverse(split(@a, ", ")), ", ")
+    execute "normal! ci(" . l:reversed . "\<esc>"
+    let @a = l:orig_a
+endfunction
+
 function! PythonLWindowDefinitions()
     if expand("%")
         lvimgrep /\v^(class|\s+def)/j %
