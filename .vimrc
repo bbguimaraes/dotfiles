@@ -137,6 +137,8 @@ augroup filetype_python
     autocmd BufNewFile,BufRead *.py
 \       iabbr ipdb import ipdb; ipdb.set_trace()
     autocmd BufNewFile,BufRead *.py
+\       nnoremap <leader>sd :call PythonLWindowDefinitions()<cr>:lwindow<cr>
+    autocmd BufNewFile,BufRead *.py
 \       nnoremap <leader>/ /^\s*def .*.*<left><left>
     autocmd BufNewFile,BufRead *.py
 \       nnoremap <leader>c/ /^class .*.*<left><left>
@@ -227,6 +229,12 @@ highlight VCConflict ctermbg=red guibg=red
 "-------------------------------------------------------------------------------
 " Functions.
 "-------------------------------------------------------------------------------
+function! PythonLWindowDefinitions()
+    if expand("%")
+        lvimgrep /\v^(class|\s+def)/j %
+    endif
+endfunction
+
 function! PythonImport(module)
     let l:cmd = "yoshi_grep -rh --color=no '^\\(from\\|import\\).*\\<"
     let l:cmd = l:cmd . a:module
