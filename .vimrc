@@ -146,6 +146,8 @@ augroup filetype_python
 \       nnoremap <silent> gf :call OpenPython(expand("<cfile>"))<cr>
     autocmd BufNewFile,BufRead *.py
 \       nnoremap <silent> <leader>i :call PythonImport("<cword>")<cr>
+    autocmd BufNewFile,BufRead *.py
+\       nnoremap <silent> <leader>super :call PythonSuper(1)<cr>
 augroup END
 
 " HTML.
@@ -244,6 +246,15 @@ function! PythonLWindowDefinitions()
     if expand("%")
         lvimgrep /\v^(class|\s+def)/j %
     endif
+endfunction
+
+function! PythonSuper(args)
+    let l:fname = expand("<cfile>")
+    execute "normal! Sdef " . l:fname . "(self):\<esc>"
+    if a:args | execute "normal! hi, *args, **kwargs" | endif
+    execute "normal! ma?^class\<cr>wyiw`a"
+    execute "normal! oreturn super(\<esc>pa, self)." . l:fname . "()"
+    if a:args | execute "normal! i*args, **kwargs" | endif
 endfunction
 
 function! PythonImport(module)
