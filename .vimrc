@@ -137,7 +137,11 @@ augroup filetype_python
     autocmd BufNewFile,BufRead *.py
 \       iabbr ipdb import ipdb; ipdb.set_trace()
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <leader>sd :call PythonLWindowDefinitions()<cr>:lwindow<cr>
+\       nnoremap <silent> <leader>sdd :call PythonLWindowDefinitions(1, 1)<cr>
+    autocmd BufNewFile,BufRead *.py
+\       nnoremap <silent> <leader>sdc :call PythonLWindowDefinitions(1, 0)<cr>
+    autocmd BufNewFile,BufRead *.py
+\       nnoremap <silent> <leader>sdf :call PythonLWindowDefinitions(0, 1)<cr>
     autocmd BufNewFile,BufRead *.py
 \       nnoremap <leader>/ /^\s*def .*.*<left><left>
     autocmd BufNewFile,BufRead *.py
@@ -242,10 +246,23 @@ function! ReverseArgs()
     let @a = l:orig_a
 endfunction
 
-function! PythonLWindowDefinitions()
-    if expand("%")
-        lvimgrep /\v^(class|\s+def)/j %
+function! PythonLWindowDefinitions(classes, functions)
+    if expand("%") == ''
+        return
     endif
+    try
+        if a:classes && a:functions
+            lvimgrep /\v\C^(class|\s+def)/j %
+        else
+            if a:classes
+                lvimgrep /\v\C^class/j %
+            elseif a:functions
+                lvimgrep /\v\C^def/j %
+            endif
+        endif
+        lwindow
+    catch E480
+    endtry
 endfunction
 
 function! PythonSuper(args)
