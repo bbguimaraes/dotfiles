@@ -152,6 +152,8 @@ augroup filetype_python
 \       nnoremap <silent> <leader>i :call PythonImport("<cword>")<cr>
     autocmd BufNewFile,BufRead *.py
 \       nnoremap <silent> <leader>super :call PythonSuper(1)<cr>
+    autocmd BufNewFile,BufRead *.py
+\       nnoremap <silent> <leader>sc :echo PythonGetClass()<cr>
 augroup END
 
 " HTML.
@@ -244,6 +246,16 @@ function! ReverseArgs()
     let l:reversed = join(reverse(split(@a, ", ")), ", ")
     execute "normal! ci(" . l:reversed . "\<esc>"
     let @a = l:orig_a
+endfunction
+
+function! PythonGetClass()
+    let l:winview = winsaveview()
+    let l:original_pat = @/
+    execute "normal! ?^\\s*class \<cr>"
+    let l:return = getline(line('.'))
+    let @/ = l:original_pat
+    call winrestview(l:winview)
+    return l:return
 endfunction
 
 function! PythonLWindowDefinitions(classes, functions)
