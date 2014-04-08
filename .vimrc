@@ -287,7 +287,7 @@ function! PythonSuper(args)
 endfunction
 
 function! PythonImport(module)
-    let l:cmd = "yoshi_grep -rh --color=no '^\\(from\\|import\\).*\\<"
+    let l:cmd = "grep -rh --color=no '^\\(from\\|import\\).*\\<"
     let l:cmd = l:cmd . a:module
     let l:cmd = l:cmd . "\\>' . | head -1"
     execute(". !" . l:cmd)
