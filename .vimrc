@@ -17,6 +17,9 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+" Set number of columns to 79 for all file types.
+set textwidth=79
+
 " Add a line on the column after textwidth limit (vim 7.3).
 set colorcolumn+=+1
 
@@ -122,16 +125,9 @@ augroup globals
     autocmd BufNewFile,BufRead,WinEnter * :call SetGlobalMatches()
 augroup END
 
-" c/++.
-augroup filetype_cpp
-    autocmd!
-    autocmd BufNewFile,BufRead *.{h,c,cpp} :set textwidth=79
-augroup END
-
 " python.
 augroup filetype_python
     autocmd!
-    autocmd BufNewFile,BufRead *.py setlocal textwidth=79
     autocmd BufNewFile,BufRead *.py
 \       iabbr ipython import IPython; IPython.embed()
     autocmd BufNewFile,BufRead *.py
@@ -162,12 +158,6 @@ augroup filetype_html
     autocmd BufNewFile,BufRead *.html setlocal nowrap
 augroup END
 
-" javascript.
-augroup filetype_js
-    autocmd!
-    autocmd BufNewFile,BufRead *.js setlocal textwidth=79
-augroup END
-
 " LaTeX.
 augroup filetype_tex
     autocmd!
@@ -179,12 +169,6 @@ augroup END
 augroup filetype_less
     autocmd!
     autocmd BufNewFile,BufRead *.less :setlocal syntax=css
-augroup END
-
-" svn
-augroup filetype_svn
-    autocmd!
-    autocmd BufNewFile,BufRead svn-commit*.tmp :setlocal tw=72
 augroup END
 
 "-------------------------------------------------------------------------------
