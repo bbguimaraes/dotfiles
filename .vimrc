@@ -177,10 +177,6 @@ augroup END
 " Set leader to ','.
 let mapleader=","
 
-" Insert "very magic" caracter whenever '/' or '?' is used.
-nnoremap / /\v
-nnoremap ? ?\v
-
 " Open a new tab with current file.
 nnoremap <c-w>t :call DuplicateOnNewTab()<cr>
 
