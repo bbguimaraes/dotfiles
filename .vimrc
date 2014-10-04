@@ -174,9 +174,6 @@ augroup END
 "-------------------------------------------------------------------------------
 " Mappings.
 "-------------------------------------------------------------------------------
-" Set leader to ','.
-let mapleader=","
-
 " Open a new tab with current file.
 nnoremap <c-w>t :call DuplicateOnNewTab()<cr>
 
