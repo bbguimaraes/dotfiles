@@ -1,6 +1,6 @@
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Globals.
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Enable no vi compatibility mode.
 set nocompatible
 
@@ -19,9 +19,6 @@ set expandtab
 
 " Set number of columns to 79 for all file types.
 set textwidth=79
-
-" Add a line on the column after textwidth limit (vim 7.3).
-set colorcolumn+=+1
 
 " Make bash shell parse .bashrc file. The default .bashrc of many systems has a
 " test to prevent parsing when not running interactively. To allow it, a test
@@ -72,8 +69,8 @@ set history=100
 " Keep cursor 8 lines from the top and bottom of the screen when scrolling.
 set scrolloff=8
 
-" Disable annoying behavior of moving to the start of line when using Ctrl-F and
-" Ctrl-B.
+" Disable annoying behavior of moving to the start of line when using Ctrl-F
+" and Ctrl-B.
 set nostartofline
 
 " Disable encryption.
@@ -90,9 +87,9 @@ set showfulltag
 set formatoptions-=r
 set formatoptions-=o
 
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Search.
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Allow search to wrap the end of the file.
 set wrapscan
 
@@ -107,18 +104,18 @@ set hlsearch
 " Enable incremental search.
 set incsearch
 
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Splits.
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Remove characters in window separators.
 set fillchars=""
 
 " Disable automatic resizing when opening or closing splits.
 set noequalalways
 
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Autocommands.
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Global commands.
 augroup globals
     autocmd!
@@ -171,9 +168,9 @@ augroup filetype_less
     autocmd BufNewFile,BufRead *.less :setlocal syntax=css
 augroup END
 
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Mappings.
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Open a new tab with current file.
 nnoremap <c-w>t :call DuplicateOnNewTab()<cr>
 
@@ -205,18 +202,21 @@ nnoremap <silent> <leader>rt :call ClearTrailing()<cr>
 " Reverse arguments.
 nnoremap <silent> <leader>ra :call ReverseArgs()<cr>
 
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Matching.
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 " Highlight trailing whitespace.
 highlight ExtraWhitespace ctermbg=red guibg=red
 
 " Highlight version control conflict marks.
 highlight VCConflict ctermbg=red guibg=red
 
-"-------------------------------------------------------------------------------
+" Highlight the character at the 80th column.
+highlight 80thColumn ctermbg=red guibg=red
+
+"------------------------------------------------------------------------------
 " Functions.
-"-------------------------------------------------------------------------------
+"------------------------------------------------------------------------------
 function! ReverseArgs()
     let l:orig_a = @a
     normal! "ayi(
@@ -280,15 +280,19 @@ function! OpenPython(module_file)
     execute "vi " . expand(l:filename)
 endfunction
 
-function! AddMatch(name, regexp)
+function! AddMatchOnce(name, regexp)
     if index(map(getmatches(), "v:val['group']"), a:name) == -1
         call matchadd(a:name, a:regexp)
     endif
 endfunction
 
 function! SetGlobalMatches()
-    call AddMatch("ExtraWhitespace", " \\+$")
-    call AddMatch("VCConflict", "^<<<<<<<")
+    call AddMatchOnce("ExtraWhitespace", " \\+$")
+    call AddMatchOnce("VCConflict", "^<<<<<<<")
+    " Highlight the character at the 80th column of each line, if there is one:
+    "     - `/\%80v/`: makes the match start at the 80th column
+    "     - `/./`: matches a single character
+    call AddMatchOnce("80thColumn", "\\%80v.")
 endfunction
 call SetGlobalMatches()
 
