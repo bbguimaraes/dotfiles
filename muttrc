@@ -1,0 +1,14 @@
+set imap_user = bbgstb@gmail.com
+source "echo set imap_pass = `kwallet_read_password kdewallet mutt mutt mutt`|"
+set folder = imaps://bbgstb@imap.gmail.com/
+set spoolfile = +INBOX
+set imap_check_subscribed
+
+set header_cache = ~/.cache/mutt
+set message_cachedir = ~/.cache/mutt
+set postponed = +[Gmail]/Drafts
+unset imap_passive
+set imap_keepalive = 300 # seconds
+set mail_check = 120 # seconds
+
+set sort = threads
