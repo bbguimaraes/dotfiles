@@ -276,8 +276,30 @@ endfunction
 
 function! OpenPython(module_file)
     let l:filename = substitute(a:module_file, '\.', '/', 'g')
-    let l:filename = l:filename . '.py'
-    execute "vi " . expand(l:filename)
+    if filereadable(l:filename . '.py')
+        execute "edit " . expand(l:filename . '.py')
+        return
+    endif
+    if filereadable(l:filename . '/__init__.py')
+        execute "edit " . expand(l:filename . '/__init__.py')
+        return
+    endif
+    let l:pathsstring = system(
+\       "python -c '"
+\       . "from __future__ import print_function\n"
+\       . "import sys\n"
+\       . "for _ in map(print, sys.path): pass'")
+    let l:paths = split(l:pathsstring, '\n', 1)
+    let l:paths = filter(deepcopy(l:paths), 'len(v:val) != 0')
+    let l:allpaths =
+\       map(deepcopy(l:paths), 'v:val . "/' . l:filename . '.py"')
+\       + map(deepcopy(l:paths), 'v:val . "/' . l:filename . '/__init__.py"')
+    for l:filename in l:allpaths
+        if filereadable(l:filename)
+            execute 'edit ' . expand(l:filename)
+            return
+        endif
+    endfor
 endfunction
 
 function! AddMatchOnce(name, regexp)
