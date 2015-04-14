@@ -1,7 +1,7 @@
 "------------------------------------------------------------------------------
 " Globals.
 "------------------------------------------------------------------------------
-" Enable no vi compatibility mode.
+" Disable vi compatibility mode.
 set nocompatible
 
 " Enable filetype recognition.
@@ -12,10 +12,15 @@ filetype indent on
 " Enable syntax highlighting.
 syntax on
 
-" Tabstops are 4 spaces.
-set tabstop=4
-set shiftwidth=4
+" Insert spaces instead of a tab on insert mode.
 set expandtab
+
+" Number of spaces that make a tab.
+set tabstop=4
+
+" Use the same number of spaces as 'tabstop' when shifting (`>` and `<`
+" commands, autoindent, ...)
+set shiftwidth=0
 
 " Set number of columns to 79 for all file types.
 set textwidth=79
@@ -26,17 +31,11 @@ set textwidth=79
 " if [ -z "$VIM" ]; then
 let $BASH_ENV="~/.bashrc"
 
-" Use forward slashes on file names.
-set shellslash
-
-" Make command line two lines high.
-set ch=1
-
 " Set visual bell.
-set vb
+set visualbell
 
 " Allow backspacing over anything.
-set backspace=2
+set backspace=indent,eol,start
 
 " Allow backgrounding of unsaved buffers.
 set hidden
@@ -44,9 +43,8 @@ set hidden
 " Make 'c' commands put a '$' at the end of the string being replaced.
 set cpoptions+=$
 
-" Set the status line the way I like it. The first item is that way to avoid
-" full paths when the path can be given based on the current directory.
-set stl=%{NameCurrentBuffer()}\ %m\ %r\ %l/%L[%p%%]\ Col:%c\ Buf:%n\ [%b][0x%B]
+" Remove the `bold` option on status line.
+highlight StatusLine term=reverse cterm=reverse gui=reverse
 
 " Always display status line, even when there is only one window.
 set laststatus=2
@@ -60,12 +58,6 @@ set showmode
 " Hide mouse while typing.
 set mousehide
 
-" Enable gui yanking without pressing 'y' or 'd'.
-set guioptions=a
-
-" Increase size of history.
-set history=100
-
 " Keep cursor 8 lines from the top and bottom of the screen when scrolling.
 set scrolloff=8
 
@@ -76,24 +68,17 @@ set nostartofline
 " Disable encryption.
 set key=
 
-" Set command-line completion to 'gnome-terminal mode'.
+" Enable wildmenu.
 set wildmenu
-set wildmode=longest:full
-
-" Display full tag instead of just the function name.
-set showfulltag
+set wildmode=longest:full,full
 
 " Do not insert comment when pressing enter or o on a line with a comment.
-set formatoptions-=r
-set formatoptions-=o
+set formatoptions-=o,r
 
 "------------------------------------------------------------------------------
 " Search.
 "------------------------------------------------------------------------------
-" Allow search to wrap the end of the file.
-set wrapscan
-
-" Set the search ti ignore case when the search is all lower, but recognizes
+" Set the search to ignore case when the search is all lower, but recognizes
 " uppercase if it's specified.
 set ignorecase
 set smartcase
@@ -181,7 +166,7 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " Copy selected text to system clipboard.
 vnoremap <silent> <leader>y :w !xclip<cr>
 
-" Toggle paste mode.
+" Paste system clipboard.
 nnoremap <leader>p :r! xclip -o<cr>
 
 " Toggle wrap.
@@ -217,14 +202,6 @@ highlight 80thColumn ctermbg=red guibg=red
 "------------------------------------------------------------------------------
 " Functions.
 "------------------------------------------------------------------------------
-function! ReverseArgs()
-    let l:orig_a = @a
-    normal! "ayi(
-    let l:reversed = join(reverse(split(@a, ", ")), ", ")
-    execute "normal! ci(" . l:reversed . "\<esc>"
-    let @a = l:orig_a
-endfunction
-
 function! PythonGetClass()
     let l:winview = winsaveview()
     let l:original_pat = @/
@@ -264,7 +241,7 @@ function! PythonSuper(args)
 endfunction
 
 function! PythonImport(module)
-    let l:cmd = "grep -rh --color=no '^\\(from\\|import\\).*\\<"
+    let l:cmd = "grep -Irh --color=no '^\\(from\\|import\\).*\\<"
     let l:cmd = l:cmd . a:module
     let l:cmd = l:cmd . "\\>' . | head -1"
     execute(". !" . l:cmd)
@@ -317,14 +294,6 @@ function! SetGlobalMatches()
     call AddMatchOnce("80thColumn", "\\%80v.")
 endfunction
 call SetGlobalMatches()
-
-function! NameCurrentBuffer()
-    let l:name = expand("%:~:.")
-    if l:name !=# ""
-        return l:name
-    else
-        return "[No Name]"
-endfunction
 
 function! DuplicateOnNewTab()
     execute("normal! \<c-w>s\<c-w>T")
