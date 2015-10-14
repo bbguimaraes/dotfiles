@@ -12,3 +12,4 @@ set imap_keepalive = 300 # seconds
 set mail_check = 120 # seconds
 
 set sort = threads
+set pager_index_lines = 10
