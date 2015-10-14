@@ -115,23 +115,26 @@ augroup filetype_python
     autocmd BufNewFile,BufRead *.py
 \       iabbr ipdb import ipdb; ipdb.set_trace()
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <silent> <leader>sdd :call PythonLWindowDefinitions(1, 1)<cr>
+\       nnoremap <buffer> <silent>
+\           <leader>sdd :call PythonLWindowDefinitions(1, 1)<cr>
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <silent> <leader>sdc :call PythonLWindowDefinitions(1, 0)<cr>
+\       nnoremap <buffer> <silent>
+\          <leader>sdc :call PythonLWindowDefinitions(1, 0)<cr>
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <silent> <leader>sdf :call PythonLWindowDefinitions(0, 1)<cr>
+\       nnoremap <buffer> <silent>
+\          <leader>sdf :call PythonLWindowDefinitions(0, 1)<cr>
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <leader>/ /^\s*def .*.*<left><left>
+\       nnoremap <buffer> <leader>/ /^\s*def .*.*<left><left>
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <leader>c/ /^class .*.*<left><left>
+\       nnoremap <buffer> <leader>c/ /^class .*.*<left><left>
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <silent> gf :call OpenPython(expand("<cfile>"))<cr>
+\       nnoremap <buffer> <silent> gf :call OpenPython(expand("<cfile>"))<cr>
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <silent> <leader>i :call PythonImport("<cword>")<cr>
+\       nnoremap <buffer> <silent> <leader>i :call PythonImport("<cword>")<cr>
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <silent> <leader>super :call PythonSuper(1)<cr>
+\       nnoremap <buffer> <silent> <leader>super :call PythonSuper(1)<cr>
     autocmd BufNewFile,BufRead *.py
-\       nnoremap <silent> <leader>sc :echo PythonGetClass()<cr>
+\       nnoremap <buffer> <silent> <leader>sc :echo PythonGetClass()<cr>
 augroup END
 
 " HTML.
