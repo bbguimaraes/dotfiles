@@ -23,8 +23,6 @@
 # to this option should be space delimited. Similar to the --ignore option,
 # this is in addition to any packages found in pacman's config.
 #IgnorePkg =
-# Ignore oracle 12 versions, cx-Oracle==5.1.2 needs version 11.
-IgnorePkg = oracle-instantclient-basic oracle-instantclient-sdk
 
 # Ignore the specified binary repos when checking for updates. Multiple arguments
 # to this option should be space delimited.
