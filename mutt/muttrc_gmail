@@ -1,0 +1,3 @@
+set from = "Bruno Barcarol Guimarães <bbgstb@gmail.com>"
+set imap_user = bbgstb@gmail.com
+source "echo set imap_pass = `kwallet_read_password kdewallet mutt bbgstb@gmail.com mutt`|"
