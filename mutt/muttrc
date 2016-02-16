@@ -13,5 +13,4 @@ set mail_check = 60 # seconds
 set sort = threads
 set pager_index_lines = 10
 
-set sendmail="/usr/bin/msmtp"
 set editor = `echo \$EDITOR`
