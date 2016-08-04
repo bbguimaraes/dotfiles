@@ -107,6 +107,12 @@ augroup globals
     autocmd BufNewFile,BufRead,WinEnter * :call SetGlobalMatches()
 augroup END
 
+" mail
+augroup filetype_mail
+    autocmd!
+    autocmd FileType mail setlocal textwidth=72
+augroup END
+
 " python.
 augroup filetype_python
     autocmd!
@@ -189,6 +195,9 @@ nnoremap <silent> <leader>rt :call ClearTrailing()<cr>
 
 " Reverse arguments.
 nnoremap <silent> <leader>ra :call ReverseArgs()<cr>
+
+" Add a mail signature.
+nnoremap <leader>mf o--<cr>Bruno Barcarol Guimarães<esc>
 
 "------------------------------------------------------------------------------
 " Matching.
