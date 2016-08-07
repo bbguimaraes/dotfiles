@@ -1,0 +1,5 @@
+[general]
+wm = /usr/lib64/gnt/irssi.so
+
+[GntWM::binding]
+a-i = window-next-urgent
