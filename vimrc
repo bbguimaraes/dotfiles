@@ -28,7 +28,7 @@ augroup filetype_mail
 \       <leader>mf o--<cr>Bruno Barcarol Guimarães<esc>
 augroup END
 
-nnoremap <leader>th :set invhlsearch<cr>
+nnoremap <leader>nh :nohlsearch<cr>
 nnoremap <leader>tn :set invnumber<cr>
 nnoremap <leader>ts :call ToggleSyntax()<cr>
 nnoremap <leader>tw :set invwrap<cr>
@@ -53,6 +53,6 @@ endfunction
 
 function! SetGlobalMatches()
     call AddMatchOnce("ExtraWhitespace", " \\+$")
-    call AddMatchOnce("VCConflict", "^<<<<<<<\|=======\|>>>>>>>")
+    call AddMatchOnce("VCConflict", "^\\(<<<<<<<\\|=======$\\|>>>>>>>\\)")
     call AddMatchOnce("80thColumn", "\\%80v.")
 endfunction
