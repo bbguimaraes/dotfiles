@@ -1,6 +1,7 @@
 set spoolfile = +INBOX
 set folder = imaps://imap.gmail.com/
 set imap_check_subscribed
+set beep_new
 
 set alias_file = ~/.mutt/aliases
 source $alias_file
