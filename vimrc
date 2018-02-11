@@ -24,7 +24,7 @@ augroup END
 
 augroup filetype_mail
     autocmd!
-    autocmd FileType mail setlocal textwidth=72
+    autocmd FileType mail setlocal textwidth=72 spell
     autocmd FileType mail nnoremap <buffer>
 \       <leader>mf o--<cr>Bruno Barcarol Guimarães<esc>
 augroup END
