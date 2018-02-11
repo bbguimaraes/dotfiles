@@ -40,6 +40,7 @@ vnoremap <leader>y :w !xclip<cr>
 nnoremap <leader>p :r! xclip -o<cr>
 nnoremap <leader>80 :vertical resize 80<cr>
 nnoremap <silent> <leader>rt :%s/\s\+$//<cr>
+nnoremap <leader>nc /^<<<<<<< <cr>
 
 function! ToggleSyntax()
     if exists("g:syntax_on") | syntax off | else | syntax enable | endif
