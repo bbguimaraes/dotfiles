@@ -1,0 +1,23 @@
+*VT100.colorBDMode: true
+*VT100.colorBD: red
+*VT100.colorULMode: true
+*VT100.colorUL: cyan
+*VT100.veryBoldColors: 6
+
+XTerm*reverseVideo: on
+XTerm*scrollBar: false
+XTerm*borderWidth: 0
+
+URxvt.reverseVideo: on
+URxvt.scrollBar: false
+URxvt.urgentOnBell: true
+URxvt.font: xft:xos4 Terminus:style=Regular:pixelsize=20
+URxvt.print-pipe: cat > "$(TMPDIR=$HOME mktemp urxvt.XXXXXX)"
+URxvt.perl-ext-common: resize-font
+URxvt.resize-font.smaller: C-minus
+URxvt.resize-font.bigger: C-plus
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+
+URxvt.color4: #0000ff
+URxvt.color12: #3333ff
