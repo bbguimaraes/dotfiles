@@ -8,7 +8,8 @@ set hidden key= lazyredraw noequalalways visualbell
 set wildmenu wildmode=longest:full,full
 set hlsearch ignorecase incsearch smartcase
 
-syntax off
+syntax on
+colorscheme desert
 highlight ExtraWhitespace ctermbg=red guibg=red
 highlight VCConflict ctermbg=red guibg=red
 highlight 80thColumn ctermbg=red guibg=red
