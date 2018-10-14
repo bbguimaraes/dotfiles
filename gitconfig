@@ -2,6 +2,5 @@
     editor = vim
 [user]
     name = Bruno Barcarol Guimarães
-    email = bbgstb@gmail.com
 [push]
     default = simple
