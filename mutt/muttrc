@@ -14,3 +14,15 @@ set sort = threads
 set pager_index_lines = 10
 
 set editor = `echo \$EDITOR`
+
+color hdrdefault red black
+color quoted blue black
+color signature blue black
+color attachment brightmagenta black
+color prompt white black
+color message brightcyan black
+color error brightred black
+color tree white black
+color markers red black
+color tilde brightmagenta black
+color index blue black ~F
