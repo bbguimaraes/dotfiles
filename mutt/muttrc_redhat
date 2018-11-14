@@ -1,4 +1,4 @@
 set from = "Bruno Barcarol Guimarães <bbarcaro@redhat.com>"
 set imap_user = bbarcaro@redhat.com
 set sendmail = "/usr/bin/msmtp --account bbarcaro@redhat.com"
-source 'echo set imap_pass = "`kwallet-query kdewallet --folder mutt --read-password bbarcaro@redhat.com`"|'
+source 'echo set imap_pass = "`pass show redhat/bbarcaro@redhat.com`"|'
