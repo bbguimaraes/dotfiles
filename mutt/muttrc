@@ -1,21 +1,9 @@
-set spoolfile = +INBOX
-set folder = imaps://imap.gmail.com/
-set imap_check_subscribed
 set beep_new
-
 set alias_file = ~/.mutt/aliases
 source $alias_file
 set header_cache = ~/.cache/mutt
-set message_cachedir = ~/.cache/mutt
-unset record
-set postponed = +[Gmail]/Drafts
-unset imap_passive
-set imap_keepalive = 300 # seconds
-set mail_check = 60 # seconds
-
 set sort = threads
 set pager_index_lines = 10
-
 set editor = `echo \$EDITOR`
 
 color hdrdefault red black
