@@ -1,0 +1,33 @@
+[general]
+accounts = redhat
+socktimeout = 60
+
+[mbnames]
+enabled = yes
+filename = ~/.mutt/redhat_mailboxes
+header = 'mailboxes '
+peritem = '+%(foldername)s'
+sep = ' '
+footer = '\n'
+
+[Account redhat]
+localrepository = redhat_local
+remoterepository = redhat_remote
+autorefresh = 5
+quick = 10
+
+[Repository redhat_local]
+type = Maildir
+localfolders = ~/.local/share/offlineimap/redhat
+
+[Repository redhat_remote]
+type = Gmail
+remoteuser = bbarcaro@redhat.com
+remotepasseval = \
+    __import__('subprocess').check_output(
+        ('pass', 'show', 'redhat/bbarcaro@redhat.com'))
+holdconnectionopen = yes
+keepalive = 60
+folderfilter = '[Gmail]/All Mail'.__ne__
+sslcacertfile = ~/.config/offlineimap/tls_trust_file
+ssl_version = tls1_2

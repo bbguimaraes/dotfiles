@@ -1,0 +1,33 @@
+[general]
+accounts = gmail
+socktimeout = 60
+
+[mbnames]
+enabled = yes
+filename = ~/.mutt/gmail_mailboxes
+header = 'mailboxes '
+peritem = '+%(foldername)s'
+sep = ' '
+footer = '\n'
+
+[Account gmail]
+localrepository = gmail_local
+remoterepository = gmail_remote
+autorefresh = 5
+quick = 10
+
+[Repository gmail_local]
+type = Maildir
+localfolders = ~/.local/share/offlineimap/gmail
+
+[Repository gmail_remote]
+type = Gmail
+remoteuser = bbgstb@gmail.com
+remotepasseval = \
+    __import__('subprocess').check_output(
+        ('pass', 'show', 'comp/bbgstb@gmail.com'))
+holdconnectionopen = yes
+keepalive = 60
+folderfilter = '[Gmail]/All Mail'.__ne__
+sslcacertfile = ~/.config/offlineimap/tls_trust_file
+ssl_version = tls1_2

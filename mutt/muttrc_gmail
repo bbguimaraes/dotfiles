@@ -1,4 +1,8 @@
 set from = "Bruno Barcarol Guimarães <bbgstb@gmail.com>"
-set imap_user = bbgstb@gmail.com
 set sendmail = "/usr/bin/msmtp --account bbgstb@gmail.com"
-source 'echo set imap_pass = "`pass show google/bbgstb@gmail.com`"|'
+set mbox_type = Maildir
+set folder = ~/.local/share/offlineimap/gmail
+source ~/.mutt/gmail_mailboxes
+set spoolfile = +INBOX
+set postponed = +[Gmail]/Drafts
+unset record
