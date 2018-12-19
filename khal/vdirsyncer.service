@@ -1,8 +1,2 @@
-[Unit]
-Description=Synchronize calendars and contacts
-Documentation=https://vdirsyncer.readthedocs.org/
-
 [Service]
-ExecStart=/usr/bin/vdirsyncer sync --max-workers 1
-Type=oneshot
-TimeoutStartSec=10m
+ExecStart=/home/bbguimaraes/.config/vdirsyncer/run.sh
