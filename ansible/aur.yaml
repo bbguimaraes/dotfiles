@@ -1,0 +1,19 @@
+- name: check if package already installed
+  command: pacman -Qqi {{ pkg }}
+  ignore_errors: true
+  changed_when: false
+  register: installed
+- name: build packages
+  command: aur sync -c {{ pkg }}
+  register: rc
+  when: installed is failed
+- name: update pacman cache
+  command: pacman -Sy
+  when: rc is changed
+  become: yes
+- name: install packages
+  package:
+    state: present
+    name: '{{ pkg }}'
+  become: yes
+  when: installed is failed

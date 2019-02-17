@@ -1,0 +1,203 @@
+- hosts: all
+  tags: base
+  vars:
+    home: '{{ ansible_env.HOME }}'
+    src_dir: '{{ home }}/src'
+  tasks:
+  - name: create source directory
+    file:
+      state: directory
+      path: '{{ src_dir }}'
+  - name: clone dotfiles repository
+    git:
+      repo: https://bbguimaraes@github.com/bbguimaraes/dotfiles.git
+      dest: '{{ src_dir }}/dotfiles'
+      update: no
+  - name: create home directories
+    file:
+      state: directory
+      path: '{{ home }}/{{ item }}'
+    loop:
+    - .local/share/tig
+    - .config/git
+    - .config/i3
+    - .config/i3status
+    - .config/khal
+    - .config/offlineimap
+    - .config/vdirsyncer
+    - .local/share/systemd/user
+    - .mutt
+  - name: setup dotfile symlinks
+    file:
+      state: link
+      src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
+      dest: '{{ home }}/{{ item.1 }}'
+    loop:
+    - ['bash/profile',         '.bash_profile']
+    - ['bash/bashrc',          '.bashrc']
+    - ['gitconfig',            '.config/git/config']
+    - ['i3/config',            '.config/i3/config']
+    - ['i3/status',            '.config/i3status/config']
+    - ['khal/khal.conf',       '.config/khal/config']
+    - ['khal/vdirsyncer.conf', '.config/vdirsyncer/config']
+    - ['khal/vdirsyncer.service',
+       '.local/share/systemd/user/vdirsyncer.service']
+    - ['khal/vdirsyncer.sh',   '.config/vdirsyncer/run.sh']
+    - ['mutt/msmtprc',         '.msmtprc']
+    - ['mutt/muttrc',          '.mutt/muttrc']
+    - ['mutt/muttrc_gmail',    '.mutt/muttrc_gmail']
+    - ['offlineimap/offlineimap@.service',
+       '.local/share/systemd/user/offlineimap@.service']
+    - ['offlineimap/gmail',    '.config/offlineimap/gmail']
+    - ['redshift.conf',        '.config/redshift.conf']
+    - ['tmux.conf',            '.tmux.conf']
+    - ['user-dirs.dirs',       '.config/user-dirs.dirs']
+    - ['vimrc',                '.vimrc']
+    - ['xorg/xinitrc',         '.xinitrc']
+    - ['xorg/Xresources',      '.Xresources']
+  - name: setup other symlinks
+    file:
+      state: link
+      src: '{{ item.0 }}'
+      dest: '{{ home }}/{{ item.1 }}'
+    loop:
+    - ['{{ home }}/n/archive/pass', '.password-store']
+    - ['{{ home }}/n/archive/mutt.aliases', '.mutt/aliases']
+  - name: setup CA symlinks (archlinux)
+    file:
+      state: link
+      src: /etc/ssl/certs/ca-certificates.crt
+      dest: '{{ home }}/{{ item }}'
+    loop:
+    - .mutt/tls_trust_file
+    - .config/offlineimap/tls_trust_file
+    when: ansible_os_family == 'Archlinux'
+  - name: setup CA symlinks (fedora)
+    file:
+      state: link
+      src: /etc/ssl/certs/ca-bundle.crt
+      dest: '{{ home }}/{{ item }}'
+    loop:
+    - .mutt/tls_trust_file
+    - .config/offlineimap/tls_trust_file
+    when: ansible_os_family == 'RedHat'
+  - name: ensure files have been created/imported
+    stat: 'path={{ home }}/{{ item }}'
+    register: st
+    failed_when: not st.stat.exists
+    loop:
+    - .config/Nextcloud/nextcloud.cfg
+    - .gnupg/private-keys-v1.d/2BCBD7BC4D16EFE8BB81514BDD139D85894131FF.key
+    - .gnupg/private-keys-v1.d/2E2E172E019FB7185972C20A9EC30C06B7645832.key
+    - .gnupg/private-keys-v1.d/80B69EFC5B439D3F744F52E3FF80117C439C7BB2.key
+    - .gnupg/private-keys-v1.d/E57CD77CA5B02F19F9A7EFE16E263DF6B869D988.key
+    - .local/share/offlineimap
+    - .local/share/vdirsyncer
+    - .password-store
+    - .ssh/id_rsa
+    - .ssh/id_rsa.pub
+    - n
+  - name: enable and start services
+    systemd:
+      enabled: true
+      state: started
+      name: '{{ item }}'
+      scope: user
+      daemon_reload: true
+    loop:
+    - offlineimap@gmail
+    - redshift
+    - vdirsyncer
+- hosts: all
+  tags: urxvt
+  vars:
+    home: '{{ ansible_env.HOME }}'
+  tasks:
+  - name: clone urxvt resize-font plugin
+    git:
+      repo: https://github.com/simmel/urxvt-resize-font.git
+      dest: '{{ home }}/.urxvt/ext/urxvt-resize-font'
+  - name: add urxvt resize-font symlink
+    file:
+      state: link
+      src: '{{ home }}/.urxvt/ext/urxvt-resize-font/resize-font'
+      dest: '{{ home }}/.urxvt/ext/resize-font'
+- hosts: all
+  tags: weechat
+  vars:
+    dir: '{{ ansible_env.HOME }}/.weechat'
+  tasks:
+  - when: ansible_os_family == 'Archlinux'
+    block:
+    - name: install weechat-edit-git
+      import_tasks: aur.yaml
+      vars: {"pkg": "weechat-edit-git"}
+    - name: install lua-cjson
+      import_tasks: aur.yaml
+      vars: {"pkg": "lua-cjson"}
+    - name: install weechat-matrix-git
+      import_tasks: aur.yaml
+      vars: {"pkg": "weechat-matrix-git"}
+  - name: create weechat directory
+    file:
+      state: directory
+      path: '{{ dir }}/lua/autoload'
+  - name: create symlinks
+    when: ansible_os_family == 'Archlinux'
+    file:
+      state: link
+      src: '{{ item.0 }}'
+      dest: '{{ dir }}/{{ item.1 }}/autoload/{{ item.2 }}'
+    loop:
+    - ['/opt/matrix.lua', 'lua', 'matrix.lua']
+    - ['/lib/weechat/python/edit.py', 'python', 'edit.py']
+  - name: set weechat variables
+    ini_file:
+      path: '{{ ansible_env.HOME }}/.weechat/{{ item.file }}'
+      section: '{{ item.section }}'
+      option: '{{ item.opt }}'
+      value: '{{ item.val }}'
+    loop:
+    - opt: beep.conditions
+      val: ${tg_displayed}
+      file: trigger.conf
+      section: trigger
+    - file: plugins.conf
+      section: var
+      opt: lua.matrix.user
+      val: bbguimaraes
+    - file: plugins.conf
+      section: var
+      opt: lua.matrix.homeserver_url
+      val: https://matrix.bbguimaraes.com:8448/
+    - file: weechat.conf
+      section: color
+      opt: separator
+      val: white
+    - file: weechat.conf
+      section: color
+      opt: status_number
+      val: white
+    - file: weechat.conf
+      section: bar
+      opt: status.color_bg
+      val: black
+    - file: weechat.conf
+      section: bar
+      opt: title.color_bg
+      val: black
+    - file: buflist.conf
+      section: format
+      opt: buffer_current
+      val: '${format_number}${indent}${color:*white,}${name}'
+- hosts: all
+  name: aur pkgs
+  tasks:
+  - when: ansible_os_family == 'Archlinux'
+    block:
+    - tags: renderdoc
+      import_tasks: aur.yaml
+      vars: {"pkg": "renderdoc"}
+    - tags: duc
+      import_tasks: aur.yaml
+      vars: {"pkg": "duc"}
