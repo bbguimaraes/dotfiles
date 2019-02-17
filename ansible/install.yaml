@@ -1,0 +1,214 @@
+- hosts: all
+  tags: base_sys_pkgs
+  tasks:
+  - name: enable multilib
+    blockinfile:
+      state: present
+      path: /etc/pacman.conf
+      marker: '# {mark} ANSIBLE MANAGED BLOCK MULTILIB'
+      block: |
+        [multilib]
+        Include = /etc/pacman.d/mirrorlist
+    when: ansible_os_family == 'Archlinux'
+  - name: install base system packages
+    package:
+      state: present
+      name: |
+        grub networkmanager openssh os-prober pkgfile sudo
+    when: ansible_os_family == 'Archlinux'
+- hosts: all
+  tags: base
+  tasks:
+  - name: add users
+    user:
+      state: present
+      uid: 1000
+      name: bbguimaraes
+      group: users
+      groups: wheel
+  - name: enable sudoers.d
+    lineinfile:
+      state: present
+      path: /etc/sudoers
+      validate: visudo -cf %s
+      line: '#includedir /etc/sudoers.d'
+  - name: allow wheel to sudo
+    copy:
+      dest: /etc/sudoers.d/0_wheel
+      owner: root
+      group: root
+      mode: 0440
+      validate: visudo -cf %s
+      content: |
+        %wheel ALL=(ALL) ALL
+  - name: update pkgfile
+    command:
+      argv: ['pkgfile', '--update']
+      creates: /var/cache/pkgfile/core.files
+    when: ansible_os_family == 'Archlinux'
+  - name: enable and start services
+    service:
+      enabled: true
+      state: started
+      name: '{{ item }}'
+    loop:
+    - NetworkManager
+    - sshd
+- hosts: all
+  tags: base_pkgs
+  vars:
+    pkgs:
+    - >- # dev
+      ansible cloc cmake colordiff ctags emacs gdb git go hub ipython podman
+      rust tidy tig
+    - >- # graphical
+      chromium dmenu feh gimp i3lock i3status qpdfview redshift
+      simplescreenrecorder scrot xdotool
+    - >- # tools
+      acpi discount ffmpeg inotify-tools msmtp mutt nextcloud-client
+      offlineimap pass perf poppler ripgrep unrar strace units vdirsyncer
+      weechat
+    arch_pkgs:
+    - >- # dev
+      base-devel ccache clang devtools distcc encfs llvm python-virtualenv
+      renderdoc shellcheck valgrind
+    - >- # xorg
+      mesa xorg xorg-xinit
+    - >- # graphical
+      blender firefox gnuplot i3-wm imagemagick inkscape kdenlive
+      libreoffice-fresh picom rxvt-unicode ttf-dejavu
+    - >- # audio
+      alsa-utils ardour audacity hydrogen mpv musescore pavucontrol pulseaudio
+      pulseaudio-alsa pulseaudio-bluetooth
+    - >- # tools
+      android-tools bc bluez bluez-utils jq khal ltrace lynx openbsd-netcat
+      pacman-contrib pigz pixz pv rlwrap unzip words youtube-dl
+    - >- # aurutils
+      expac diffstat pacutils parallel wget
+    - >- # nngn
+      boost clinfo emscripten glew glfw-x11 glm intel-compute-runtime
+      opencl-headers ocl-icd qt5-charts vulkan-intel vulkan-devel
+    - >- # nngn tests
+      freeglut glu
+    fedora_pkgs:
+    - >- # dev
+      distcc distcc-server fuse-encfs libcurl-devel patch ShellCheck
+    - >- # graphical
+      compton i3 libreoffice rxvt-unicode-256color-ml
+    - >- # tools
+      fuse-sshfs passmenu
+    - >- # work
+      krb5-workstation pyOpenSSL python-cryptography python-lxml
+    fedora_groups:
+    - '@Development tools'
+  tasks:
+  - name: install base packages
+    package:
+      name: '{{ ((pkgs+arch_pkgs)|join(" ")).split(" ") }}'
+    when: ansible_os_family == 'Archlinux'
+  - name: install base packages
+    package:
+      name: '{{ ((pkgs+fedora_pkgs)|join(" ")).split(" ") + fedora_groups }}'
+    when: ansible_os_family == 'RedHat'
+  - name: enable/start services
+    service:
+      enabled: true
+      state: started
+      name: bluetooth
+- hosts: all
+  tags: aurutils
+  vars:
+    user: bbguimaraes
+    aurutils_repo: /var/lib/pacman/aurutils
+    aurutils_gpg_key: DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A
+  tasks:
+  - when: ansible_os_family == 'Archlinux'
+    block:
+    - name: create local repository directory
+      file:
+        state: directory
+        path: '{{ aurutils_repo }}'
+        owner: '{{ user }}'
+        group: users
+    - name: unprivileged operations
+      become: yes
+      become_user: '{{ user }}'
+      become_method: su
+      block:
+      - name: check if aurutils gpg key is imported
+        command: gpg2 --list-keys '{{ aurutils_gpg_key }}'
+        register: rc
+        ignore_errors: true
+        changed_when: false
+      - name: import aurutils gpg key
+        command: gpg2 --recv-keys '{{ aurutils_gpg_key }}'
+        when: rc is failed
+      - name: check if already installed
+        command: pacman -Qqi aurutils
+        register: aurutils_installed
+        ignore_errors: true
+        changed_when: false
+      - name: download snapshot
+        get_url:
+          url: https://aur.archlinux.org/cgit/aur.git/snapshot/aurutils.tar.gz
+          dest: /tmp/aurutils.tar.gz
+        when: aurutils_installed is failed
+      - name: extract files
+        unarchive:
+          src: /tmp/aurutils.tar.gz
+          dest: /tmp
+        when: aurutils_installed is failed
+      - name: makepkg
+        command:
+          argv: makepkg
+          chdir: /tmp/aurutils
+          creates: /tmp/aurutils/aurutils-*.pkg.tar.xz
+        when: aurutils_installed is failed
+      - name: create local repository
+        command:
+          argv:
+          - repo-add
+          - '{{ aurutils_repo }}/aurutils.db.tar'
+          creates: '{{ aurutils_repo }}/aurutils.db.tar'
+    - name: install package
+      command: pacman --noconfirm -U '{{ item }}'
+      with_fileglob: /tmp/aurutils/aurutils-*.pkg.tar.xz
+      when: aurutils_installed is failed
+    - name: add local repository to pacman.conf
+      blockinfile:
+        state: present
+        path: /etc/pacman.conf
+        marker: '# {mark} ANSIBLE MANAGED BLOCK AURUTILS'
+        block: |
+          [aurutils]
+          SigLevel = Optional TrustAll
+          Server = file://{{ aurutils_repo }}
+    - name: update pacman cache
+      command: pacman -Sy
+- hosts: all
+  tags: misc
+  tasks:
+  - name: disable pulseaudio esound module
+    replace:
+      path: /etc/pulse/default.pa
+      regexp: '^(load-module module-esound-protocol-unix)$'
+      replace: '#\1'
+- hosts: all
+  tags: brightness
+  tasks:
+  - name: copy script
+    copy:
+      src: /home/bbguimaraes/n/comp/scripts/brightness.py
+      dest: /usr/local/bin/brightness
+      owner: root
+      group: root
+      mode: 0755
+  - name: allow wheel to use it without a password
+    copy:
+      dest: /etc/sudoers.d/1_brightness
+      owner: root
+      group: root
+      mode: 0440
+      validate: visudo -cf %s
+      content: |
+        %wheel ALL=(ALL) NOPASSWD: /usr/local/bin/brightness
