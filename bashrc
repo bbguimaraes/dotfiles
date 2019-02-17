@@ -1,6 +1,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
-. /etc/bashrc
+[[ -f /etc/bash.bashrc ]] && . /etc/bash.bashrc
+[[ -f /etc/bashrc ]] && . /etc/bashrc
 
 eval "$(dircolors)"
 alias ls='ls --color=auto'
