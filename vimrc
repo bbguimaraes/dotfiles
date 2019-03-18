@@ -29,7 +29,9 @@ augroup filetype_mail
 \       <leader>mf o--<cr>Bruno Barcarol Guimarães<esc>
 augroup END
 
+nnoremap <leader>td :windo setlocal invdiff invscrollbind<cr>
 nnoremap <leader>tn :set invnumber<cr>
+nnoremap <leader>tp :set invpaste<cr>
 nnoremap <leader>ts :call ToggleSyntax()<cr>
 nnoremap <leader>tw :set invwrap<cr>
 
