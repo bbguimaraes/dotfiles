@@ -28,6 +28,6 @@ remotepasseval = \
         ('pass', 'show', 'redhat/bbarcaro@redhat.com'))
 holdconnectionopen = yes
 keepalive = 60
-folderfilter = '[Gmail]/All Mail'.__ne__
+folderfilter = lambda x: x not in ('[Gmail]/All Mail', '[Gmail]/Trash')
 sslcacertfile = ~/.config/offlineimap/tls_trust_file
 ssl_version = tls1_2
