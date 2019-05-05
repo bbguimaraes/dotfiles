@@ -38,6 +38,7 @@
     - ['gitconfig',            '.config/git/config']
     - ['i3/config',            '.config/i3/config']
     - ['i3/status',            '.config/i3status/config']
+    - ['bash/inputrc',         '.inputrc']
     - ['khal/khal.conf',       '.config/khal/config']
     - ['khal/vdirsyncer.conf', '.config/vdirsyncer/config']
     - ['khal/vdirsyncer.service',
