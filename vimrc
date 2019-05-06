@@ -35,6 +35,7 @@ nnoremap <leader>tp :set invpaste<cr>
 nnoremap <leader>ts :call ToggleSyntax()<cr>
 nnoremap <leader>tw :set invwrap<cr>
 
+nnoremap <leader>ct :checktime<cr>
 nnoremap <leader>ev :vi $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <c-w>t <c-w>s<c-w>T
