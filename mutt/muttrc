@@ -6,6 +6,8 @@ set sort = threads
 set pager_index_lines = 10
 set editor = `echo \$EDITOR`
 
+macro index i '<change-folder>=INBOX<enter>'
+
 color hdrdefault red black
 color quoted blue black
 color signature blue black
