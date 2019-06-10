@@ -157,5 +157,6 @@ bar {
 
 hide_edge_borders both
 bindsym $mod+Return exec d urxvt
+bindsym $mod+g exec d f
 bindsym $mod+minus scratchpad show
 bindsym $mod+Shift+minus move scratchpad
