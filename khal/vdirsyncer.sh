@@ -2,7 +2,5 @@
 set -euo pipefail
 
 p=$(pass show nextcloud/cal)
-while timeout 5m vdirsyncer sync --force-delete <<< "$p"; do
-    echo done
-    sleep 5m
-done
+while timeout 5m vdirsyncer --verbosity WARNING sync --force-delete <<< "$p"
+do sleep 5m; done
