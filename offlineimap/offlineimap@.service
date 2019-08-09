@@ -1,5 +1,5 @@
 [Service]
-ExecStart=/usr/bin/offlineimap -c ~/.config/offlineimap/%i
+ExecStart=/usr/bin/offlineimap -u quiet -c ~/.config/offlineimap/%i
 Restart=always
 
 [Install]
