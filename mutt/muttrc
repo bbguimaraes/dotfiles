@@ -3,6 +3,8 @@ set alias_file = ~/.mutt/aliases
 source $alias_file
 set header_cache = ~/.cache/mutt
 set sort = threads
+set delete
+set sleep_time = 0
 set pager_index_lines = 10
 set editor = `echo \$EDITOR`
 
