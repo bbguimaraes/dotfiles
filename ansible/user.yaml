@@ -25,6 +25,7 @@
     - .config/khal
     - .config/offlineimap
     - .config/vdirsyncer
+    - .local/share/subs
     - .local/share/systemd/user
     - .mutt
   - name: setup dotfile symlinks
@@ -62,6 +63,8 @@
       src: '{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
+    - ['{{ home }}/src/subs/subs.py', '.local/bin/subs']
+    - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
     - ['{{ home }}/n/archive/pass', '.password-store']
     - ['{{ home }}/n/archive/mutt.aliases', '.mutt/aliases']
   - name: setup CA symlinks (archlinux)
