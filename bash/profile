@@ -2,3 +2,4 @@
 export VISUAL=vim
 export EDITOR=vim
 export PATH=$HOME/.local/bin${PATH+:$PATH}
+export PASSWORD_STORE_X_SELECTION=primary
