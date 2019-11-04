@@ -1,6 +1,6 @@
 set nocompatible
 
-set textwidth=79 expandtab tabstop=4 shiftwidth=0 foldminlines=0
+set textwidth=79 expandtab tabstop=4 shiftwidth=0 foldminlines=0 scrolloff=0
 set backspace=indent,eol,start cpoptions+=$ formatoptions-=o,r nostartofline
 set fillchars= laststatus=2 showmode showcmd
 
