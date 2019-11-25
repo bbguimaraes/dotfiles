@@ -39,8 +39,10 @@ nnoremap <leader>ct :checktime<cr>
 nnoremap <leader>ev :vi $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <c-w>t <c-w>s<c-w>T
-vnoremap <leader>y :w !xclip<cr>
-nnoremap <leader>p :r! xclip -o<cr>
+noremap <leader>y :w !xclip<cr>
+noremap <leader>cy :w !xclip -selection clipboard<cr>
+nnoremap <leader>p :r! xclip -out<cr>
+nnoremap <leader>cp :r! xclip -selection clipboard -out<cr>
 nnoremap <leader>80 :vertical resize 80<cr>
 nnoremap <silent> <leader>rt :%s/\s\+$//<cr>
 nnoremap <leader>nc /^\(<<<<<<< \\|=======\\|>>>>>>> \)<cr>
