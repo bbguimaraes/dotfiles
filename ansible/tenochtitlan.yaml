@@ -1,0 +1,30 @@
+# Pre-requisites (must be done manually):
+# - Password-less ssh access.
+# - (Optional, but helpful) configure mirrors.
+# - # pacman-key --init
+# - # pacman-key --populate archlinuxarm
+# - # pacman -Syyu python
+# Repurpose the `alarm` user, which has UID 1000 (base.yaml would fail to add
+# the default user otherwise):
+# - # usermod --login bbguimaraes --home /home/bbguimaraes alarm
+# - # mv /home/alarm ~bbguimaraes
+# With that done, execute the base.yaml playbook, then this one.
+- hosts: all
+  tasks:
+  - name: configure locale
+    lineinfile:
+      state: present
+      path: /etc/locale.gen
+      line: en_US.UTF-8 UTF-8
+  - name: generate locale
+    command:
+      argv: ['locale-gen']
+  - name: allow wheel to sudo without a password
+    copy:
+      dest: /etc/sudoers.d/0_wheel
+      owner: root
+      group: root
+      mode: 0440
+      validate: visudo -cf %s
+      content: |
+        %wheel ALL=(ALL) NOPASSWD: ALL
