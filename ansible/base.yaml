@@ -1,0 +1,61 @@
+- hosts: all
+  tags: base_sys_pkgs
+  tasks:
+  - name: install base system packages
+    package:
+      state: present
+      name:
+      - openssh
+      - pkgfile
+      - sudo
+    when: ansible_os_family == 'Archlinux'
+- hosts: all
+  tags: base
+  tasks:
+  - name: add users
+    user:
+      state: present
+      uid: 1000
+      name: bbguimaraes
+      group: users
+      groups: wheel
+  - name: enable sudoers.d
+    lineinfile:
+      state: present
+      path: /etc/sudoers
+      validate: visudo -cf %s
+      line: '#includedir /etc/sudoers.d'
+  - name: allow wheel to sudo
+    copy:
+      dest: /etc/sudoers.d/0_wheel
+      owner: root
+      group: root
+      mode: 0440
+      validate: visudo -cf %s
+      content: |
+        %wheel ALL=(ALL) ALL
+  - name: update pkgfile
+    command:
+      argv: ['pkgfile', '--update']
+      creates: /var/cache/pkgfile/core.files
+    when: ansible_os_family == 'Archlinux'
+  - name: enable and start sshd
+    service:
+      enabled: true
+      state: started
+      name: sshd
+- hosts: all
+  tags: base_pkgs
+  vars:
+    arch_pkgs:
+    - >-
+      bash-completion git tmux vim
+  tasks:
+  - name: install base packages
+    package:
+      name: '{{ (arch_pkgs|join(" ")).split(" ") }}'
+    when: ansible_os_family == 'Archlinux'
+  - name: install base packages
+    package:
+      name: '{{ (fedora_pkgs|join(" ")).split(" ") + fedora_groups }}'
+    when: ansible_os_family == 'RedHat'

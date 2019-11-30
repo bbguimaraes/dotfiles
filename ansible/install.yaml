@@ -1,59 +1,11 @@
 - hosts: all
   tags: base_sys_pkgs
   tasks:
-  - name: enable multilib
-    blockinfile:
-      state: present
-      path: /etc/pacman.conf
-      marker: '# {mark} ANSIBLE MANAGED BLOCK MULTILIB'
-      block: |
-        [multilib]
-        Include = /etc/pacman.d/mirrorlist
-    when: ansible_os_family == 'Archlinux'
   - name: install base system packages
     package:
       state: present
-      name: |
-        grub networkmanager openssh os-prober pkgfile sudo
+      name: grub os-prober
     when: ansible_os_family == 'Archlinux'
-- hosts: all
-  tags: base
-  tasks:
-  - name: add users
-    user:
-      state: present
-      uid: 1000
-      name: bbguimaraes
-      group: users
-      groups: wheel
-  - name: enable sudoers.d
-    lineinfile:
-      state: present
-      path: /etc/sudoers
-      validate: visudo -cf %s
-      line: '#includedir /etc/sudoers.d'
-  - name: allow wheel to sudo
-    copy:
-      dest: /etc/sudoers.d/0_wheel
-      owner: root
-      group: root
-      mode: 0440
-      validate: visudo -cf %s
-      content: |
-        %wheel ALL=(ALL) ALL
-  - name: update pkgfile
-    command:
-      argv: ['pkgfile', '--update']
-      creates: /var/cache/pkgfile/core.files
-    when: ansible_os_family == 'Archlinux'
-  - name: enable and start services
-    service:
-      enabled: true
-      state: started
-      name: '{{ item }}'
-    loop:
-    - NetworkManager
-    - sshd
 - hosts: all
   tags: base_pkgs
   vars:
@@ -102,6 +54,15 @@
     fedora_groups:
     - '@Development tools'
   tasks:
+  - name: enable multilib
+    blockinfile:
+      state: present
+      path: /etc/pacman.conf
+      marker: '# {mark} ANSIBLE MANAGED BLOCK MULTILIB'
+      block: |
+        [multilib]
+        Include = /etc/pacman.d/mirrorlist
+    when: ansible_os_family == 'Archlinux'
   - name: install base packages
     package:
       name: '{{ ((pkgs+arch_pkgs)|join(" ")).split(" ") }}'
