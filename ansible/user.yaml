@@ -4,15 +4,6 @@
     home: '{{ ansible_env.HOME }}'
     src_dir: '{{ home }}/src'
   tasks:
-  - name: create source directory
-    file:
-      state: directory
-      path: '{{ src_dir }}'
-  - name: clone dotfiles repository
-    git:
-      repo: https://bbguimaraes@github.com/bbguimaraes/dotfiles.git
-      dest: '{{ src_dir }}/dotfiles'
-      update: no
   - name: create home directories
     file:
       state: directory
@@ -35,13 +26,9 @@
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['bash/profile',         '.bash_profile']
-    - ['bash/bashrc',          '.bashrc']
-    - ['git/config',           '.config/git/config']
     - ['git/tigrc',            '.config/tig/config']
     - ['i3/config',            '.config/i3/config']
     - ['i3/status',            '.config/i3status/config']
-    - ['bash/inputrc',         '.inputrc']
     - ['khal/khal.conf',       '.config/khal/config']
     - ['khal/vdirsyncer.conf', '.config/vdirsyncer/config']
     - ['khal/vdirsyncer.service',
@@ -54,9 +41,7 @@
        '.local/share/systemd/user/offlineimap@.service']
     - ['offlineimap/gmail',    '.config/offlineimap/gmail']
     - ['redshift.conf',        '.config/redshift.conf']
-    - ['tmux.conf',            '.tmux.conf']
     - ['user-dirs.dirs',       '.config/user-dirs.dirs']
-    - ['vimrc',                '.vimrc']
     - ['xorg/xinitrc',         '.xinitrc']
     - ['xorg/Xresources',      '.Xresources']
   - name: setup other symlinks
