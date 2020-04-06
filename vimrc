@@ -29,6 +29,11 @@ augroup filetype_mail
 \       <leader>mf o--<cr>Bruno Barcarol Guimarães<esc>
 augroup END
 
+augroup filetype_opencl
+    autocmd!
+    autocmd BufNewFile,BufRead *.cl setlocal filetype=c
+augroup END
+
 nnoremap <leader>td :windo setlocal invdiff invscrollbind<cr>
 nnoremap <leader>tn :set invnumber<cr>
 nnoremap <leader>tp :set invpaste<cr>
