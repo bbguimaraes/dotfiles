@@ -43,6 +43,8 @@ noremap <leader>y :w !xclip<cr>
 noremap <leader>cy :w !xclip -selection clipboard<cr>
 nnoremap <leader>p :r! xclip -out<cr>
 nnoremap <leader>cp :r! xclip -selection clipboard -out<cr>
+nnoremap <silent> <leader>o
+\   :silent call system("xdg-open " . shellescape(expand("<cWORD>")))<cr>
 nnoremap <leader>80 :vertical resize 80<cr>
 nnoremap <silent> <leader>rt :%s/\s\+$//<cr>
 nnoremap <leader>nc /^\(<<<<<<< \\|=======\\|>>>>>>> \)<cr>
