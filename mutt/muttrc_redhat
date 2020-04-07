@@ -6,3 +6,5 @@ source ~/.mutt/redhat_mailboxes
 set spoolfile = +INBOX
 set postponed = +[Gmail]/Drafts
 unset record
+
+color status white red
