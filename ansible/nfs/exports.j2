@@ -1,0 +1,7 @@
+{% set ah = nfs_allowed_hosts|join(' ') %}
+{{ nfs_dir }} -fsid=0,rw {{ nfs_root_allowed_hosts|join(' ') }}
+{% for item in nfs_exports %}
+{% set path = nfs_dir + "/" + item["path"] %}
+{% set item_ah = ([ah] + (item.allowed_hosts|default([])))|join(' ') %}
+{{ path }} -rw {{ item_ah }}
+{% endfor %}

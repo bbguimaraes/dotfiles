@@ -11,8 +11,8 @@
   vars:
     pkgs:
     - >- # dev
-      ansible cloc cmake colordiff ctags emacs gdb git go hub ipython podman
-      rust tidy tig
+      ansible cloc cmake colordiff ctags emacs gdb go hub ipython podman rust
+      tidy tig
     - >- # graphical
       chromium dmenu feh gimp i3lock i3status qpdfview redshift
       simplescreenrecorder scrot xdotool
@@ -34,7 +34,7 @@
       pulseaudio-alsa pulseaudio-bluetooth
     - >- # tools
       android-tools bc bluez bluez-utils jq khal ltrace lynx openbsd-netcat
-      pacman-contrib pigz pixz pv rlwrap unzip words youtube-dl
+      pacman-contrib pigz pixz rlwrap sshfs unzip words youtube-dl
     - >- # aurutils
       expac diffstat pacutils parallel wget
     - >- # nngn
