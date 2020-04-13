@@ -5,10 +5,23 @@
     package:
       state: present
       name:
+      - bash-completion
+      - git
       - openssh
-      - pkgfile
+      - pv
       - sudo
+      - tmux
+      - vim
+  - name: install base system packages (arch)
+    package:
+      state: present
+      name: pkgfile
     when: ansible_os_family == 'Archlinux'
+  - name: install base system packages (redhat)
+    package:
+      state: present
+      name: epel-release
+    when: ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora'
 - hosts: all
   tags: base
   tasks:
@@ -34,35 +47,86 @@
       validate: visudo -cf %s
       content: |
         %wheel ALL=(ALL) ALL
+    when: not (sudo_wheel_nopasswd|default(false))
+  - name: allow wheel to sudo without a password
+    copy:
+      dest: /etc/sudoers.d/0_wheel
+      owner: root
+      group: root
+      mode: 0440
+      validate: visudo -cf %s
+      content: |
+        %wheel ALL=(ALL) NOPASSWD: ALL
+    when: sudo_wheel_nopasswd|default(false)
   - name: update pkgfile
     command:
       argv: ['pkgfile', '--update']
       creates: /var/cache/pkgfile/core.files
     when: ansible_os_family == 'Archlinux'
+  - name: disable root SSH password login
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      line: 'PermitRootLogin prohibit-password'
   - name: enable and start sshd
     service:
       enabled: true
       state: started
       name: sshd
-  - name: check if the ntp service is enabled
+  - name: set timezone to utc
+    timezone:
+      name: UTC
+      hwclock: UTC
+  - name: check if the ntp service is enabled (arch)
     command: timedatectl show --property NTP --value
     register: rc
     changed_when: False
-  - name: enable ntp service
-    command: timedatectl set-ntp yes
-    when: rc.stdout == "no"
-- hosts: all
-  tags: base_pkgs
-  vars:
-    arch_pkgs:
-    - >-
-      bash-completion git tmux vim
-  tasks:
-  - name: install base packages
-    package:
-      name: '{{ (arch_pkgs|join(" ")).split(" ") }}'
     when: ansible_os_family == 'Archlinux'
-  - name: install base packages
-    package:
-      name: '{{ (fedora_pkgs|join(" ")).split(" ") + fedora_groups }}'
+  - name: enable ntp service (arch)
+    command: timedatectl set-ntp yes
+    when: ansible_os_family == 'Archlinux' and rc.stdout == "no"
+  - name: check if the ntp service is enabled (redhat)
+    command: timedatectl status
+    register: rc
+    changed_when: False
     when: ansible_os_family == 'RedHat'
+  - name: enable ntp service (redhat)
+    command: timedatectl set-ntp yes
+    when: |
+      ansible_os_family == 'RedHat'
+      and 'NTP enabled: no' in rc.stdout
+  - name: initialize /etc/subuid
+    copy:
+      dest: /etc/subuid
+      force: no
+      content: |
+        1000:65536:1000
+  - name: initialize /etc/subgid
+    copy:
+      dest: /etc/subgid
+      force: no
+      content: |
+        1000:65536:1000
+- hosts: servers
+  tasks:
+  - name: install base system packages (server)
+    package:
+      state: present
+      name:
+      - fail2ban
+  - name: fail2ban ssh
+    blockinfile:
+      name: /etc/fail2ban/jail.d/ssh.conf
+      create: true
+      block: |
+        [sshd]
+        enabled = true
+        port    = ssh
+        logpath = %(sshd_log)s
+        backend = %(sshd_backend)s
+    notify:
+    - restart fail2ban
+  handlers:
+  - name: restart fail2ban
+    service:
+      state: restarted
+      name: fail2ban

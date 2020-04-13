@@ -12,19 +12,6 @@
 - hosts: all
   tasks:
   - name: configure locale
-    lineinfile:
+    locale_gen:
+      name: en_US.UTF-8
       state: present
-      path: /etc/locale.gen
-      line: en_US.UTF-8 UTF-8
-  - name: generate locale
-    command:
-      argv: ['locale-gen']
-  - name: allow wheel to sudo without a password
-    copy:
-      dest: /etc/sudoers.d/0_wheel
-      owner: root
-      group: root
-      mode: 0440
-      validate: visudo -cf %s
-      content: |
-        %wheel ALL=(ALL) NOPASSWD: ALL

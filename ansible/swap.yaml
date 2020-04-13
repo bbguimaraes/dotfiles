@@ -1,0 +1,32 @@
+- hosts: swap
+  vars:
+    swapfile_path: /var/swapfile
+    swapfile_size_kb: 4096
+  tasks:
+  - name: create swap file
+    command:
+      cmd: >
+        dd if=/dev/zero of={{ swapfile_path }}
+        bs=1024k count={{ swapfile_size_kb }}
+      creates: '{{ swapfile_path }}'
+  - name: format swap file
+    filesystem:
+      dev: '{{ swapfile_path }}'
+      fstype: swap
+  - name: check if already enabled
+    command:
+      argv:
+      - awk
+      - NR > 1 { print $1 }
+      - /proc/swaps
+    changed_when: false
+    register: rc
+  - name: enable swap
+    command: swapon /var/swapfile
+    when: swapfile_path not in rc.stdout_lines
+  - name: add swap entry on swap file
+    lineinfile:
+      state: present
+      path: /etc/fstab
+      line: '{{ swapfile_path }} none swap sw 0 0'
+      validate: mount --fake --all --verbose
