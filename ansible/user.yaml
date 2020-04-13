@@ -129,19 +129,26 @@
     - name: install weechat-matrix-git
       import_tasks: aur.yaml
       vars: {"pkg": "weechat-matrix-git"}
-  - name: create weechat directory
+  - name: create weechat directories
     file:
       state: directory
-      path: '{{ dir }}/lua/autoload'
+      path: '{{ dir }}/{{ item }}'
+    with_items:
+    - lua
+    - lua/autoload
+    - python
+    - python/autoload
   - name: create symlinks
     when: ansible_os_family == 'Archlinux'
     file:
       state: link
       src: '{{ item.0 }}'
-      dest: '{{ dir }}/{{ item.1 }}/autoload/{{ item.2 }}'
+      dest: '{{ dir }}/{{ item.1 }}'
     loop:
-    - ['/opt/matrix.lua', 'lua', 'matrix.lua']
-    - ['/lib/weechat/python/edit.py', 'python', 'edit.py']
+    - ['/usr/share/weechat/python/matrix', 'python/matrix']
+    - ['/usr/share/weechat/python/matrix.py', 'python/matrix.py']
+    - ['/usr/share/weechat/python/matrix.py', 'python/autoload/matrix.py']
+    - ['/lib/weechat/python/edit.py', 'python/autoload/edit.py']
   - name: set weechat variables
     ini_file:
       path: '{{ ansible_env.HOME }}/.weechat/{{ item.file }}'
@@ -153,14 +160,6 @@
       val: ${tg_displayed}
       file: trigger.conf
       section: trigger
-    - file: plugins.conf
-      section: var
-      opt: lua.matrix.user
-      val: bbguimaraes
-    - file: plugins.conf
-      section: var
-      opt: lua.matrix.homeserver_url
-      val: https://matrix.bbguimaraes.com:8448/
     - file: weechat.conf
       section: color
       opt: separator
