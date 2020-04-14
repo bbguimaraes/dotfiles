@@ -29,6 +29,11 @@ augroup filetype_mail
 \       <leader>mf o--<cr>Bruno Barcarol Guimarães<esc>
 augroup END
 
+augroup filetype_go
+    autocmd!
+    autocmd FileType go setlocal noexpandtab
+augroup END
+
 augroup filetype_opencl
     autocmd!
     autocmd BufNewFile,BufRead *.cl setlocal filetype=c
