@@ -1,0 +1,11 @@
+[Unit]
+Description=Protonmail Bridge - ProtonMail IMAP and SMTP Bridge
+
+[Service]
+Type=simple
+ExecStart=/home/bbguimaraes/.local/bin/proton-bridge --noninteractive
+Restart=always
+KillMode=process
+
+[Install]
+WantedBy=default.target

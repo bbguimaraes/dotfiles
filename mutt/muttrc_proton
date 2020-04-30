@@ -1,0 +1,10 @@
+set imap_user = bbguimaraes@bbguimaraes.com
+source 'echo set imap_pass = "$(pass show comp/protonmail/tjobim)" |'
+set folder = imap://localhost:1143
+set certificate_file = ~/.config/protonmail/bridge/cert.pem
+set ssl_verify_host = no
+set from = "Bruno Barcarol Guimarães <bbguimaraes@bbguimaraes.com>"
+set sendmail = "/usr/bin/msmtp --account bbguimaraes@bbguimaraes.com"
+set spoolfile = +INBOX
+set postponed = +Drafts
+unset record
