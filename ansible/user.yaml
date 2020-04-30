@@ -37,8 +37,11 @@
     - ['mutt/msmtprc',         '.msmtprc']
     - ['mutt/muttrc',          '.mutt/muttrc']
     - ['mutt/muttrc_gmail',    '.mutt/muttrc_gmail']
+    - ['mutt/muttrc_proton',   '.mutt/muttrc_proton']
     - ['offlineimap/offlineimap@.service',
        '.local/share/systemd/user/offlineimap@.service']
+    - ['proton/proton-bridge.service',
+       '.local/share/systemd/user/proton-bridge.service']
     - ['offlineimap/gmail',    '.config/offlineimap/gmail']
     - ['redshift.conf',        '.config/redshift.conf']
     - ['user-dirs.dirs',       '.config/user-dirs.dirs']
@@ -97,6 +100,7 @@
       daemon_reload: true
     loop:
     - offlineimap@gmail
+    - proton-bridge
     - redshift
     - vdirsyncer
 - hosts: all
