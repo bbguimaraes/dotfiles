@@ -1,4 +1,12 @@
-"\C-i": menu-complete
-"\e[Z": menu-complete-backward
+set editing-mode vi
 set show-all-if-ambiguous on
 set menu-complete-display-prefix on
+set keymap vi-command
+"\C-i": menu-complete
+"\e[Z": menu-complete-backward
+"\C-o": operate-and-get-next
+set keymap vi-insert
+"\C-i": menu-complete
+"\e[Z": menu-complete-backward
+"\C-o": operate-and-get-next
+"\C-l": clear-screen
