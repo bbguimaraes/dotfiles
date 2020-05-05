@@ -5,5 +5,5 @@
 
 eval "$(dircolors)"
 alias ls='ls --color=auto'
-PS1='[\u@\h \W]\$ '
+PS1='$ '
 complete -C 'd completion' d
