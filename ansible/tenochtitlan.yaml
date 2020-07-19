@@ -9,7 +9,7 @@
 # - # usermod --login bbguimaraes --home /home/bbguimaraes alarm
 # - # mv /home/alarm ~bbguimaraes
 # With that done, execute the base.yaml playbook, then this one.
-- hosts: all
+- hosts: tenochtitlan
   tasks:
   - name: configure locale
     locale_gen:
