@@ -10,8 +10,13 @@
 # - # mv /home/alarm ~bbguimaraes
 # With that done, execute the base.yaml playbook, then this one.
 - hosts: tenochtitlan
+  tags: pkgs
   tasks:
   - name: configure locale
     locale_gen:
       name: en_US.UTF-8
       state: present
+  - name: install packages
+    package:
+      name: |
+        cmake encfs lua rsync
