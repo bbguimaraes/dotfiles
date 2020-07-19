@@ -20,3 +20,75 @@
     package:
       name: |
         cmake encfs lua rsync
+- hosts: tenochtitlan
+  tags: lvm
+  vars:
+    pvs:
+    - /dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2ZPJ9ADA08694
+    - /dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2ZPJ9FDA17760
+    vg: vg0
+    swap_lv: swap
+    raid_lv: raid1
+    swap_dev: /dev/{{ vg }}/{{ swap_lv }}
+    raid_dev: /dev/{{ vg }}/{{ raid_lv }}
+    raid_mount: /mnt/data
+  tasks:
+  - name: create physical volumes / volume groups
+    lvg:
+      state: present
+      vg: '{{ vg }}'
+      pvs: '{{ pvs }}'
+  - name: create swap logical volume
+    lvol:
+      state: present
+      vg: '{{ vg }}'
+      lv: '{{ swap_lv }}'
+      size: 8G
+  - name: create RAID logical volume
+    lvol:
+      state: present
+      vg: '{{ vg }}'
+      lv: '{{ raid_lv }}'
+      size: 100%FREE
+      opts: --type raid1
+  - name: format swap volume
+    filesystem:
+      dev: '/dev/{{ vg }}/{{ swap_lv }}'
+      fstype: swap
+  - name: check if swap already enabled
+    command:
+      argv:
+      - awk
+      - NR > 1 { print $1 }
+      - /proc/swaps
+    changed_when: false
+    register: rc
+  - name: enable swap
+    command: swapon '{{ swap_dev }}'
+    when: swap_dev not in rc.stdout_lines
+  - name: add swap entry to fstab
+    lineinfile:
+      state: present
+      path: /etc/fstab
+      line: '{{ swap_dev }} none swap defaults 0 0'
+      validate: mount --fake --all --verbose
+  - name: format storage volume
+    filesystem:
+      dev: '{{ raid_dev }}'
+      fstype: ext4
+      opts: -cc
+  - name: create storage mount point
+    file:
+      state: directory
+      path: '{{ raid_mount }}'
+  - name: mount storage volume
+    mount:
+      state: mounted
+      fstype: ext4
+      src: '{{ raid_dev }}'
+      path: '{{ raid_mount }}'
+  - name: set storage mount mode
+    file:
+      state: directory
+      path: '{{ raid_mount }}'
+      mode: 01777
