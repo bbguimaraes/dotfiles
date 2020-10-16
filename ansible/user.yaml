@@ -195,3 +195,5 @@
       vars: {"pkg": "duc"}
     - import_tasks: aur.yaml
       vars: {"pkg": "opencl-1.2-man-doc"}
+    - import_tasks: aur.yaml
+      vars: {"pkg": "pam-gnupg"}

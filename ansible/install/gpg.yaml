@@ -1,0 +1,19 @@
+- hosts: all
+  tasks:
+  - when: ansible_os_family == 'Archlinux'
+    block:
+    - import_tasks: ../aur.yaml
+      vars: {"pkg": "pam-gnupg"}
+    - name: enable for console logins
+      blockinfile:
+        state: present
+        dest: /etc/pam.d/system-local-login
+        block: |
+          auth     optional  pam_gnupg.so
+          session  optional  pam_gnupg.so
+    - name: enable for i3lock
+      lineinfile:
+        state: present
+        dest: /etc/pam.d/i3lock
+        line: |
+          auth     optional  pam_gnupg.so
