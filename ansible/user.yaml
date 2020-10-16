@@ -127,9 +127,6 @@
     - name: install weechat-edit-git
       import_tasks: aur.yaml
       vars: {"pkg": "weechat-edit-git"}
-    - name: install lua-cjson
-      import_tasks: aur.yaml
-      vars: {"pkg": "lua-cjson"}
     - name: install weechat-matrix-git
       import_tasks: aur.yaml
       vars: {"pkg": "weechat-matrix-git"}
@@ -186,12 +183,15 @@
       val: '${format_number}${indent}${color:*white,}${name}'
 - hosts: all
   name: aur pkgs
+  tags: aur
   tasks:
   - when: ansible_os_family == 'Archlinux'
     block:
-    - tags: renderdoc
-      import_tasks: aur.yaml
+    - import_tasks: aur.yaml
+      vars: {"pkg": "cjson"}
+    - import_tasks: aur.yaml
       vars: {"pkg": "renderdoc"}
-    - tags: duc
-      import_tasks: aur.yaml
+    - import_tasks: aur.yaml
       vars: {"pkg": "duc"}
+    - import_tasks: aur.yaml
+      vars: {"pkg": "opencl-1.2-man-doc"}
