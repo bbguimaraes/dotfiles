@@ -1,6 +1,6 @@
 set nocompatible
 
-set textwidth=79 expandtab tabstop=4 shiftwidth=0 foldminlines=0 scrolloff=0
+set textwidth=80 expandtab tabstop=4 shiftwidth=0 foldminlines=0 scrolloff=0
 set backspace=indent,eol,start cpoptions+=$ formatoptions-=o,r nostartofline
 set fillchars= laststatus=2 showmode showcmd
 
@@ -12,7 +12,7 @@ syntax on
 colorscheme desert
 highlight ExtraWhitespace ctermbg=red guibg=red
 highlight VCConflict ctermbg=red guibg=red
-highlight 80thColumn ctermbg=red guibg=red
+highlight 81stColumn ctermbg=red guibg=red
 filetype on
 filetype plugin on
 filetype indent on
@@ -72,5 +72,5 @@ endfunction
 function! SetGlobalMatches()
     call AddMatchOnce("ExtraWhitespace", " \\+$")
     call AddMatchOnce("VCConflict", "^\\(<<<<<<<\\|=======$\\|>>>>>>>\\)")
-    call AddMatchOnce("80thColumn", "\\%80v.")
+    call AddMatchOnce("81stColumn", "\\%81v.")
 endfunction
