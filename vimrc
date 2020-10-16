@@ -8,6 +8,8 @@ set hidden key= lazyredraw noequalalways visualbell
 set wildmenu wildmode=longest:full,full
 set hlsearch ignorecase incsearch smartcase
 
+let g:ctrlp_working_path_mode = ''
+
 syntax on
 colorscheme desert
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -56,8 +58,8 @@ nnoremap <leader>ts :call ToggleSyntax()<cr>
 nnoremap <leader>tw :set invwrap<cr>
 
 nnoremap <leader>ct :checktime<cr>
-nnoremap <leader>ev :vi $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>e :CtrlP<cr>
+nnoremap <leader>s :source $MYVIMRC<cr>
 nnoremap <leader>ut :silent !ctags -R src/<cr>
 nnoremap <c-w>t <c-w>s<c-w>T
 noremap <leader>y :w !xclip<cr>
