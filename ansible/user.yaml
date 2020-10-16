@@ -38,6 +38,7 @@
     - ['mutt/muttrc',          '.mutt/muttrc']
     - ['mutt/muttrc_gmail',    '.mutt/muttrc_gmail']
     - ['mutt/muttrc_proton',   '.mutt/muttrc_proton']
+    - ['mutt/mailcap',          '.mutt/mailcap']
     - ['offlineimap/offlineimap@.service',
        '.local/share/systemd/user/offlineimap@.service']
     - ['proton/proton-bridge.service',
