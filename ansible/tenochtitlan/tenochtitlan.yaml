@@ -10,15 +10,41 @@
 # - # mv /home/alarm ~bbguimaraes
 # With that done, execute the base.yaml playbook, then this one.
 - hosts: tenochtitlan
+  tags: install
   tasks:
   - name: configure locale
     locale_gen:
       name: en_US.UTF-8
       state: present
+  - name: force HDMI hotplug
+    lineinfile:
+      path: /boot/config.txt
+      line: hdmi_force_hotplug=1
+  - name: allow any user to start Xorg
+    lineinfile:
+      path: /etc/X11/Xwrapper.config
+      line: allowed_users = anybody
+      create: true
+- hosts: tenochtitlan
+  tags: pkgs
+  vars:
+    dev_pkgs: >-
+      cmake distcc gdb glew glfw lua openbsd-netcat
+    graphics_pkgs: >-
+      xf86-video-fbdev xorg-server xorg-xinit
+    tools_pkgs: >-
+      encfs perf rlwrap rsync sshfs
+    # TODO remove
+    xxx_pkgs: >-
+      i3-wm ttf-dejavu xorg-xrandr xorg-twm xterm
+    pkgs: '{{ [dev_pkgs, graphics_pkgs, tools_pkgs, xxx_pkgs]|join(" ") }}'
+  tasks:
+  - debug: var=pkgs
   - name: install packages
     package:
       name: |
-        cmake encfs lua rsync
+      state: present
+      name: '{{ pkgs }}'
 - hosts: tenochtitlan
   vars:
     pvs:
