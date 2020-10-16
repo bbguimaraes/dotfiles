@@ -11,32 +11,35 @@
   vars:
     pkgs:
     - >- # dev
-      ansible cloc cmake colordiff ctags emacs gdb go hub ipython podman rust
-      tidy tig
+      ansible cloc cmake colordiff ctags doxygen emacs gdb go graphviz hub
+      ipython podman rust tidy tig
     - >- # graphical
       chromium dmenu feh gimp i3lock i3status qpdfview redshift
       simplescreenrecorder scrot xdotool
     - >- # tools
-      acpi discount ffmpeg inotify-tools msmtp mutt nextcloud-client
-      offlineimap pass perf poppler ripgrep unrar strace units vdirsyncer
+      acpi discount ffmpeg inotify-tools moreutils msmtp mutt nextcloud-client
+      offlineimap p7zip pass perf poppler ripgrep unrar strace units vdirsyncer
       weechat
     arch_pkgs:
     - >- # dev
-      base-devel ccache clang devtools distcc encfs llvm python-virtualenv
-      renderdoc shellcheck valgrind
+      arm-none-eabi-gcc base-devel ccache clang dash devtools distcc encfs llvm
+      opengl-man-pages python-virtualenv renderdoc shellcheck valgrind vim-ctrlp
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
-      blender firefox gnuplot i3-wm imagemagick inkscape kdenlive
-      libreoffice-fresh picom rxvt-unicode ttf-dejavu
+      blender celluloid firefox gnuplot i3-wm imagemagick inkscape kdenlive
+      libreoffice-fresh picom qtcreator rxvt-unicode ttf-dejavu
     - >- # audio
       alsa-utils ardour audacity hydrogen mpv musescore pavucontrol pulseaudio
       pulseaudio-alsa pulseaudio-bluetooth
     - >- # tools
-      android-tools bc bluez bluez-utils jq khal ltrace lynx openbsd-netcat
-      pacman-contrib pigz pixz rlwrap sshfs unzip words youtube-dl
+      android-tools bc bind-tools bluez bluez-utils jq khal ltrace lynx
+      openbsd-netcat pacman-contrib pigz pixz rlwrap sshfs unzip words
+      youtube-dl
     - >- # aurutils
       expac diffstat pacutils parallel wget
+    - >- # wine
+      lib32-mesa wine wine-mono
     - >- # nngn
       boost clinfo emscripten glew glfw-x11 glm intel-compute-runtime
       opencl-headers ocl-icd qt5-charts vulkan-intel vulkan-devel
@@ -44,11 +47,12 @@
       freeglut glu
     fedora_pkgs:
     - >- # dev
-      distcc distcc-server fuse-encfs libcurl-devel patch ShellCheck
+      distcc distcc-server fuse-encfs gl-manpages libcurl-devel patch
+      ShellCheck
     - >- # graphical
       compton i3 libreoffice rxvt-unicode-256color-ml
     - >- # tools
-      fuse-sshfs passmenu
+      bind-utils fuse-sshfs passmenu
     - >- # work
       krb5-workstation pyOpenSSL python-cryptography python-lxml
     fedora_groups:
