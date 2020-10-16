@@ -22,6 +22,16 @@ augroup globals
     autocmd BufNewFile,BufRead,WinEnter * :call SetGlobalMatches()
 augroup END
 
+augroup filetype_c
+    autocmd!
+    autocmd FileType c nnoremap <leader>th :call ToggleHeader()<cr>
+augroup END
+
+augroup filetype_cpp
+    autocmd!
+    autocmd FileType cpp nnoremap <leader>th :call ToggleHeader()<cr>
+augroup END
+
 augroup filetype_mail
     autocmd!
     autocmd FileType mail setlocal textwidth=72 spell
@@ -58,6 +68,32 @@ nnoremap <silent> <leader>o
 nnoremap <leader>80 :vertical resize 80<cr>
 nnoremap <silent> <leader>rt :%s/\s\+$//<cr>
 nnoremap <leader>nc /^\(<<<<<<< \\|=======\\|>>>>>>> \)<cr>
+
+function! ToggleHeader()
+    let l:f = ""
+    if expand("%:e") == "h" || expand("%:e") == "hpp"
+        let l:f = expand("%:r") . ".cpp"
+        if !filereadable(l:f)
+            let l:f = expand("%:r") . ".c"
+            if !filereadable(l:f)
+                let l:f = ""
+            endif
+        endif
+    else
+        let l:f = expand("%:r") . ".hpp"
+        if !filereadable(l:f)
+            let l:f = expand("%:r") . ".h"
+            if !filereadable(l:f)
+                let l:f = ""
+            endif
+        endif
+    endif
+    if l:f != ""
+        execute "edit " . l:f
+    else
+        echo "header/source file not found"
+    endif
+endfunction
 
 function! ToggleSyntax()
     if exists("g:syntax_on") | syntax off | else | syntax enable | endif
