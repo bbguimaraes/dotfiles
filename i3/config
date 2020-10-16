@@ -159,8 +159,10 @@ default_border normal 0
 hide_edge_borders both
 bindsym $mod+Return exec d urxvt
 bindsym $mod+b border toggle
+bindsym $mod+c exec d do
 bindsym $mod+g exec d f
 bindsym $mod+m exec d displays
-bindsym $mod+p exec xdotool search --name mpv key space
+bindsym $mod+p exec d pause
+bindsym $mod+t exec d vtr
 bindsym $mod+minus scratchpad show
 bindsym $mod+Shift+minus move scratchpad
