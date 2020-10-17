@@ -25,12 +25,12 @@ load {
 
 cpu_temperature 0 {
     format = "%degrees°C"
-    path = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp2_input"
+    path = "/sys/devices/platform/coretemp.0/hwmon/hwmon6/temp2_input"
 }
 
 cpu_temperature 1 {
     format = "%degrees°C"
-    path = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp3_input"
+    path = "/sys/devices/platform/coretemp.0/hwmon/hwmon6/temp3_input"
 }
 
 wireless _first_ {
