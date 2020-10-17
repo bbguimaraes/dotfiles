@@ -17,6 +17,7 @@
     - .config/offlineimap
     - .config/tig
     - .config/vdirsyncer
+    - .local/share/nummi
     - .local/share/subs
     - .local/share/systemd/user
     - .mutt
@@ -54,6 +55,7 @@
       src: '{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
+    - ['{{ home }}/n/archive/money', '.local/share/nummi/db']
     - ['{{ home }}/src/subs/subs.py', '.local/bin/subs']
     - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
     - ['{{ home }}/n/archive/pass', '.password-store']
