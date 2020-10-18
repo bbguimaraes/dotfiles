@@ -3,3 +3,4 @@ export VISUAL=vim
 export EDITOR=vim
 export PATH=$HOME/.local/bin${PATH+:$PATH}
 export PASSWORD_STORE_X_SELECTION=primary
+[[ -e /home/bbguimaraes/.nix-profile/etc/profile.d/nix.sh ]] && source /home/bbguimaraes/.nix-profile/etc/profile.d/nix.sh
