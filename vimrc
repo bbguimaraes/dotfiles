@@ -44,6 +44,7 @@ augroup END
 augroup filetype_go
     autocmd!
     autocmd FileType go setlocal noexpandtab
+    autocmd Filetype go nnoremap <leader>ut :!gotags -f tags -R .<cr>
 augroup END
 
 augroup filetype_opencl
