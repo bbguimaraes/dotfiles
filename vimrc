@@ -52,10 +52,10 @@ augroup filetype_opencl
 augroup END
 
 nnoremap <leader>td :windo setlocal invdiff invscrollbind<cr>
-nnoremap <leader>tn :set invnumber<cr>
-nnoremap <leader>tp :set invpaste<cr>
+nnoremap <leader>tn :setlocal invnumber<cr>
+nnoremap <leader>tp :setlocal invpaste<cr>
 nnoremap <leader>ts :call ToggleSyntax()<cr>
-nnoremap <leader>tw :set invwrap<cr>
+nnoremap <leader>tw :setlocal invwrap<cr>
 
 nnoremap <leader>ct :checktime<cr>
 nnoremap <leader>e :CtrlP<cr>
