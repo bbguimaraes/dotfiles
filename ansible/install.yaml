@@ -14,7 +14,7 @@
       ansible clang cloc cmake colordiff ctags distcc emacs gdb go graphviz hub
       ipython podman rust tidy tig vim-ctrlp
     - >- # graphical
-      celluloid chromium dmenu feh gimp i3lock i3status qpdfview redshift
+      celluloid chromium dmenu feh gimp i3lock i3status qpdfview qt5ct redshift
       simplescreenrecorder scrot xdotool
     - >- # tools
       acpi discount ffmpeg gnuplot inotify-tools moreutils msmtp mutt
@@ -27,7 +27,7 @@
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
-      blender celluloid firefox i3-wm imagemagick inkscape kdenlive
+      blender breeze celluloid firefox i3-wm imagemagick inkscape kdenlive
       libreoffice-fresh picom rxvt-unicode ttf-dejavu
     - >- # audio
       alsa-utils ardour audacity hydrogen mpv musescore pavucontrol pulseaudio
@@ -48,7 +48,7 @@
     fedora_pkgs:
     - >- # dev
       cargo distcc-server fuse-encfs golang-godoc gotags libcurl-devel
-      openssl-devel patch rustfmt ShellCheck
+      openssl-devel patch plasma-breeze rustfmt ShellCheck
     - >- # graphical
       compton i3 libreoffice rxvt-unicode
     - >- # tools
