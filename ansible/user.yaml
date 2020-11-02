@@ -56,7 +56,7 @@
       dest: '{{ home }}/{{ item.1 }}'
     loop:
     - ['{{ home }}/n/archive/money', '.local/share/nummi/db']
-    - ['{{ home }}/src/subs/subs.py', '.local/bin/subs']
+    - ['{{ home }}/src/subs/subs/subs.py', '.local/bin/subs']
     - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
     - ['{{ home }}/n/archive/pass', '.password-store']
     - ['{{ home }}/n/archive/mutt.aliases', '.mutt/aliases']
