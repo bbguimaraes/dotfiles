@@ -13,6 +13,7 @@
     - .config/git
     - .config/i3
     - .config/i3status
+    - .config/impero
     - .config/khal
     - .config/offlineimap
     - .config/tig
