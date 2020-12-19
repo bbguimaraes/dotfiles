@@ -56,6 +56,7 @@
       src: '{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
+    - ['{{ home }}/n/archive/impero.txt', '.config/impero/commands.txt']
     - ['{{ home }}/n/archive/money', '.local/share/nummi/db']
     - ['{{ home }}/n/archive/mutt.aliases', '.mutt/aliases']
     - ['{{ home }}/n/archive/pass', '.password-store']
