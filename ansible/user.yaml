@@ -40,7 +40,7 @@
     - ['mutt/muttrc',          '.mutt/muttrc']
     - ['mutt/muttrc_gmail',    '.mutt/muttrc_gmail']
     - ['mutt/muttrc_proton',   '.mutt/muttrc_proton']
-    - ['mutt/mailcap',          '.mutt/mailcap']
+    - ['mutt/mailcap',         '.mutt/mailcap']
     - ['offlineimap/offlineimap@.service',
        '.local/share/systemd/user/offlineimap@.service']
     - ['proton/proton-bridge.service',
@@ -57,10 +57,10 @@
       dest: '{{ home }}/{{ item.1 }}'
     loop:
     - ['{{ home }}/n/archive/money', '.local/share/nummi/db']
-    - ['{{ home }}/src/subs/subs/subs.py', '.local/bin/subs']
-    - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
-    - ['{{ home }}/n/archive/pass', '.password-store']
     - ['{{ home }}/n/archive/mutt.aliases', '.mutt/aliases']
+    - ['{{ home }}/n/archive/pass', '.password-store']
+    - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
+    - ['{{ home }}/src/subs/subs/subs.py', '.local/bin/subs']
   - name: setup CA symlinks (archlinux)
     file:
       state: link
