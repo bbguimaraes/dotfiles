@@ -4,8 +4,11 @@
   - name: install base system packages
     package:
       state: present
-      name: grub os-prober
+      name: "{{ item }}"
     when: ansible_os_family == 'Archlinux'
+    with_items:
+    - grub
+    - os-prober
 - hosts: all
   tags: base_pkgs
   vars:
