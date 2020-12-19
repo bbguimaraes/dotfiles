@@ -21,12 +21,12 @@
       simplescreenrecorder scrot xdotool
     - >- # tools
       acpi discount ffmpeg gnuplot inotify-tools moreutils msmtp mutt
-      nextcloud-client offlineimap p7zip pandoc pass perf poppler ripgrep unrar
-      strace units vdirsyncer weechat
+      nextcloud-client offlineimap p7zip pandoc pass perf poppler
+      python-matplotlib ripgrep unrar strace units vdirsyncer weechat
     arch_pkgs:
     - >- # dev
       arm-none-eabi-gcc base-devel ccache dash devtools doxygen encfs llvm
-      opengl-man-pages renderdoc shellcheck valgrind
+      opengl-man-pages pocl renderdoc shellcheck valgrind
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
