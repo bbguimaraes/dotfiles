@@ -9,6 +9,7 @@ set wildmenu wildmode=longest:full,full
 set hlsearch ignorecase incsearch smartcase
 
 let g:ctrlp_working_path_mode = ''
+set grepprg=rg\ --with-filename\ --line-number\ $*
 
 syntax on
 colorscheme desert
