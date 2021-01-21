@@ -42,6 +42,11 @@ augroup filetype_mail
 \       <leader>mf o--<cr>Bruno Barcarol Guimarães<esc>
 augroup END
 
+augroup filetype_gitcommit
+    autocmd!
+    autocmd FileType gitcommit setlocal spell
+augroup END
+
 augroup filetype_go
     autocmd!
     autocmd FileType go setlocal noexpandtab
