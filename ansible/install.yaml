@@ -19,8 +19,10 @@
     - >- # graphical
       chromium dmenu feh gimp i3lock i3status qpdfview qt5ct redshift
       simplescreenrecorder scrot xdotool
+    - >- #audio
+      audacity
     - >- # tools
-      acpi discount ffmpeg gnuplot inotify-tools moreutils msmtp mutt
+      acpi discount ffmpeg gnuplot inotify-tools ltrace moreutils msmtp mutt
       nextcloud-client offlineimap p7zip pass perf poppler python-matplotlib
       ripgrep unrar strace units vdirsyncer weechat
     arch_pkgs:
@@ -33,12 +35,11 @@
       blender breeze celluloid firefox i3-wm imagemagick inkscape kdenlive
       libreoffice-fresh picom rxvt-unicode ttf-dejavu
     - >- # audio
-      alsa-utils ardour audacity hydrogen mpv musescore pavucontrol pulseaudio
+      alsa-utils ardour hydrogen mpv musescore pavucontrol pulseaudio
       pulseaudio-alsa pulseaudio-bluetooth
     - >- # tools
-      android-tools bc bind-tools bluez bluez-utils jq khal ltrace lynx
-      openbsd-netcat pacman-contrib pigz pixz rlwrap sshfs unzip words
-      youtube-dl
+      android-tools bc bind-tools bluez bluez-utils jq khal lynx openbsd-netcat
+      pacman-contrib pigz pixz rlwrap sshfs unzip words youtube-dl
     - >- # aurutils
       expac diffstat pacutils parallel wget
     - >- # wine
@@ -51,7 +52,8 @@
     fedora_pkgs:
     - >- # dev
       cargo distcc-server fuse-encfs golang-godoc gotags libcurl-devel
-      openssl-devel patch plasma-breeze rustfmt ShellCheck
+      libsecret-devel openssl-devel patch plasma-breeze qt5-devel rustfmt
+      ShellCheck
     - >- # graphical
       compton i3 libreoffice rxvt-unicode-256color-ml
     - >- # tools
