@@ -17,16 +17,16 @@
       ansible clang cloc cmake colordiff ctags distcc emacs gdb go graphviz hub
       ipython podman rust tidy tig vim-ctrlp
     - >- # graphical
-      celluloid chromium dmenu feh gimp i3lock i3status qpdfview qt5ct redshift
+      chromium dmenu feh gimp i3lock i3status qpdfview qt5ct redshift
       simplescreenrecorder scrot xdotool
     - >- # tools
       acpi discount ffmpeg gnuplot inotify-tools moreutils msmtp mutt
-      nextcloud-client offlineimap p7zip pandoc pass perf poppler
-      python-matplotlib ripgrep unrar strace units vdirsyncer weechat
+      nextcloud-client offlineimap p7zip pass perf poppler python-matplotlib
+      ripgrep unrar strace units vdirsyncer weechat
     arch_pkgs:
     - >- # dev
       arm-none-eabi-gcc base-devel ccache dash devtools doxygen encfs llvm
-      opengl-man-pages pocl renderdoc shellcheck valgrind
+      mit-scheme opengl-man-pages pocl renderdoc valgrind
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
@@ -53,7 +53,7 @@
       cargo distcc-server fuse-encfs golang-godoc gotags libcurl-devel
       openssl-devel patch plasma-breeze rustfmt ShellCheck
     - >- # graphical
-      compton i3 libreoffice rxvt-unicode
+      compton i3 libreoffice rxvt-unicode-256color-ml
     - >- # tools
       ftp bind-utils fuse-sshfs libolm-devel passmenu
     - >- # work
