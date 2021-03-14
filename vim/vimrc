@@ -8,11 +8,12 @@ set hidden key= lazyredraw noequalalways visualbell
 set wildmenu wildmode=longest:full,full
 set hlsearch ignorecase incsearch smartcase
 
+set term=rxvt-unicode
 let g:ctrlp_working_path_mode = ''
 set grepprg=rg\ --with-filename\ --line-number\ $*
 
 syntax on
-colorscheme desert
+colorscheme preto
 highlight ExtraWhitespace ctermbg=red guibg=red
 highlight VCConflict ctermbg=red guibg=red
 highlight 81stColumn ctermbg=red guibg=red

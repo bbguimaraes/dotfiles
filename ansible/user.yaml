@@ -22,6 +22,7 @@
     - .local/share/subs
     - .local/share/systemd/user
     - .mutt
+    - .vim/colors
   - name: setup dotfile symlinks
     file:
       state: link
@@ -48,6 +49,7 @@
     - ['offlineimap/gmail',    '.config/offlineimap/gmail']
     - ['redshift.conf',        '.config/redshift.conf']
     - ['user-dirs.dirs',       '.config/user-dirs.dirs']
+    - ['vim/preto.vim',        '.vim/colors/preto.vim']
     - ['xorg/xinitrc',         '.xinitrc']
     - ['xorg/Xresources',      '.Xresources']
   - name: setup other symlinks
