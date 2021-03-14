@@ -8,6 +8,7 @@ set hidden key= lazyredraw noequalalways visualbell
 set wildmenu wildmode=longest:full,full
 set hlsearch ignorecase incsearch smartcase
 
+runtime ftplugin/man.vim
 set term=rxvt-unicode
 let g:ctrlp_working_path_mode = ''
 set grepprg=rg\ --with-filename\ --line-number\ $*
