@@ -30,4 +30,4 @@
     - ['git/config',           '.config/git/config']
     - ['bash/inputrc',         '.inputrc']
     - ['tmux.conf',            '.tmux.conf']
-    - ['vimrc',                '.vimrc']
+    - ['vim/vimrc',            '.vimrc']
