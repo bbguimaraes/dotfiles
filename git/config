@@ -4,3 +4,5 @@
     name = Bruno Barcarol Guimarães
 [push]
     default = simple
+[pull]
+	ff = only
