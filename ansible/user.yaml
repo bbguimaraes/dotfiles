@@ -160,34 +160,36 @@
       - https://gitlab.matrix.org/matrix-org/olm
       - '{{ dir }}/python/olm'
     when: ansible_os_family == 'RedHat'
-  - name: create olm build directory
-    file:
-      state: directory
-      path: '{{ dir }}/python/olm/build'
-  - name: build olm (cmake)
-    command:
-      cmd: cmake ..
-      chdir: '{{ dir }}/python/olm/build'
-      creates: '{{ dir }}/python/olm/build/Makefile'
-  - name: build olm (make)
-    command:
-      cmd: make
-      chdir: '{{ dir }}/python/olm/build'
-      creates: '{{ dir }}/python/olm/build/lib64/libolm.so'
-  - name: create virtualenv
-    command:
-      cmd: virtualenv '{{ dir }}/python/env'
-      creates: '{{ dir }}/python/env'
-    when: ansible_os_family == 'RedHat'
-    register: rc
-  - name: install virtualenv packages
-    command: >
-      env
-      CPATH={{ dir }}/python/olm/include
-      LIBRARY_PATH={{ dir }}/python/olm/build/lib64
-      '{{ dir }}/python/env/bin/pip'
-      install -r '{{ dir }}/python/weechat-matrix/requirements.txt'
-    when: rc.changed
+  - when: ansible_os_family == 'RedHat'
+    block:
+    - name: create olm build directory
+      file:
+        state: directory
+        path: '{{ dir }}/python/olm/build'
+    - name: build olm (cmake)
+      command:
+        cmd: cmake ..
+        chdir: '{{ dir }}/python/olm/build'
+        creates: '{{ dir }}/python/olm/build/Makefile'
+    - name: build olm (make)
+      command:
+        cmd: make
+        chdir: '{{ dir }}/python/olm/build'
+        creates: '{{ dir }}/python/olm/build/lib64/libolm.so'
+    - name: create virtualenv
+      command:
+        cmd: virtualenv '{{ dir }}/python/env'
+        creates: '{{ dir }}/python/env'
+      when: ansible_os_family == 'RedHat'
+      register: rc
+    - name: install virtualenv packages
+      command: >
+        env
+        CPATH={{ dir }}/python/olm/include
+        LIBRARY_PATH={{ dir }}/python/olm/build/lib64
+        '{{ dir }}/python/env/bin/pip'
+        install -r '{{ dir }}/python/weechat-matrix/requirements.txt'
+      when: rc.changed
   - name: create symlinks
     when: ansible_os_family == 'Archlinux'
     file:
