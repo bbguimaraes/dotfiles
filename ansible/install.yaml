@@ -22,9 +22,9 @@
     - >- #audio
       audacity
     - >- # tools
-      acpi discount ffmpeg gnuplot inotify-tools ltrace moreutils msmtp mutt
-      nextcloud-client offlineimap p7zip pass perf poppler python-matplotlib
-      ripgrep unrar strace units vdirsyncer weechat
+      acpi discount ffmpeg gnuplot inotify-tools ltrace lsof moreutils msmtp
+      mutt nextcloud-client offlineimap p7zip pass perf poppler
+      python-matplotlib ripgrep unrar strace units vdirsyncer weechat
     arch_pkgs:
     - >- # dev
       arm-none-eabi-gcc base-devel ccache dash devtools doxygen encfs llvm
