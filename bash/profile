@@ -4,6 +4,7 @@ export EDITOR=vim
 export PATH=$HOME/.local/bin${PATH+:$PATH}
 export PASSWORD_STORE_X_SELECTION=primary
 export QT_QPA_PLATFORMTHEME=qt5ct
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 alias gdb='gdb --quiet'
 alias musescore='musescore --gui-scaling 1'
 [[ -e /home/bbguimaraes/.nix-profile/etc/profile.d/nix.sh ]] && source /home/bbguimaraes/.nix-profile/etc/profile.d/nix.sh

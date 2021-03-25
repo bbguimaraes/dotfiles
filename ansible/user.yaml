@@ -16,6 +16,7 @@
     - .config/impero
     - .config/khal
     - .config/offlineimap
+    - .config/ripgrep
     - .config/tig
     - .config/vdirsyncer
     - .local/share/nummi
@@ -48,6 +49,7 @@
        '.local/share/systemd/user/proton-bridge.service']
     - ['offlineimap/gmail',    '.config/offlineimap/gmail']
     - ['redshift.conf',        '.config/redshift.conf']
+    - ['ripgrep',              '.config/ripgrep/config']
     - ['user-dirs.dirs',       '.config/user-dirs.dirs']
     - ['vim/preto.vim',        '.vim/colors/preto.vim']
     - ['xorg/xinitrc',         '.xinitrc']
