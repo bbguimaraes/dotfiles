@@ -18,7 +18,7 @@ EOF
 )
 
 CXX_PROG=$(cat <<'EOF'
-// g++ -std=c++2a -S -masm=intel
+// g++ -std=c++20 -S -masm=intel
 
 int main() {
 }
