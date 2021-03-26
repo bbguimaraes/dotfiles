@@ -1,4 +1,5 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
+export HISTTIMEFORMAT='%FT%H:%M:%S '
 export VISUAL=vim
 export EDITOR=vim
 export PATH=$HOME/.local/bin${PATH+:$PATH}
