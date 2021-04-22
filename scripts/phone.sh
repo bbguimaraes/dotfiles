@@ -11,7 +11,7 @@ main() {
 }
 
 push() {
-    local addr=192.168.0.59 port=2121 user=anonymous root=/storage/emulated/0
+    local addr=192.168.0.5 port=2121 user=anonymous root=/storage/emulated/0
     for x; do
         echo "$x"
         curl "ftp://$addr:$port/$root/" \
