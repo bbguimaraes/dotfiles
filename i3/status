@@ -8,6 +8,7 @@ order += "cpu_temperature 0"
 order += "cpu_temperature 1"
 order += "disk /"
 order += "disk /home"
+order += "disk /tmp"
 order += "wireless _first_"
 order += "ethernet enp0s25"
 order += "battery 0"
@@ -53,11 +54,15 @@ battery 1 {
 }
 
 disk "/" {
-    format = "%avail"
+    format = "/ %avail"
 }
 
 disk "/home" {
-    format = "%avail"
+    format = "/home %avail"
+}
+
+disk "/tmp" {
+    format = "/tmp %avail"
 }
 
 tztime pacific {
