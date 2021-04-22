@@ -9,16 +9,10 @@ main() {
         shift
     fi
     case "$cmd" in
-    check) check "$@";;
+    check) subdir check.py "$@";;
     configure) subdir configure.sh "$@";;
     *) echo >&2 "invalid command: $cmd"; return 1;;
     esac
-}
-
-check() {
-    local build_dir=$1; shift
-    make -C "$build_dir" "$@" all check-programs
-    make -C "$build_dir" check "$@" || cat "$build_dir/test-suite.log"
 }
 
 subdir() {
