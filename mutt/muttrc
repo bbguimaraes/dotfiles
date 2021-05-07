@@ -23,4 +23,4 @@ color tree white black
 color markers red black
 color tilde brightmagenta black
 color index blue black ~F
-color status black white
+color status default default
