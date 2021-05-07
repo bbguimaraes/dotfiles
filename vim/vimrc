@@ -68,7 +68,7 @@ nnoremap <leader>tw :setlocal invwrap<cr>
 nnoremap <leader>ct :checktime<cr>
 nnoremap <leader>e :CtrlP<cr>
 nnoremap <leader>s :source $MYVIMRC<cr>
-nnoremap <leader>ut :silent !ctags -R src/<cr>
+nnoremap <leader>ut :!ctags -R<cr>
 nnoremap <c-w>t <c-w>s<c-w>T
 noremap <leader>y :w !xclip<cr>
 noremap <leader>cy :w !xclip -selection clipboard<cr>
