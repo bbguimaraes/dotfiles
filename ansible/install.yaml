@@ -18,7 +18,7 @@
       ipython podman rust tidy tig vim-ctrlp
     - >- # graphical
       chromium dmenu feh gimp i3lock i3status qpdfview qt5ct redshift
-      simplescreenrecorder scrot xdotool
+      rxvt-unicode simplescreenrecorder scrot xdotool
     - >- #audio
       audacity
     - >- # tools
@@ -33,7 +33,7 @@
       mesa xorg xorg-xinit
     - >- # graphical
       blender breeze celluloid firefox i3-wm imagemagick inkscape kdenlive
-      libreoffice-fresh picom rxvt-unicode ttf-dejavu
+      libreoffice-fresh picom ttf-dejavu
     - >- # audio
       alsa-utils ardour hydrogen mpv musescore pavucontrol pulseaudio
       pulseaudio-alsa pulseaudio-bluetooth
@@ -51,15 +51,16 @@
       freeglut glu
     fedora_pkgs:
     - >- # dev
-      cargo distcc-server fuse-encfs golang-godoc gotags libcurl-devel
-      libsecret-devel openssl-devel patch plasma-breeze qt5-devel rustfmt
-      ShellCheck
+      awscli cargo distcc-server docker-compose fuse-encfs golang-godoc gotags
+      libcurl-devel libsecret-devel openssl-devel patch plasma-breeze qt5-devel
+      rustfmt ShellCheck
     - >- # graphical
-      compton i3 libreoffice rxvt-unicode-256color-ml
+      compton i3 libreoffice
     - >- # tools
-      ftp bind-utils fuse-sshfs libolm-devel passmenu
+      bind-utils ftp fuse-sshfs hugo libolm-devel nodejs passmenu pinentry-qt
     - >- # work
-      krb5-workstation pyOpenSSL python-cryptography python-lxml
+      krb5-workstation openldap-clients pyOpenSSL python-cryptography
+      python-lxml
     fedora_groups:
     - '@Development tools'
   tasks:
