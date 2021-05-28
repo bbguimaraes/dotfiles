@@ -27,8 +27,8 @@
       python-matplotlib ripgrep unrar strace units vdirsyncer weechat
     arch_pkgs:
     - >- # dev
-      arm-none-eabi-gcc base-devel ccache dash devtools doxygen encfs llvm
-      mit-scheme opengl-man-pages pocl renderdoc valgrind
+      arm-none-eabi-gcc base-devel ccache cjson dash devtools doxygen encfs
+      llvm mit-scheme opengl-man-pages pocl renderdoc valgrind
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical

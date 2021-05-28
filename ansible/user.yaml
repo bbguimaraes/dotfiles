@@ -250,8 +250,6 @@
   - when: ansible_os_family == 'Archlinux'
     block:
     - import_tasks: aur.yaml
-      vars: {"pkg": "cjson"}
-    - import_tasks: aur.yaml
       vars: {"pkg": "renderdoc"}
     - import_tasks: aur.yaml
       vars: {"pkg": "duc"}
