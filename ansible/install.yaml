@@ -23,7 +23,7 @@
       audacity
     - >- # tools
       acpi discount ffmpeg gnuplot inotify-tools ltrace lsof moreutils msmtp
-      mutt nextcloud-client offlineimap p7zip pass perf poppler
+      mutt nextcloud-client offlineimap p7zip pass perf poppler pv
       python-matplotlib ripgrep unrar strace units vdirsyncer weechat
     arch_pkgs:
     - >- # dev
