@@ -93,39 +93,3 @@
     when: |
       ansible_os_family == 'RedHat'
       and 'NTP enabled: no' in rc.stdout
-  - name: initialize /etc/subuid
-    copy:
-      dest: /etc/subuid
-      force: no
-      content: |
-        1000:65536:1000
-  - name: initialize /etc/subgid
-    copy:
-      dest: /etc/subgid
-      force: no
-      content: |
-        1000:65536:1000
-- hosts: servers
-  tasks:
-  - name: install base system packages (server)
-    package:
-      state: present
-      name:
-      - fail2ban
-  - name: fail2ban ssh
-    blockinfile:
-      name: /etc/fail2ban/jail.d/ssh.conf
-      create: true
-      block: |
-        [sshd]
-        enabled = true
-        port    = ssh
-        logpath = %(sshd_log)s
-        backend = %(sshd_backend)s
-    notify:
-    - restart fail2ban
-  handlers:
-  - name: restart fail2ban
-    service:
-      state: restarted
-      name: fail2ban

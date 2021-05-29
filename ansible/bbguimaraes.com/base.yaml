@@ -1,0 +1,35 @@
+- hosts: all
+  tasks:
+  - name: check if user centos exists
+    command: getent passwd centos
+    changed_when: false
+    failed_when: ret.rc in (1, 3)
+    register: ret
+  - name: rename centos user
+    command: >
+      usermod centos
+      --login bbguimaraes
+      --home /home/bbguimaraes
+      --move-home
+    when: ret.rc == 0
+  - name: install fail2ban
+    package:
+      state: present
+      name: fail2ban
+  - name: fail2ban ssh
+    blockinfile:
+      name: /etc/fail2ban/jail.d/ssh.conf
+      create: true
+      block: |
+        [sshd]
+        enabled = true
+        port    = ssh
+        logpath = %(sshd_log)s
+        backend = %(sshd_backend)s
+    notify:
+    - restart fail2ban
+  handlers:
+  - name: restart fail2ban
+    service:
+      state: restarted
+      name: fail2ban
