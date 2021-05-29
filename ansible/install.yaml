@@ -15,10 +15,10 @@
     pkgs:
     - >- # dev
       ansible clang cloc cmake colordiff ctags distcc emacs gdb go graphviz hub
-      ipython podman rust tidy tig vim-ctrlp
+      ipython podman python-pip rust tidy tig vim-ctrlp
     - >- # graphical
       chromium dmenu feh gimp i3lock i3status qpdfview qt5ct redshift
-      rxvt-unicode simplescreenrecorder scrot xdotool
+      rxvt-unicode simplescreenrecorder scrot xclip xdotool
     - >- #audio
       audacity
     - >- # tools
@@ -28,12 +28,12 @@
     arch_pkgs:
     - >- # dev
       arm-none-eabi-gcc base-devel ccache cjson dash devtools doxygen encfs
-      llvm mit-scheme opengl-man-pages pocl renderdoc valgrind
+      libc++ llvm mit-scheme mypy opengl-man-pages pocl renderdoc valgrind
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
       blender breeze celluloid firefox i3-wm imagemagick inkscape kdenlive
-      libreoffice-fresh picom ttf-dejavu
+      libreoffice-fresh mednafen picom ttf-dejavu
     - >- # audio
       alsa-utils ardour hydrogen mpv musescore pavucontrol pulseaudio
       pulseaudio-alsa pulseaudio-bluetooth
@@ -52,8 +52,8 @@
     fedora_pkgs:
     - >- # dev
       awscli cargo distcc-server docker-compose fuse-encfs golang-godoc gotags
-      libcurl-devel libsecret-devel openssl-devel patch plasma-breeze qt5-devel
-      rustfmt ShellCheck
+      libcurl-devel libsecret-devel openssl-devel patch plasma-breeze
+      python3-mypy qt5-devel rustfmt ShellCheck
     - >- # graphical
       compton i3 libreoffice
     - >- # tools
