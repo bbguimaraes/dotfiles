@@ -1,0 +1,9 @@
+- hosts: all
+  tasks:
+  - name: add Nextcloud cron job
+    cron:
+      name: nextcloud
+      minute: '*/30'
+      job: >
+        podman exec nextcloud-php
+        php /usr/share/webapps/nextcloud/cron.php
