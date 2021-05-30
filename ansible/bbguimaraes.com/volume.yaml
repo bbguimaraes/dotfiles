@@ -1,0 +1,22 @@
+- hosts: all
+  tasks:
+  - name: format the filesystem
+    when: volume_format_disk|default(false)
+    filesystem:
+      dev: '{{ volume_dev }}'
+      fstype: ext4
+  - name: create root directory
+    file:
+      state: directory
+      path: '{{ volume_dir }}'
+      owner: root
+      group: root
+      mode: 0755
+  - name: mount the filesystem
+    mount:
+      state: mounted
+      src: '{{ volume_dev }}'
+      name: '{{ volume_dir }}'
+      fstype: ext4
+      # From DO's documentation
+      opts: discard,defaults,noatime

@@ -1,0 +1,13 @@
+- hosts: all
+  vars:
+    pkgs:
+    - podman
+    - podman-plugins
+  tasks:
+  - name: install podman packages
+    package:
+      state: present
+      name: '{{ pkgs }}'
+  - name: verify installation
+    command: 'rpm -qi {{ pkgs|join(" ") }}'
+    changed_when: false
