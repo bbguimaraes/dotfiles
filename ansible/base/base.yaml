@@ -8,6 +8,7 @@
       - bash-completion
       - git
       - openssh
+      - rxvt-unicode-terminfo
       - sudo
       - tmux
       - vim
