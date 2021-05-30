@@ -46,7 +46,7 @@
       validate: visudo -cf %s
       content: |
         %wheel ALL=(ALL) ALL
-    when: not (sudo_wheel_nopasswd|default(false))
+    when: not sudo_wheel_nopasswd
   - name: allow wheel to sudo without a password
     copy:
       dest: /etc/sudoers.d/0_wheel
@@ -56,7 +56,7 @@
       validate: visudo -cf %s
       content: |
         %wheel ALL=(ALL) NOPASSWD: ALL
-    when: sudo_wheel_nopasswd|default(false)
+    when: sudo_wheel_nopasswd
   - name: update pkgfile
     command:
       argv: ['pkgfile', '--update']
