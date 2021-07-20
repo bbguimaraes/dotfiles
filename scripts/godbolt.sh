@@ -10,7 +10,7 @@ EOF
 )
 
 C_PROG=$(cat <<'EOF'
-// gcc -std=c11 -S -masm=intel
+// gcc -std=c11 -S -masm=intel -fno-stack-protector
 
 int main() {
 }
@@ -18,7 +18,7 @@ EOF
 )
 
 CXX_PROG=$(cat <<'EOF'
-// g++ -std=c++20 -S -masm=intel -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables
+// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables
 
 int main() {
 }
