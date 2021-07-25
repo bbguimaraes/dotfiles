@@ -1,0 +1,17 @@
+user_home: /home/bbguimaraes
+arch_pkg: '{{ user_home }}/ArchLinuxARM-rpi-latest.tar.gz'
+ssh_pub_key: '{{ user_home }}/.ssh/id_rsa.pub'
+sudo_wheel_nopasswd: true
+sd_card_dev: /dev/disk/by-id/mmc-SD16G_0x6c80ed8d
+sd_mount_root: /mnt/sd
+vg: rpi_vg0
+pvs:
+- /dev/disk/by-id/usb-Seagate_Backup+_BK_NA5CNF0A-0:0
+- /dev/disk/by-id/usb-Seagate_Backup+_BK_NA5CL99P-0:0
+swap_lv: swap
+swap_dev: /dev/{{ vg }}/{{ swap_lv }}
+swap_size: 8G
+raid_lv: raid1
+raid_dev: /dev/{{ vg }}/{{ raid_lv }}
+raid_mount_root: /mnt/raid1
+raid_mounts: [home, var]

@@ -1,0 +1,57 @@
+# Move dynamic directories out of the SD card.
+- hosts: all
+  tasks:
+  - name: create RAID logical volume
+    lvol:
+      state: present
+      vg: '{{ vg }}'
+      lv: '{{ raid_lv }}'
+      size: 100%FREE
+      opts: --type raid1
+    register: out
+    failed_when: out.msg != 'Sorry, no shrinking of raid1 without force=yes'
+  - name: mount SD card (root)
+    mount:
+      state: mounted
+      fstype: ext4
+      src: '{{ sd_card_dev }}-part2'
+      path: '{{ sd_mount_root }}/root'
+  - name: mount raid volume
+    mount:
+      state: mounted
+      fstype: ext4
+      src: '{{ raid_dev }}'
+      path: '{{ raid_mount_root }}'
+  - name: list root
+    command: ls '{{ sd_mount_root }}/root'
+    register: out
+    changed_when: false
+  - name: create mount destination
+    file: state=directory path={{ raid_mount_root }}/rpi
+  - name: move mounts to raid
+    shell: |
+      mv -t '{{ raid_mount_root }}/rpi/' '{{ sd_mount_root }}/root/{{ item }}'
+    when: item in out.stdout_lines
+    loop: '{{ raid_mounts }}'
+  - name: create storage mount point
+    file: state=directory path={{ sd_mount_root }}/{{ raid_mount_root }}
+  - name: add raid to fstab
+    lineinfile:
+      state: present
+      path: '{{ sd_mount_root }}/root/etc/fstab'
+      line: '{{ raid_dev }} {{ raid_mount_root }} ext4 defaults 0 0'
+  - name: add bind mounts to fstab
+    mount:
+      fstab: '{{ sd_mount_root }}/root/etc/fstab'
+      state: present
+      fstype: none
+      src: '{{ raid_mount_root }}/rpi/{{ item }}'
+      path: '/{{ item }}'
+      opts: defaults,bind
+    loop: '{{ raid_mounts }}'
+  - name: unmount
+    mount: state=absent path={{ item }}
+    loop:
+    - '{{ raid_mount_root }}'
+    - '{{ sd_mount_root }}/root'
+    - '{{ raid_mount_root }}'

@@ -1,0 +1,75 @@
+# Executed on the host to prepare the root file system on the SD card.
+- hosts: all
+  tasks:
+  - name: create physical volumes / volume groups
+    lvg: state=present pvs={{ pvs }} vg={{ vg }}
+  - name: create swap logical volume
+    lvol: state=present vg={{ vg }} lv={{ swap_lv }} size={{ swap_size }}
+  - name: format swap volume
+    filesystem: dev={{ swap_dev }} fstype=swap
+  - name: format raid volume
+    filesystem: dev={{ raid_dev }} fstype=ext4
+  - name: partition SD card (boot)
+    parted:
+      state: present
+      device: '{{ sd_card_dev }}'
+      number: 1
+      flags: [lba]
+      part_end: 200MiB
+  - name: partition SD card (root)
+    parted:
+      state: present
+      device: '{{ sd_card_dev }}'
+      number: 2
+      part_start: 200MiB
+      part_end: 100%
+  - name: format SD card (boot)
+    filesystem: dev={{ sd_card_dev }}-part1 fstype=vfat
+  - name: format SD card (root)
+    filesystem: dev={{ sd_card_dev }}-part2 fstype=ext4
+  - name: mount SD card (boot)
+    mount:
+      state: mounted
+      fstype: vfat
+      src: '{{ sd_card_dev }}-part1'
+      path: '{{ sd_mount_root }}/boot'
+  - name: mount SD card (root)
+    mount:
+      state: mounted
+      fstype: ext4
+      src: '{{ sd_card_dev }}-part2'
+      path: '{{ sd_mount_root }}/root'
+  - name: list files in root
+    command: ls '{{ sd_mount_root }}/root'
+    register: out
+    changed_when: false
+  - name: extract package
+    unarchive: src={{ arch_pkg }} dest={{ sd_mount_root }}/root
+    when: out.stdout == ""
+  - name: list files in boot
+    command: ls '{{ sd_mount_root }}/boot'
+    register: out
+    changed_when: false
+  - name: move boot to separate partition
+    shell: mv -t '{{ sd_mount_root }}/boot' '{{ sd_mount_root }}/root/boot'/*
+    when: out.stdout == ""
+  - name: add swap entry to fstab
+    mount:
+      fstab: '{{ sd_mount_root }}/root/etc/fstab'
+      state: present
+      src: '{{ swap_dev }}'
+      path: none
+      fstype: swap
+      opts: defaults
+  - name: install ssh key
+    authorized_key:
+      state: present
+      user: bbguimaraes
+      path: '{{ sd_mount_root }}/root/home/alarm/.ssh/authorized_keys'
+      key: '{{ lookup("file", ssh_pub_key) }}'
+      manage_dir: false
+  - name: unmount SD card
+    mount: state=absent path={{ item }}
+    loop:
+    - '{{ sd_mount_root }}/boot'
+    - '{{ sd_mount_root }}/root'
