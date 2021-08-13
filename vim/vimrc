@@ -10,6 +10,7 @@ set hlsearch ignorecase incsearch smartcase
 
 runtime ftplugin/man.vim
 let g:ctrlp_working_path_mode = ''
+let g:dispatch_no_tmux_make = 1
 set grepprg=rg\ --with-filename\ --line-number\ $*
 
 syntax on
@@ -67,6 +68,7 @@ nnoremap <leader>tw :setlocal invwrap<cr>
 
 nnoremap <leader>ct :checktime<cr>
 nnoremap <leader>e :CtrlP<cr>
+nnoremap <leader>m :w \| Make<cr>
 nnoremap <leader>s :source $MYVIMRC<cr>
 nnoremap <leader>ut :!ctags -R<cr>
 nnoremap <c-w>t <c-w>s<c-w>T
