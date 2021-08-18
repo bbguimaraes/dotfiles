@@ -25,6 +25,9 @@
 - hosts: all
   tags: base
   tasks:
+  - name: check required variable
+    fail: {}
+    when: sudo_wheel_nopasswd is undefined
   - name: add users
     user:
       state: present
