@@ -8,6 +8,9 @@ main() {
     install) install "$@";;
     build) build "$@";;
     shell) common_shell "$@";;
+    run) common_shell "$@" \
+        --chdir "/home/$COMMON_USER/0ad" \
+        binaries/system/pyrogenesis;;
     *) echo >&2 "invalid command: $cmd"; return 1;;
     esac
 }
