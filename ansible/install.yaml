@@ -28,7 +28,7 @@
     arch_pkgs:
     - >- # dev
       arm-none-eabi-gcc base-devel ccache cjson dash devtools doxygen encfs
-      libc++ llvm mit-scheme mypy opengl-man-pages pocl renderdoc valgrind
+      libc++ llvm mit-scheme mypy opengl-man-pages pocl qemu renderdoc valgrind
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
