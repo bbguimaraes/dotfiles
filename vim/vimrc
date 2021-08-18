@@ -60,6 +60,7 @@ augroup filetype_opencl
     autocmd BufNewFile,BufRead *.cl setlocal filetype=c
 augroup END
 
+nnoremap <leader>vr :execute "resize " . line("$")<cr>
 nnoremap <leader>td :windo setlocal invdiff invscrollbind<cr>
 nnoremap <leader>tn :setlocal invnumber<cr>
 nnoremap <leader>tp :setlocal invpaste<cr>
