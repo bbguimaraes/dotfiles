@@ -11,7 +11,7 @@ set hlsearch ignorecase incsearch smartcase
 runtime ftplugin/man.vim
 let g:ctrlp_working_path_mode = ''
 let g:dispatch_no_tmux_make = 1
-set grepprg=rg\ --with-filename\ --line-number\ $*
+set grepprg=rg\ --vimgrep\ $*
 
 syntax on
 colorscheme preto
