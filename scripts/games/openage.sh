@@ -8,6 +8,7 @@ main() {
     install) install "$@";;
     build) build "$@";;
     shell) common_shell "$@";;
+    run) common_shell "$@" --chdir "/home/$COMMON_USER/openage" bin/run;;
     *) echo >&2 "invalid command: $cmd"; return 1;;
     esac
 }
