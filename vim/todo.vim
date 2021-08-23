@@ -27,7 +27,8 @@ function! TodoIncDec(d)
     endif
     let l:h = l:cur[0:1]
     let l:m = l:cur[3:4]
-    if stridx(l:line, ":", l:col) > l:col
+    let l:colon = stridx(l:line, ":", l:col)
+    if l:colon != -1 && l:colon - l:col <= 2
         let l:h += a:d
     else
         let l:m += a:d * g:todo_inc
