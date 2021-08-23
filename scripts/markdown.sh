@@ -8,6 +8,7 @@ main() {
     simple) simple "$@";;
     css) css "$@";;
     hugo) hugo "$@";;
+    *) echo >&2 "invalid command: $cmd"; return 1;;
     esac
 }
 
@@ -29,7 +30,7 @@ EOF
 }
 
 hugo() {
-    hugo_replace | css
+    hugo_replace | css "$@"
 }
 
 hugo_replace() {
