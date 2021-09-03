@@ -19,13 +19,14 @@ main() {
         tmux split-window -t "$target.3" -l 1000 d mutt proton
         tmux split-window -t "$target.4" -l 1000 d mutt gmail
         tmux split-window -t "$target.5" -l 1000 d weechat
+        tmux split-window -t "$target.6" -l 1000
         tmux select-layout -t "$target" tiled
     else
         tmux split-window -t "$target.3" -l 1000 d mutt redhat
         tmux split-window -t "$target.4" -l 1000 \
             ssh -t file.emea.redhat.com screen -dR
         tmux select-layout -t "$target" tiled
-        tmux new-window -t "$SESSION" -l 1000 d weechat
+        tmux new-window -t "$SESSION:1" d weechat
     fi
     attach
 }
