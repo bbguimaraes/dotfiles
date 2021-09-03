@@ -52,7 +52,7 @@ augroup END
 augroup filetype_go
     autocmd!
     autocmd FileType go setlocal noexpandtab
-    autocmd Filetype go nnoremap <leader>ut :!gotags -f tags -R .<cr>
+    autocmd Filetype go nnoremap <leader>ut :Dispatch! gotags -f tags -R .<cr>
 augroup END
 
 augroup filetype_opencl
@@ -72,7 +72,7 @@ nnoremap <leader>e :CtrlP<cr>
 nnoremap <leader>h :set hlsearch \| let @/ = expand("<cword>")<cr>
 nnoremap <leader>m :w \| Make<cr>
 nnoremap <leader>s :source $MYVIMRC<cr>
-nnoremap <leader>ut :!ctags -R<cr>
+nnoremap <leader>ut :Dispatch! ctags -R<cr>
 nnoremap <leader>w :write \| :call system("d do")<cr><c-l>
 nnoremap <c-w>t <c-w>s<c-w>T
 noremap <leader>y :w !xclip<cr>
