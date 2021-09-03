@@ -51,9 +51,10 @@
       freeglut glu
     fedora_pkgs:
     - >- # dev
-      awscli cargo distcc-server docker-compose fuse-encfs golang-godoc gotags
-      libcurl-devel libsecret-devel openssl-devel patch plasma-breeze
-      python3-mypy qt5-devel rustfmt ShellCheck
+      autoconf automake awscli cargo distcc-server docker-compose fuse-encfs
+      golang-godoc gotags libarchive-devel libcurl-devel libsecret-devel
+      openssl-devel patch plasma-breeze python3-mypy python3-tabulate qt5-devel
+      rustfmt ShellCheck
     - >- # graphical
       compton i3 libreoffice
     - >- # tools
