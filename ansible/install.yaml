@@ -165,22 +165,3 @@
       path: /etc/pulse/default.pa
       regexp: '^(load-module module-esound-protocol-unix)$'
       replace: '#\1'
-- hosts: all
-  tags: brightness
-  tasks:
-  - name: copy script
-    copy:
-      src: /home/bbguimaraes/n/comp/scripts/brightness.py
-      dest: /usr/local/bin/brightness
-      owner: root
-      group: root
-      mode: 0755
-  - name: allow wheel to use it without a password
-    copy:
-      dest: /etc/sudoers.d/1_brightness
-      owner: root
-      group: root
-      mode: 0440
-      validate: visudo -cf %s
-      content: |
-        %wheel ALL=(ALL) NOPASSWD: /usr/local/bin/brightness
