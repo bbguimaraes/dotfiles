@@ -34,7 +34,9 @@
       uid: 1000
       name: bbguimaraes
       group: users
-      groups: wheel
+      groups:
+      - video
+      - wheel
   - name: enable sudoers.d
     lineinfile:
       state: present
