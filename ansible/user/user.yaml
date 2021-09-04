@@ -250,10 +250,10 @@
   - when: ansible_os_family == 'Archlinux'
     block:
     - import_tasks: aur.yaml
-      vars: {"pkg": "renderdoc"}
-    - import_tasks: aur.yaml
       vars: {"pkg": "duc"}
     - import_tasks: aur.yaml
       vars: {"pkg": "opencl-1.2-man-doc"}
     - import_tasks: aur.yaml
       vars: {"pkg": "pam-gnupg"}
+    - import_tasks: aur.yaml
+      vars: {"pkg": "renderdoc"}
