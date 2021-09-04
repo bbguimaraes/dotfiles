@@ -15,7 +15,8 @@
     pkgs:
     - >- # dev
       ansible clang cloc cmake colordiff ctags distcc emacs gdb go graphviz hub
-      ipython podman python-pip rust tidy tig vim-ctrlp
+      ipython podman python-pip rust tidy tig vim-ctrlp vim-fugitive
+      vim-gitgutter
     - >- # graphical
       chromium dmenu feh gimp i3lock i3status qpdfview qt5ct redshift
       rxvt-unicode simplescreenrecorder scrot xclip xdotool
@@ -29,6 +30,7 @@
     - >- # dev
       arm-none-eabi-gcc base-devel ccache cjson dash devtools doxygen encfs
       libc++ llvm mit-scheme mypy opengl-man-pages pocl qemu renderdoc valgrind
+      vim-tagbar
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
