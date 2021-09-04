@@ -28,7 +28,7 @@ cmd() {
 watch() {
     mkdir -p "$DIR"
     [[ -e "$FIFO" ]] || mkfifo "$FIFO"
-    cmd printf '\0' \> "$FIFO"
+    cmd printf '\\x1' \> "$FIFO"
     while read -n 1 < "$FIFO"; do
         "$SHELL" -c "$*" || true
     done
