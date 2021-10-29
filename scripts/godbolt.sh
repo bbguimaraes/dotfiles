@@ -41,26 +41,47 @@ func main() {
 EOF
 )
 
-tmp=$(mktemp -d)
-trap "rm -f '$tmp'/test* '$tmp'/a.out; rmdir $tmp" EXIT
-cd "$tmp"
-case "${1:-c++}" in
-c)
+main() {
+    tmp=$(mktemp -d)
+    trap "rm -f '$tmp'/test* '$tmp'/a.out; rmdir $tmp" EXIT
+    cd "$tmp"
+    local cmd=c++
+    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    case "$cmd" in
+    c) c "$@";;
+    c++) cpp "$@";;
+    rs) rs "$@";;
+    go) go "$@";;
+    *) echo >&2 "invalid command: $cmd"; return 1;;
+    esac
+    vim \
+        -c "$WRITE_POST" \
+        -c 'autocmd BufWritePost * :call WritePost()' \
+        "${cmds[@]}"
+}
+
+c() {
+    local prog=$C_PROG
     cmds=(-c 'edit test.s' -c 'setlocal autoread' -c 'vsplit test.c')
     > test.s
-    echo "$C_PROG" > test.c;;
-c++)
+    echo "$prog" > test.c
+}
+
+cpp() {
+    local prog=$CXX_PROG
     cmds=(-c 'edit test.s' -c 'setlocal autoread' -c 'vsplit test.cpp')
     > test.s
-    echo "$CXX_PROG" > test.cpp;;
-rs)
+    echo "$prog" > test.cpp
+}
+
+rs() {
     cmds=(-c 'edit test.rs')
-    echo "$RS_PROG" > test.rs;;
-go)
+    echo "$RS_PROG" > test.rs
+}
+
+go() {
     cmds=(-c 'edit test.go')
-    echo "$GO_PROG" > test.go;;
-esac
-vim \
-    -c "$WRITE_POST" \
-    -c 'autocmd BufWritePost * :call WritePost()' \
-    "${cmds[@]}"
+    echo "$GO_PROG" > test.go
+}
+
+main "$@"
