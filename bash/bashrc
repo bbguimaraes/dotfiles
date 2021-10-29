@@ -8,3 +8,11 @@ alias ls='ls --color=auto'
 alias cal='cal --monday'
 PS1='$ '
 complete -C 'd completion' d
+
+function d() {
+    [[ "$#" -eq 0 ]] && exec d
+    case "$1" in
+    cd) shift; eval "$(command d cd "$@")"; cd "$@";;
+    *) command d "$@";;
+    esac
+}
