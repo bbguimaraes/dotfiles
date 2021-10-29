@@ -4,5 +4,5 @@ set -euo pipefail
 ansible-playbook \
     --inventory localhost, \
     --connection local \
-    ansible/user.yaml \
+    ansible/user/user.yaml \
     "$@"

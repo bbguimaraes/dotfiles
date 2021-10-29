@@ -135,10 +135,10 @@
   - when: ansible_os_family == 'Archlinux'
     block:
     - name: install weechat-edit-git
-      import_tasks: aur.yaml
+      import_tasks: ../aur.yaml
       vars: {"pkg": "weechat-edit-git"}
     - name: install weechat-matrix-git
-      import_tasks: aur.yaml
+      import_tasks: ../aur.yaml
       vars: {"pkg": "weechat-matrix-git"}
   - name: create weechat directories
     file:
@@ -249,11 +249,11 @@
   tasks:
   - when: ansible_os_family == 'Archlinux'
     block:
-    - import_tasks: aur.yaml
+    - import_tasks: ../aur.yaml
       vars: {"pkg": "duc"}
-    - import_tasks: aur.yaml
+    - import_tasks: ../aur.yaml
       vars: {"pkg": "opencl-1.2-man-doc"}
-    - import_tasks: aur.yaml
+    - import_tasks: ../aur.yaml
       vars: {"pkg": "pam-gnupg"}
-    - import_tasks: aur.yaml
+    - import_tasks: ../aur.yaml
       vars: {"pkg": "renderdoc"}
