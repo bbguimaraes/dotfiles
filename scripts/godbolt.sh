@@ -11,6 +11,16 @@ EOF
 
 C_PROG=$(cat <<'EOF'
 // gcc -std=c11 -S -masm=intel -fno-stack-protector
+int main() {
+}
+EOF
+)
+
+C_INCLUDES_PROG=$(cat <<'EOF'
+// gcc -std=c11 -S -masm=intel -fno-stack-protector
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
 
 int main() {
 }
@@ -19,6 +29,17 @@ EOF
 
 CXX_PROG=$(cat <<'EOF'
 // g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables
+int main() {
+}
+EOF
+)
+
+CXX_INCLUDES_PROG=$(cat <<'EOF'
+// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables
+#include <algorithm>
+#include <array>
+#include <iostream>
+#include <vector>
 
 int main() {
 }
@@ -61,14 +82,24 @@ main() {
 }
 
 c() {
-    local prog=$C_PROG
+    local prog
+    case "${1:-}" in
+    '') prog=$C_PROG;;
+    includes) prog=$C_INCLUDES_PROG;;
+    *) echo >&2 "invalid c++ option: $1"; return 1;;
+    esac
     cmds=(-c 'edit test.s' -c 'setlocal autoread' -c 'vsplit test.c')
     > test.s
     echo "$prog" > test.c
 }
 
 cpp() {
-    local prog=$CXX_PROG
+    local prog
+    case "${1:-}" in
+    '') prog=$CXX_PROG;;
+    includes) prog=$CXX_INCLUDES_PROG;;
+    *) echo >&2 "invalid c++ option: $1"; return 1;;
+    esac
     cmds=(-c 'edit test.s' -c 'setlocal autoread' -c 'vsplit test.cpp')
     > test.s
     echo "$prog" > test.cpp
