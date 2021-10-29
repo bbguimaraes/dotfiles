@@ -14,8 +14,8 @@
   vars:
     pkgs:
     - >- # dev
-      ansible clang cloc cmake colordiff ctags distcc emacs gdb go graphviz hub
-      ipython podman python-pip rust tidy tig vim-ctrlp vim-fugitive
+      ansible clang cloc cmake colordiff ctags dash distcc emacs gdb go graphviz
+      hub ipython podman python-pip rust tidy tig vim-ctrlp vim-fugitive
       vim-gitgutter
     - >- # graphical
       chromium dmenu feh gimp i3lock i3status qpdfview qt5ct redshift
@@ -23,8 +23,8 @@
     - >- #audio
       audacity
     - >- # tools
-      acpi discount ffmpeg gnuplot inotify-tools ltrace lsof moreutils msmtp
-      mutt nextcloud-client offlineimap p7zip pass perf poppler pv
+      acpi discount ffmpeg fish gnuplot inotify-tools ltrace lsof moreutils
+      msmtp mutt nextcloud-client offlineimap p7zip pass perf poppler pv
       python-matplotlib ripgrep unrar strace units vdirsyncer weechat
     arch_pkgs:
     - >- # dev
