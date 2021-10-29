@@ -24,6 +24,7 @@
     - .local/share/systemd/user
     - .mutt
     - .vim/colors
+    - .vim/spell
   - name: setup dotfile symlinks
     file:
       state: link
@@ -64,6 +65,7 @@
     - ['{{ home }}/n/archive/money', '.local/share/nummi/db']
     - ['{{ home }}/n/archive/mutt.aliases', '.mutt/aliases']
     - ['{{ home }}/n/archive/pass', '.password-store']
+    - ['{{ home }}/n/archive/vim.spl', '.vim/spell/en.utf-8.add.spl']
     - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
     - ['{{ home }}/src/proton-bridge/proton-bridge', '.local/bin/proton-bridge']
     - ['{{ home }}/src/subs/subs/subs.py', '.local/bin/subs']
