@@ -39,7 +39,27 @@ CXX_INCLUDES_PROG=$(cat <<'EOF'
 #include <algorithm>
 #include <array>
 #include <iostream>
+#include <span>
 #include <vector>
+
+int main() {
+}
+EOF
+)
+
+CXX_OBJ_PROG=$(cat <<'EOF'
+// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables
+#include <cstdio>
+
+struct S {
+    S(void) { std::puts("S(void)"); }
+    S(int) { std::puts("S(int)"); }
+    S(const S&) { std::puts("S(const S&)"); }
+    S(S&&) { std::puts("S(S&&)"); }
+    S &operator=(const S&) { std::puts("S &operator=(const S&)"); return *this; }
+    S &operator=(S&&) { std::puts("S &operator=(S&&)"); return *this; }
+    ~S(void) { std::puts("~S(void)"); }
+};
 
 int main() {
 }
@@ -98,6 +118,7 @@ cpp() {
     case "${1:-}" in
     '') prog=$CXX_PROG;;
     includes) prog=$CXX_INCLUDES_PROG;;
+    obj) prog=$CXX_OBJ_PROG;;
     *) echo >&2 "invalid c++ option: $1"; return 1;;
     esac
     cmds=(-c 'edit test.s' -c 'setlocal autoread' -c 'vsplit test.cpp')
