@@ -1,7 +1,22 @@
 #!/bin/bash
 set -euo pipefail
 
-export LUA_INIT='
+main() {
+    local cmd=
+    if [[ "$#" -eq 0 ]]; then
+       repl
+    else
+        cmd=$1
+        shift
+    fi
+    case "$cmd" in
+    types) exec grep '^#define LUA_T' /usr/include/lua.h;;
+    *) echo >&2 "invalid command: $cmd"; return 1;;
+    esac
+}
+
+repl() {
+    export LUA_INIT='
 function hex(i) return string.format("0x%x", i) end
 
 function bin(n)
@@ -64,6 +79,23 @@ function ieee754(f)
     return {sign = s, exp = e, mantissa = m}
 end
 
+function ieee754_64(f)
+    local max <const> = (1 << 52)
+    local s <const> = f >> 63
+    local e <const> = ((f >> 52) & ((1 << 11) - 1)) - 1023
+    local m <const> = (f & (max - 1)) / max
+    return {sign = s, exp = e, mantissa = m}
+end
+
+function keys(t)
+    local ret = {}
+    for k in pairs(t) do
+        table.insert(ret, k)
+    end
+    table.sort(ret)
+    return ret
+end
+
 function pprint(x)
     local t = type(x)
     if t ~= "table" then
@@ -88,4 +120,7 @@ function pprint(x)
     end
 end
 '
-exec lua "$@"
+    exec lua "$@"
+}
+
+main "$@"
