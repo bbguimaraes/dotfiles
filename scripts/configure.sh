@@ -13,9 +13,14 @@ main() {
 
 dir() {
     local d0=$PWD d1=$1; shift
+    local args=()
+    d0=${d0%%/}
+    case "${d0##*/}" in
+    codex) args=(--enable-benchmarks --enable-tests);;
+    esac
     [[ -e "$d1" ]] || mkdir "$d1"
     cd "$d1"
-    "$d0/configure" "$@"
+    "$d0/configure" "${args[@]}" "$@"
 }
 
 clean() {
