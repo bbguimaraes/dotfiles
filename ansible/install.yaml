@@ -45,7 +45,7 @@
     - >- # aurutils
       expac diffstat pacutils parallel wget
     - >- # wine
-      lib32-mesa wine wine-mono
+      lib32-mesa mingw-w64 wine wine-mono
     - >- # nngn
       boost clinfo emscripten glew glfw-x11 glm intel-compute-runtime
       opencl-headers ocl-icd qt5-charts vulkan-intel vulkan-devel
