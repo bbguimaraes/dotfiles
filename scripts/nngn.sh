@@ -9,8 +9,8 @@ main() {
         shift
     fi
     case "$cmd" in
-    check) subdir check.py "$@";;
-    configure) subdir configure.sh "$@";;
+    check) subdir nngn.py check "$@";;
+    configure) subdir nngn.py configure "$@";;
     launcher) launcher;;
     *) echo >&2 "invalid command: $cmd"; return 1;;
     esac
