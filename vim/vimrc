@@ -90,6 +90,8 @@ nnoremap <leader>80 :vertical resize 80<cr>
 nnoremap <silent> <leader>rt :%s/\s\+$//<cr>
 nnoremap <leader>nc /^\(<<<<<<< \\|=======\\|>>>>>>> \)<cr>
 
+vnoremap <leader>. :normal .<cr>
+
 function! ToggleHeader()
     let l:f = ""
     if expand("%:e") == "h" || expand("%:e") == "hpp"
