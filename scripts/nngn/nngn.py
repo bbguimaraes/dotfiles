@@ -38,6 +38,13 @@ LINUX_LDFLAGS = (
     "-Wl,--threads,--preread-archive-symbols",
 )
 
+MINGW = "x86_64-w64-mingw32"
+def MINGW_SETUP(d: str):
+    if not os.path.exists(os.path.join(d, "mingw")):
+        subprocess.check_call(
+            ("scripts/src_build.sh", "mingw", d),
+            env=os.environ | {"CC": f"{MINGW}-cc"})
+
 def WASM_SETUP(d: str):
     if not os.path.lexists("nngn.js"):
         os.symlink(os.path.join(d, "nngn.js"), "nngn.js")
@@ -135,6 +142,20 @@ CHECKS = {
             "-L", f"{HOME}/src/es/ElysianLua/build/lib",
         ),
         "libs": ("-llibElysianLua",),
+    },
+    "mingw": {
+        "name": "MinGW",
+        "setup": MINGW_SETUP,
+        "configure_args": ("--build=x86_64-pc-linux-gnu", f"--host={MINGW}"),
+        "cxxflags": (*DEBUG_CXXFLAGS, "-isystem", "mingw/include"),
+        "ldflags": ("-L", "mingw/lib"),
+    },
+    "mingw_release": {
+        "name": "MinGW release",
+        "setup": MINGW_SETUP,
+        "configure_args": ("--build=x86_64-pc-linux-gnu", f"--host={MINGW}"),
+        "cxxflags": (*DEBUG_CXXFLAGS, "-isystem", "mingw/include"),
+        "ldflags": ("-L", "mingw/lib"),
     },
     "distcheck": {
         "name": "distcheck",
