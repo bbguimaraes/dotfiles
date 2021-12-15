@@ -84,11 +84,18 @@
     package:
       name: '{{ ((pkgs+fedora_pkgs)|join(" ")).split(" ") + fedora_groups }}'
     when: ansible_os_family == 'RedHat'
+- hosts: all
+  tasks:
   - name: enable/start services
     service:
       enabled: true
       state: started
       name: bluetooth
+  - name: disable perf paranoid mode for Vulkan
+    sysctl:
+      name: dev.i915.perf_stream_paranoid
+      value: '0'
+      state: present
 - hosts: all
   tags: aurutils
   vars:
