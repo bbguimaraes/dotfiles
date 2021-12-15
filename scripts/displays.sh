@@ -27,6 +27,11 @@ displays() {
         else second=HDMI-1; fi
         case "$mode" in
         single) xrandr --output "$first" --auto --output "$second" --off;;
+        mirror)
+            xrandr \
+                --output "$first" --auto \
+                --output "$second" --auto \
+                --mode 1920x1080 -r 60 --same-as "$first";;
         dual)
             xrandr \
                 --output "$first" --auto \
