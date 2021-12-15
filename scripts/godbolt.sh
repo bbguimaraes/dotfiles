@@ -40,6 +40,8 @@ CXX_INCLUDES_PROG=$(cat <<'EOF'
 #include <array>
 #include <iostream>
 #include <span>
+#include <string>
+#include <string_view>
 #include <vector>
 
 int main() {
