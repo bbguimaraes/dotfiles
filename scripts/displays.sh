@@ -11,9 +11,9 @@ main() {
     case "$cmd" in
     '') case "$#" in
         0) sleep .1; toggle;;
-        *) displays "$@";;
         esac;;
     toggle) toggle;;
+    *) displays "$cmd" "$@";;
     esac
 }
 
