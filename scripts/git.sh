@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-CMDS=(complete authors rebase)
+CMDS=(complete authors backport rebase)
 
 main() {
     local cmd
@@ -9,6 +9,7 @@ main() {
     case "$cmd" in
     complete) cmd_complete "$@";;
     authors) authors "$@";;
+    backport) backport "$@";;
     rebase) rebase "$@";;
     *) echo >&2 "invalid command: $cmd"; return 1
     esac
@@ -30,11 +31,27 @@ authors() {
         | sort -u
 }
 
+backport() {
+    local rev=$1 cur base
+    rev=$(git rev-parse "$rev")
+    cur=$(git rev-parse HEAD)
+    base=$(git merge-base "$cur" "$rev")
+    if [[ "$base" != "$rev" ]]; then
+        echo >&2 'invalid ancestor'
+        return 1
+    fi
+    git stash push
+    git reset --hard "$rev"
+    git stash pop
+    git add -u
+    git commit --amend --no-edit
+    git cherry-pick "$rev..$cur"
+}
+
 rebase() {
     local cmd
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
-    backport) rebase_backport "$@";;
     branches) rebase_branches "$@";;
     *) echo >&2 "invalid command: rebase $cmd"; return 1
     esac
@@ -50,23 +67,6 @@ rebase_branches() {
         sleep 1 # for unique timestamps
         git rebase master "$x"
     done
-}
-
-rebase_backport() {
-    local rev=$1 cur base
-    rev=$(git rev-parse "$rev")
-    cur=$(git rev-parse HEAD)
-    base=$(git merge-base "$cur" "$rev")
-    if [[ "$base" != "$rev" ]]; then
-        echo >&2 'invalid ancestor'
-        return 1
-    fi
-    git stash push
-    git reset --hard "$rev"
-    git stash pop
-    git add -u
-    git commit --amend --no-edit
-    git cherry-pick "$rev..$cur"
 }
 
 main "$@"
