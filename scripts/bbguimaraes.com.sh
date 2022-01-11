@@ -11,6 +11,7 @@ main() {
     files) files "$@";;
     push-img) push_img "$@";;
     local) _local "$@";;
+    sync-docs) sync_docs "$@";;
     *) echo >&2 "invalid command: $cmd"; return 1;;
     esac
 }
@@ -44,6 +45,11 @@ push_img() {
 _local() {
     cd ~/src/bbguimaraes.com/bbguimaraes.com
     exec python -m http.server
+}
+
+sync_docs() {
+    local out=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
+    rsync --archive ~/src/nngn/docs/html/ "$out/nngn/docs"
 }
 
 main "$@"
