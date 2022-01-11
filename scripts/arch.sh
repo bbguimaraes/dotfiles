@@ -5,10 +5,20 @@ main() {
     local cmd=
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
+    clean) clean "$@";;
     kernel) kernel "$@";;
     img) img "$@";;
     *) echo >&2 "invalid command: $cmd"; return 1;;
     esac
+}
+
+clean() {
+    local cmd='bash -s'
+    [[ "$(id -u)" -ne 0 ]] && cmd='sudo -s'
+    exec $cmd <<EOF
+paccache --remove --keep 1
+paccache --remove --uninstalled --keep 0
+EOF
 }
 
 kernel() {
