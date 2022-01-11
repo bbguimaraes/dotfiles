@@ -3,21 +3,21 @@ set -euo pipefail
 
 WRITE_POST=$(cat <<'EOF'
 function! WritePost()
-    execute "!" .. getline(1)[2:] .. " %"
+    execute "!" .. getline(1)[2:]
     if filereadable("a.out") | execute "!./a.out" | endif
-endfunction'
+endfunction
 EOF
 )
 
 C_PROG=$(cat <<'EOF'
-// gcc -std=c11 -S -masm=intel -fno-stack-protector
+// gcc -std=c11 -S -masm=intel -fno-stack-protector %
 int main() {
 }
 EOF
 )
 
 C_INCLUDES_PROG=$(cat <<'EOF'
-// gcc -std=c11 -S -masm=intel -fno-stack-protector
+// gcc -std=c11 -S -masm=intel -fno-stack-protector %
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -28,14 +28,14 @@ EOF
 )
 
 CXX_PROG=$(cat <<'EOF'
-// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables
+// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables %
 int main() {
 }
 EOF
 )
 
 CXX_INCLUDES_PROG=$(cat <<'EOF'
-// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables
+// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables %
 #include <algorithm>
 #include <array>
 #include <iostream>
@@ -50,7 +50,7 @@ EOF
 )
 
 CXX_OBJ_PROG=$(cat <<'EOF'
-// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables
+// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables %
 #include <cstdio>
 
 struct S {
@@ -69,14 +69,14 @@ EOF
 )
 
 RS_PROG=$(cat <<'EOF'
-// sh -c 'rustc -o %:r % && ./%:r'
+// rustc -o %:r % && ./%:r
 fn main() {
 }
 EOF
 )
 
 GO_PROG=$(cat <<'EOF'
-// go run
+// go run %
 package main
 
 func main() {
