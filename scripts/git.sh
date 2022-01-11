@@ -1,13 +1,25 @@
 #!/bin/bash
 set -euo pipefail
 
+CMDS=(complete authors rebase)
+
 main() {
     local cmd
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
+    complete) cmd_complete "$@";;
     authors) authors "$@";;
     rebase) rebase "$@";;
     *) echo >&2 "invalid command: $cmd"; return 1
+    esac
+}
+
+cmd_complete() {
+    local line=($COMP_LINE)
+    local n=${#line[@]}
+    case "$n" in
+    1) compgen -W "${CMDS[*]}";;
+    2) compgen -W "${CMDS[*]}" "${line[$((n - 1))]}";;
     esac
 }
 
