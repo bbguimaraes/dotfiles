@@ -64,6 +64,7 @@ augroup filetype_opencl
 augroup END
 
 nnoremap <leader>vr :execute "resize " . line("$")<cr>
+nnoremap <leader>tc :call PretoToggleComments()<cr>
 nnoremap <leader>tn :setlocal invnumber<cr>
 nnoremap <leader>tp :setlocal invpaste<cr>
 nnoremap <leader>ts :call ToggleSyntax()<cr>
