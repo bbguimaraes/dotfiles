@@ -11,7 +11,7 @@ EOF
 
 C_PROG=$(cat <<'EOF'
 // gcc -std=c11 -S -masm=intel -fno-stack-protector %
-int main() {
+int main(int argc, char **argv, char **env) {
 }
 EOF
 )
@@ -22,14 +22,14 @@ C_INCLUDES_PROG=$(cat <<'EOF'
 #include <stdint.h>
 #include <stdio.h>
 
-int main() {
+int main(int argc, char **argv, char **env) {
 }
 EOF
 )
 
 CXX_PROG=$(cat <<'EOF'
 // g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables %
-int main() {
+int main(int argc, char **argv, char **env) {
 }
 EOF
 )
@@ -44,7 +44,7 @@ CXX_INCLUDES_PROG=$(cat <<'EOF'
 #include <string_view>
 #include <vector>
 
-int main() {
+int main(int argc, char **argv, char **env) {
 }
 EOF
 )
@@ -63,7 +63,7 @@ struct S {
     ~S(void) { std::puts("~S(void)"); }
 };
 
-int main() {
+int main(int argc, char **argv, char **env) {
 }
 EOF
 )
