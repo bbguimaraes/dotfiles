@@ -6,6 +6,7 @@ general {
 order += "load"
 order += "cpu_temperature 0"
 order += "cpu_temperature 1"
+order += "memory"
 order += "disk /"
 order += "disk /home"
 order += "disk /tmp"
@@ -32,6 +33,13 @@ cpu_temperature 0 {
 cpu_temperature 1 {
     format = "%degrees°C"
     path = "/sys/devices/platform/coretemp.0/hwmon/hwmon6/temp3_input"
+}
+
+memory {
+    format = "%free"
+    memory_used_method = "memavailable"
+    threshold_degraded = "20%"
+    threshold_critical = "5%"
 }
 
 wireless _first_ {
