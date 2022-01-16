@@ -10,6 +10,7 @@
       path: '{{ home }}/{{ item }}'
     loop:
     - .local/share/tig
+    - .config/gdb
     - .config/git
     - .config/i3
     - .config/i3status
@@ -31,6 +32,7 @@
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
+    - ['gdb/init',             '.config/gdb/gdbinit']
     - ['git/tigrc',            '.config/tig/config']
     - ['i3/config',            '.config/i3/config']
     - ['i3/status',            '.config/i3status/config']
