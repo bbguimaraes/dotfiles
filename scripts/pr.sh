@@ -2,10 +2,9 @@
 set -euo pipefail
 
 main() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && { pr; return; }
+    local cmd=$1; shift
     case "$cmd" in
-    '') pr;;
     status) status "$@";;
     watch) watch "$@";;
     *) echo >&2 "invalid command: $cmd"; return 1;;
