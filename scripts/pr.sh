@@ -5,6 +5,7 @@ main() {
     [[ "$#" -eq 0 ]] && { pr; return; }
     local cmd=$1; shift
     case "$cmd" in
+    for-ref) for_ref "$@";;
     status) status "$@";;
     watch) watch "$@";;
     *) echo >&2 "invalid command: $cmd"; return 1;;
@@ -22,6 +23,21 @@ pr() {
     pass show test > /dev/null
     git -c "credential.helper=$helper" push --set-upstream github "$branch"
     hub pull-request
+}
+
+for_ref() {
+    [[ "$#" -eq 0 ]] && set -- HEAD
+    local x j
+    for x; do
+        x=$(git rev-parse "$x")
+        j=$(hub api "search/issues?q=org:{owner}+repo:{repo}+sha:$x")
+        if [[ "$(jq <<< "$j" .total_count)" -eq 0 ]]; then
+            echo "$x"
+        else
+            printf '%s ' "$x"
+            jq --raw-output <<< "$j" '[.items[].html_url]|join(" ")'
+        fi
+    done
 }
 
 status() {
