@@ -5,6 +5,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    tr|tl|halve|qtr|quarter) window "$@";;
     vtr) vtr "$@";;
     window) window "$@";;
     *) usage;;
