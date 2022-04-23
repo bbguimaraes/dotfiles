@@ -12,6 +12,7 @@ main() {
     case "$cmd" in
     push) push "$@";;
     pull) pull "$@";;
+    send) send "$@";;
     ls) _ls "$@";;
     *) usage;;
     esac
@@ -26,8 +27,29 @@ Commands:
     push FILES...
     pull FILES...
     ls PATHS...
+    send audio FILES...
 EOF
     return 1
+}
+
+send() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    audio) send_audio "$@";;
+    *) usage;;
+    esac
+}
+
+send_audio() {
+    local x
+    printf '%s\0' "$@" \
+        | xargs --null --max-args 1 --max-procs 0 d video conv audio
+    for x; do
+        x=${x%.*}.ogg
+        d phone push "$x"
+        rm "$x"
+    done
 }
 
 push() {
