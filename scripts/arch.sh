@@ -44,11 +44,13 @@ kernel() {
 }
 
 kernel_revert() {
-    local v
+    local cmd v
     v=$(uname -r)
     v=${v/-/.}-$(uname -m)
     echo "$v"
-    sudo pacman -U /var/cache/pacman/pkg/linux-$v.pkg.tar.zst
+    cmd=()
+    [[ "$UID" -eq 0 ]] || cmd=("${cmd[@]}" sudo)
+    "${cmd[@]}" pacman -U /var/cache/pacman/pkg/linux-$v.pkg.tar.zst
 }
 
 img() {
