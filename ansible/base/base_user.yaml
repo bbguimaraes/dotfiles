@@ -19,6 +19,7 @@
       path: '{{ home }}/{{ item }}'
     loop:
     - .config/git
+    - .vim/colors
   - name: setup dotfile symlinks
     file:
       state: link
@@ -30,4 +31,5 @@
     - ['git/config',           '.config/git/config']
     - ['bash/inputrc',         '.inputrc']
     - ['tmux.conf',            '.tmux.conf']
+    - ['vim/preto.vim',        '.vim/colors/preto.vim']
     - ['vim/vimrc',            '.vimrc']
