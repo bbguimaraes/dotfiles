@@ -147,17 +147,17 @@ CHECKS = {
         "target": "check",
         "ldflags": LINUX_LDFLAGS,
     },
-    "elysian": {
-        "name": "GCC (ElysianLua)",
-        "cxxflags": (
-            *SANITIZERS_CXXFLAGS, *DEBUG_CXXFLAGS,
-            "-isystem", f"{HOME}/src/es/ElysianLua/lib/api"),
-        "ldflags": (
-            *LINUX_LDFLAGS,
-            "-L", f"{HOME}/src/es/ElysianLua/build/lib",
-        ),
-        "libs": ("-llibElysianLua",),
-    },
+#    "elysian": {
+#        "name": "GCC (ElysianLua)",
+#        "cxxflags": (
+#            *SANITIZERS_CXXFLAGS, *DEBUG_CXXFLAGS,
+#            "-isystem", f"{HOME}/src/es/ElysianLua/lib/api"),
+#        "ldflags": (
+#            *LINUX_LDFLAGS,
+#            "-L", f"{HOME}/src/es/ElysianLua/build/lib",
+#        ),
+#        "libs": ("-llibElysianLua",),
+#    },
     "mingw": {
         "name": "MinGW",
         "setup": MINGW_SETUP,
