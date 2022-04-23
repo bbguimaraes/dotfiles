@@ -34,6 +34,13 @@ int main(int argc, char **argv, char **env) {
 EOF
 )
 
+CXX_NNGN_PROG=$(cat <<'EOF'
+// g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables -I ~/src/nngn/src %
+int main(int argc, char **argv, char **env) {
+}
+EOF
+)
+
 CXX_INCLUDES_PROG=$(cat <<'EOF'
 // g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables %
 #include <algorithm>
@@ -136,6 +143,7 @@ cpp() {
     case "${1:-}" in
     '') prog=$CXX_PROG;;
     includes) prog=$CXX_INCLUDES_PROG;;
+    nngn) prog=$CXX_NNGN_PROG;;
     obj) prog=$CXX_OBJ_PROG;;
     *) echo >&2 "invalid c++ option: $1"; return 1;;
     esac
