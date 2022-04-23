@@ -31,9 +31,11 @@ displays() {
     local first=$SINGLE second third
     case "$where" in
     home|dock)
-        if [[ "$where" == dock ]]; then second=$DOCK
-        elif [[ "$HOSTNAME" == rh* ]]; then second=$HDMI
-        else second=HDMI-1; fi
+        if [[ "$where" == dock ]]; then
+            second=$DOCK
+        else
+            second=$HDMI
+        fi
         case "$mode" in
         single)
             xrandr \

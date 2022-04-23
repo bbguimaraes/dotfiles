@@ -25,7 +25,11 @@ main() {
         *) awk '/^\s/ { print $2 }' "$1" | xargs mpv;;
         esac
         ;;
-    unwatched) "${VIDEOS[@]}" --unwatched --untagged | "${VIM[@]}";;
+    unwatched)
+        # XXX
+        cd ~/src/subs
+        subs lua 'videos{watched = false, fmt = "url_text"}' \
+            | "${VIM[@]}";;
     update)
         local args=(--delay 2)
         case "${1:-normal}" in
@@ -35,8 +39,8 @@ main() {
             --cache "$((60 * 60))"
             --last-video "$((7 * 24 * 60 * 60))");;
         esac
-        exec subs --verbose update "${args[@]}";;
-    watched) awk '/^\s/{print$1}' | xargs subs watched --;;
+        exec ~/src/subs/subs.old/subs.py --verbose update "${args[@]}";;
+    watched) awk '{print$1}' | xargs subs watched;;
     *) usage;;
     esac
 }
