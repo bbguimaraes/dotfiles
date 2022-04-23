@@ -10,14 +10,14 @@ EOF
 )
 
 C_PROG=$(cat <<'EOF'
-// gcc -std=c11 -S -masm=intel -fno-stack-protector %
+// gcc -std=c11 -S -masm=intel -fno-stack-protector -fno-asynchronous-unwind-tables %
 int main(int argc, char **argv, char **env) {
 }
 EOF
 )
 
 C_INCLUDES_PROG=$(cat <<'EOF'
-// gcc -std=c11 -S -masm=intel -fno-stack-protector %
+// gcc -std=c11 -S -masm=intel -fno-stack-protector -fno-asynchronous-unwind-tables %
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
