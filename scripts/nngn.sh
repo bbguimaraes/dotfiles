@@ -36,9 +36,9 @@ launcher() {
     cd ~/src/nngn
     local p=tools/bin/launcher
     local t=/tmp/nngn/debug
-    [[ -e "$t/$p" ]] && exec "$t/$p"
+    [[ -e "$t/$p" ]] && exec "$t/$p" "$PWD/sock"
     t=$(find /tmp/nngn -mindepth 1 -maxdepth 1 -print -exit)
-    [[ "$t" ]] && exec "$t/$p"
+    [[ "$t" ]] && exec "$t/$p" "$PWD/sock"
 }
 
 main "$@"
