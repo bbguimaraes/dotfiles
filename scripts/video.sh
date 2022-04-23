@@ -50,21 +50,21 @@ conv() {
 }
 
 conv_audio() {
-    local in=$1
+    local in=$1; shift
     local out=${in%.*}.ogg
-    exec ffmpeg -i "$in" -vn "$out"
+    exec ffmpeg -threads "$(nproc)" -i "$in" -vn "$out" "$@"
 }
 
 playlist() {
-    local name=$1 url=$2
+    local name=$1 url=$2; shift 2
     if ! [[ -f "$name.json" ]]; then
-        youtube-dl --dump-single-json "$url" > "$name.json"
+        youtube-dl --dump-json --ignore-errors "$url" "$@" \
+            > "$name.json"
     fi
     if ! [[ -f "$name.txt" ]]; then
         jq --raw-output \
+            '["https://youtube.com/watch?v=" + .id, .title]|join(" ")' \
             < "$name.json" \
-            '.entries[]|[.id,.title]|join(" ")' \
-            | sed 's|^|https://youtube.com/watch?v=|' \
             > "$name.txt"
     fi
 }
