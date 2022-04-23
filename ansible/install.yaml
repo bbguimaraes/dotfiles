@@ -41,7 +41,8 @@
       pulseaudio-alsa pulseaudio-bluetooth
     - >- # tools
       android-tools bc bind-tools bluez bluez-utils jq khal lynx openbsd-netcat
-      pacman-contrib pigz pixz rlwrap sshfs unzip words youtube-dl
+      pacman-contrib pigz pixz rlwrap sshfs unzip weechat-matrix words
+      youtube-dl
     - >- # aurutils
       expac diffstat pacutils parallel wget
     - >- # wine

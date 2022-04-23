@@ -141,9 +141,6 @@
     - name: install weechat-edit-git
       import_tasks: ../aur.yaml
       vars: {"pkg": "weechat-edit-git"}
-    - name: install weechat-matrix-git
-      import_tasks: ../aur.yaml
-      vars: {"pkg": "weechat-matrix-git"}
   - name: create weechat directories
     file:
       state: directory
@@ -203,9 +200,9 @@
       src: '{{ item.0 }}'
       dest: '{{ dir }}/{{ item.1 }}'
     loop:
-    - ['/usr/share/weechat/python/matrix', 'python/matrix']
-    - ['/usr/share/weechat/python/matrix.py', 'python/matrix.py']
-    - ['/usr/share/weechat/python/matrix.py', 'python/autoload/matrix.py']
+    -
+      - '/usr/share/weechat/python/weechat-matrix.py'
+      - 'python/autoload/weechat-matrix.py'
     - ['/lib/weechat/python/edit.py', 'python/autoload/edit.py']
   - name: create symlinks
     file:
