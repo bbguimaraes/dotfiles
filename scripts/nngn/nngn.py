@@ -239,6 +239,10 @@ def cmd_configure(dir, names, args):
         configure(os.path.join(dir, name), name, check, args)
 
 def cmd_check(dir, names, args):
+    if not dir:
+        for x in CHECKS.keys():
+            print(x)
+        return
     if not names:
         names = list(CHECKS)
     elif not validate_checks(names):
