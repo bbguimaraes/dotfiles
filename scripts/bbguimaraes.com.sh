@@ -1,17 +1,16 @@
 #!/bin/bash
 set -euo pipefail
 
-CMDS=(complete files push-img local sync-docs)
+CMDS=(complete push-img local remote)
 
 main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
     complete) cmd_complete;;
-    files) files "$@";;
     push-img) push_img "$@";;
     local) _local "$@";;
-    sync-docs) sync_docs "$@";;
+    remote) remote "$@";;
     *) usage;;
     esac
 }
@@ -25,8 +24,9 @@ Commands:
     complete
     files ARGS...
     push-img NAME
-    local
-    sync-docs
+    local [sync-docs]
+    remote pull
+    remote sync-files ARGS...
 EOF
     return 1
 }
@@ -40,16 +40,6 @@ cmd_complete() {
     esac
 }
 
-files() {
-    local host=bbguimaraes.com
-    local src=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
-    local dst=/mnt/bbguimaraes0-vol/bbguimaraes.com/bbguimaraes.com/
-    exec rsync \
-        --archive --chown 0:0 \
-        "$src" "$host:$dst" "$@"
-#        --rsync-path 'sudo rsync'
-}
-
 push_img() {
     local name=$1
     sudo podman save "$name" \
@@ -58,13 +48,42 @@ push_img() {
 }
 
 _local() {
-    cd ~/src/bbguimaraes.com/bbguimaraes.com
-    exec python -m http.server
+    if [[ "$#" -eq 0 ]]; then
+        cd ~/src/bbguimaraes.com/bbguimaraes.com
+        exec python -m http.server
+    fi
+    local cmd=
+    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    case "$cmd" in
+    sync-docs) local_sync_docs "$@";;
+    *) echo >&2 "invalid command: local $cmd"; return 1;;
+    esac
 }
 
-sync_docs() {
+local_sync_docs() {
     local out=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
-    rsync --archive ~/src/nngn/docs/html/ "$out/nngn/docs"
+    rsync --archive --delete ~/src/codex/docs/html/ "$out/codex/docs" "$@"
+    rsync --archive --delete ~/src/nngn/docs/html/ "$out/nngn/docs" "$@"
+}
+
+remote() {
+    local cmd=
+    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    case "$cmd" in
+    pull) exec ssh bbguimaraes.com 'sudo ~root/bbguimaraes.com.sh pull';;
+    sync-files) remote_sync_files "$@";;
+    *) echo >&2 "invalid command: remote $cmd"; return 1;;
+    esac
+}
+
+remote_sync_files() {
+    local host=bbguimaraes.com
+    local src=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
+    local dst=/mnt/bbguimaraes0-vol/bbguimaraes.com/bbguimaraes.com/
+    exec rsync \
+        --archive --chown 0:0 \
+        "$src" "$host:$dst" "$@"
+#        --rsync-path 'sudo rsync' \
 }
 
 main "$@"
