@@ -6,15 +6,24 @@ HDMI=HDMI-2
 DOCK=DP-2-1
 
 main() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    local cmd=toggle
+    [[ "$#" -ne 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
-    '') case "$#" in
-        0) sleep .1; toggle;;
-        esac;;
-    toggle) toggle;;
+    toggle) sleep .1; toggle;;
     *) displays "$cmd" "$@";;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 [CMD] ARGS...
+
+Commands:
+
+    toggle
+    home|dock single|mirror|dual|tv|120hz|4k
+EOF
+    return 1
 }
 
 displays() {

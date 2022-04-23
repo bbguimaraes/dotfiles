@@ -7,14 +7,27 @@ ARGS=(--user anonymous:)
 ROOT=/storage/emulated/0
 
 main() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=${1:-}; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
     push) push "$@";;
     pull) pull "$@";;
     ls) _ls "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 CMD ARGS...
+
+Commands:
+
+    push FILES...
+    pull FILES...
+    ls PATHS...
+EOF
+    return 1
 }
 
 push() {

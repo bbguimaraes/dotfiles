@@ -2,12 +2,23 @@
 set -euo pipefail
 
 main() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
     clean) clean "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 CMD
+
+Commands:
+
+    clean
+EOF
+    return 1
 }
 
 clean() {

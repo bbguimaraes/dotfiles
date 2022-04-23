@@ -4,12 +4,23 @@ set -euo pipefail
 DEFAULT_DIR=$HOME/src
 
 main() {
-    [[ "$#" -gt 0 ]] || { echo >&2 "Usage: $0 dir"; return 1; }
-    dir=$1
-    case "$dir" in
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
     complete) cmd_complete;;
-    *) cmd_ws "$@";;
+    *) cmd_ws "$cmd" "$@";;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 DIR|CMD
+
+Commands:
+
+    complete
+EOF
+    return 1
 }
 
 cmd_complete() {
@@ -22,6 +33,7 @@ cmd_complete() {
 }
 
 cmd_ws() {
+    local dir=$1
     [[ -e "$dir" ]] || dir=$DEFAULT_DIR/$dir
     name=${1##*/}
     eval "$(d cd "$dir")"

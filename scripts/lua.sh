@@ -2,17 +2,25 @@
 set -euo pipefail
 
 main() {
-    local cmd=
-    if [[ "$#" -eq 0 ]]; then
-       repl
-    else
-        cmd=$1
-        shift
-    fi
+    local cmd=repl
+    [[ "$#" -ne 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
+    repl) repl "$@";;
     types) exec grep '^#define LUA_T' /usr/include/lua.h;;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 [CMD]
+
+Commands:
+
+    repl
+    types
+EOF
+    return 1
 }
 
 repl() {

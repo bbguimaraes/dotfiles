@@ -4,16 +4,31 @@ set -euo pipefail
 CMDS=(complete files push-img local sync-docs)
 
 main() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
     complete) cmd_complete;;
     files) files "$@";;
     push-img) push_img "$@";;
     local) _local "$@";;
     sync-docs) sync_docs "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 CMD ARGS...
+
+Commands:
+
+    complete
+    files ARGS...
+    push-img NAME
+    local
+    sync-docs
+EOF
+    return 1
 }
 
 cmd_complete() {
@@ -26,13 +41,13 @@ cmd_complete() {
 }
 
 files() {
-#        --rsync-path 'sudo rsync' \
     local host=bbguimaraes.com
     local src=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
     local dst=/mnt/bbguimaraes0-vol/bbguimaraes.com/bbguimaraes.com/
     exec rsync \
         --archive --chown 0:0 \
         "$src" "$host:$dst" "$@"
+#        --rsync-path 'sudo rsync'
 }
 
 push_img() {

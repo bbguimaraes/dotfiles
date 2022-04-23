@@ -2,13 +2,41 @@
 set -euo pipefail
 
 main() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
-    window) window "$@";;
     vtr) vtr "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    window) window "$@";;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 CMD ARGS...
+
+Commands:
+
+    vtr
+    window tr|tl|halve|htr|qtr|quarter...
+EOF
+    return 1
+}
+
+vtr() {
+    local w ww wh sw sh
+    IFS=x read -r sw sh < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
+    w=$(xdotool getwindowfocus)
+    i3-msg --quiet 'floating enable; border none'
+    read -r ww wh < <(
+        xdotool getwindowgeometry --shell "$w" \
+            | awk -F = 'NR==4||NR==5{printf("%s ",$2)}END{print"\n"}')
+    while [[ $ww -gt $((sw / 3)) || $wh -gt $((sh / 3)) ]]; do
+        ww=$((ww / 2)); wh=$((wh / 2))
+    done
+    xdotool \
+        windowsize "$w" "$ww" "$wh" \
+        windowmove "$w" "$((sw - ww))" 0
 }
 
 window() {
@@ -36,25 +64,10 @@ window() {
         quarter)
             ww=$((ww / 4)); wh=$((wh / 4))
             cmd=$(printf '%s\n%s' "$cmd" "windowsize $w $ww $wh") ;;
+        *) usage;;
         esac
     done
     xdotool - <<< "$cmd"
-}
-
-vtr() {
-    local w ww wh sw sh
-    IFS=x read -r sw sh < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
-    w=$(xdotool getwindowfocus)
-    i3-msg --quiet 'floating enable; border none'
-    read -r ww wh < <(
-        xdotool getwindowgeometry --shell "$w" \
-            | awk -F = 'NR==4||NR==5{printf("%s ",$2)}END{print"\n"}')
-    while [[ $ww -gt $((sw / 3)) || $wh -gt $((sh / 3)) ]]; do
-        ww=$((ww / 2)); wh=$((wh / 2))
-    done
-    xdotool \
-        windowsize "$w" "$ww" "$wh" \
-        windowmove "$w" "$((sw - ww))" 0
 }
 
 main "$@"

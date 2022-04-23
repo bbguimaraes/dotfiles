@@ -89,18 +89,32 @@ main() {
     trap "rm -f '$tmp'/test* '$tmp'/a.out; rmdir $tmp" EXIT
     cd "$tmp"
     local cmd=c++
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -ne 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
     c) c "$@";;
     c++) cpp "$@";;
     rs) rs "$@";;
     go) go "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    *) usage;;
     esac
     vim \
         -c "$WRITE_POST" \
         -c 'autocmd BufWritePost * :call WritePost()' \
         "${cmds[@]}"
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 [LANG MODE]
+
+Languages/modes:
+
+    c includes
+    cpp includes|obj
+    rs
+    go
+EOF
+    return 1
 }
 
 c() {

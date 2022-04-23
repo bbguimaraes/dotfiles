@@ -8,8 +8,21 @@ main() {
     for-ref) for_ref "$@";;
     status) status "$@";;
     watch) watch "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 [CMD ARGS...]
+
+Commands:
+
+    for-ref REFS...
+    status HUB_ARGS...
+    watch HUB_ARGS...
+EOF
+    return 1
 }
 
 pr() {

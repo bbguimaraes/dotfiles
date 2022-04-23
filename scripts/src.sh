@@ -2,32 +2,61 @@
 set -euo pipefail
 
 main() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
     cloc) cloc "$@";;
     gen) gen "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 CMD ARGS...
+
+Commands:
+
+    cloc plot
+    gen shell
+    gen header NAME
+    gen test header|source NAME
+EOF
+    return 1
 }
 
 cloc() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
     plot) cloc_plot "$@";;
-    *) echo >&2 "invalid command: cloc $cmd"; return 1;;
+    *) usage
     esac
 }
 
+cloc_plot() {
+    command cloc --csv --quiet "$@" \
+        | head --lines -1 \
+        | sort --reverse --numeric --field-separator , --key 5,5 \
+        | gnuplot -e '
+set term pngcairo size 1600,600;
+set datafile separator ",";
+set key off;
+set xtics rotate nomirror scale 0;
+set style fill solid;
+set boxwidth 0.75;
+plot "-" using 5:xtic(2) with boxes;
+'
+}
+
 gen() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
     shell) gen_shell "$@";;
     header) gen_header "$@";;
     test) gen_test "$@";;
-    *) echo >&2 "invalid command: gen $cmd"; return 1;;
+    *) usage;;
     esac
 }
 
@@ -48,16 +77,6 @@ main "$@"
 EOF
 }
 
-gen_test() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
-    case "$cmd" in
-    header) gen_test_header "$@";;
-    source) gen_test_source "$@";;
-    *) echo >&2 "invalid command: gen $cmd"; return 1;;
-    esac
-}
-
 gen_header() {
     local name=$1 upper
     upper=${name^^}
@@ -67,6 +86,16 @@ gen_header() {
 
 #endif
 EOF
+}
+
+gen_test() {
+    local cmd=
+    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    case "$cmd" in
+    header) gen_test_header "$@";;
+    source) gen_test_source "$@";;
+    *) usage;;
+    esac
 }
 
 gen_test_header() {
@@ -100,21 +129,6 @@ void ${name}Test::test(void) {
 
 QTEST_MAIN(${name}Test)
 EOF
-}
-
-cloc_plot() {
-    command cloc --csv --quiet "$@" \
-        | head --lines -1 \
-        | sort --reverse --numeric --field-separator , --key 5,5 \
-        | gnuplot -e '
-set term pngcairo size 1600,600;
-set datafile separator ",";
-set key off;
-set xtics rotate nomirror scale 0;
-set style fill solid;
-set boxwidth 0.75;
-plot "-" using 5:xtic(2) with boxes;
-'
 }
 
 main "$@"

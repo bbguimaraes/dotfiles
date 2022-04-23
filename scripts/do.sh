@@ -6,14 +6,27 @@ CMD_FILE=$DIR/cmd.txt
 FIFO=$DIR/fifo
 
 main() {
-    local cmd=
+    local cmd=shell
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
-    '') shell;;
+    shell) shell;;
     cmd) cmd "$@";;
     watch) watch "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 [CMD ARGS...]
+
+Commands:
+
+    shell
+    cmd ARGS...
+    watch ARGS...
+EOF
+    return 1
 }
 
 shell() {
