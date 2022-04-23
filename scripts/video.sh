@@ -2,8 +2,8 @@
 set -euo pipefail
 
 main() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
     audio) youtube-dl \
         --extract-audio --audio-format vorbis \
@@ -12,8 +12,23 @@ main() {
     split) ~/n/comp/scripts/split_video.py "$@";;
     compress) compress "$@";;
     playlist) playlist "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 CMD ARGS...
+
+Commands:
+
+    audio FILES...
+    conv audio FILE
+    split ARGS...
+    compress FILE ARGS...
+    playlist NAME URL
+EOF
+    return 1
 }
 
 compress() {

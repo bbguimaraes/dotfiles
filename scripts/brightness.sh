@@ -8,9 +8,20 @@ main() {
     [[ "$#" -eq 0 ]] && { brightness; return; }
     local cmd=$1; shift
     case "$cmd" in
-    gui) gui "$@";;
     *) brightness "$cmd" "$@";;
+    gui) gui "$@";;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 [N% | CMD]
+
+Commands:
+
+    gui
+EOF
+    return 1
 }
 
 gui() {

@@ -4,15 +4,29 @@ set -euo pipefail
 CMDS=(complete authors backport rebase)
 
 main() {
-    local cmd
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
     complete) cmd_complete "$@";;
     authors) authors "$@";;
     backport) backport "$@";;
     rebase) rebase "$@";;
-    *) echo >&2 "invalid command: $cmd"; return 1
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 CMD ARGS...
+
+Commands:
+
+    complete
+    authors ARGS...
+    backport REV
+    rebase branches [BRANCHES...]
+EOF
+    return 1
 }
 
 cmd_complete() {

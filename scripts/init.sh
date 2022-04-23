@@ -12,8 +12,23 @@ main() {
     keyboard) keyboard;;
     services) services;;
     wamozart) wamozart;;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 [CMD]
+
+Commands:
+
+    all
+    complete
+    keyboard
+    services
+    wamozart
+EOF
+    return 1
 }
 
 cmd_complete() {

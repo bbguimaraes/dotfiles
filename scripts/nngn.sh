@@ -2,18 +2,29 @@
 set -euo pipefail
 
 SCRIPTS=$HOME/n/comp/scripts/nngn
+
 main() {
-    local cmd=
-    if [[ "$#" -gt 0 ]]; then
-        cmd=$1
-        shift
-    fi
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
     case "$cmd" in
     check) subdir nngn.py check "$@";;
     configure) subdir nngn.py configure "$@";;
     launcher) launcher;;
-    *) echo >&2 "invalid command: $cmd"; return 1;;
+    *) usage;;
     esac
+}
+
+usage() {
+    cat >&2 <<EOF
+Usage: $0 CMD ARGS...
+
+Commands:
+
+    check DIR CHECKS [-- CONFIGURE_ARGS...]
+    configure DIR CHECKS [-- CONFIGURE_ARGS...]
+    launcher
+EOF
+    return 1
 }
 
 subdir() {
