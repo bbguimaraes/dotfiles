@@ -25,6 +25,15 @@ EOF
 
 repl() {
     export LUA_INIT='
+function popcnt(n)
+    local ret = 0
+    while n ~= 0 do
+        ret = ret + 1
+        n = n & (n - 1)
+    end
+    return ret
+end
+
 function hex(i) return string.format("0x%x", i) end
 
 function bin(n)
