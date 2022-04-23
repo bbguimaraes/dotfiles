@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-CMDS=(archive archived dailywire play update watched)
+CMDS=(archive archived audio dailywire play update watched)
 VIM=(vim -c 'set buftype=nofile' -c 'set nowrap' -)
 VIDEOS=(subs videos --fields yt_id,url,title)
 
@@ -11,6 +11,7 @@ main() {
     case "$cmd" in
     archive) awk '/^\s/{print$1}' | xargs subs tag archive --;;
     archived) "${VIDEOS[@]}" --tags archive | "${VIM[@]}";;
+    audio) audio "$@";;
     complete) cmd_complete;;
     dailywire) "${VIDEOS[@]}" --tags dailywire --unwatched | "${VIM[@]}";;
     enqueue)
@@ -47,6 +48,7 @@ Commands:
 
     archive
     archived
+    audio FILES...
     complete
     dailywire
     enqueue
@@ -56,6 +58,14 @@ Commands:
     watched
 EOF
     return 1
+}
+
+audio() {
+    local x
+    for x; do
+        ffmpeg -threads "$(nproc)" -i "$x" -vn "${x%.*}.ogg" &
+    done
+    wait -p $(jobs -p)
 }
 
 cmd_complete() {
