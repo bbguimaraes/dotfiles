@@ -44,6 +44,8 @@ CXX_INCLUDES_PROG=$(cat <<'EOF'
 #include <string_view>
 #include <vector>
 
+#define FWD(x) std::forward<decltype(x)>(x)
+
 int main(int argc, char **argv, char **env) {
 }
 EOF
