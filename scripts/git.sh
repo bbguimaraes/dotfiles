@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-CMDS=(complete authors backport rebase)
+CMDS=(complete authors backport diff rebase)
 
 main() {
     [[ "$#" -eq 0 ]] && usage
@@ -10,6 +10,7 @@ main() {
     complete) cmd_complete "$@";;
     authors) authors "$@";;
     backport) backport "$@";;
+    diff) cmd_diff "$@";;
     rebase) rebase "$@";;
     *) usage;;
     esac
@@ -24,6 +25,7 @@ Commands:
     complete
     authors ARGS...
     backport REV
+    diff log REV0 REV1
     rebase branches [BRANCHES...]
 EOF
     return 1
@@ -60,6 +62,19 @@ backport() {
     git add -u
     git commit --amend --no-edit
     git cherry-pick "$rev..$cur"
+}
+
+cmd_diff() {
+    local cmd
+    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    case "$cmd" in
+    log) diff_log "$@";;
+    *) echo >&2 "invalid command: rebase $cmd"; return 1
+    esac
+}
+
+diff_log() {
+    diff -u <(git log --format=%s "$1" --) <(git log --format=%s "$2" --)
 }
 
 rebase() {
