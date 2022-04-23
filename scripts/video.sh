@@ -12,6 +12,7 @@ main() {
     split) ~/n/comp/scripts/split_video.py "$@";;
     compress) compress "$@";;
     playlist) playlist "$@";;
+    poster) poster "$@";;
     *) usage;;
     esac
 }
@@ -27,6 +28,7 @@ Commands:
     split ARGS...
     compress FILE ARGS...
     playlist NAME URL
+    poster TIME SRC DST ARGS...
 EOF
     return 1
 }
@@ -65,6 +67,11 @@ playlist() {
             | sed 's|^|https://youtube.com/watch?v=|' \
             > "$name.txt"
     fi
+}
+
+poster() {
+    local t=$1 input=$2 output=$3; shift 3
+    ffmpeg -i "$input" -ss "$t" -vframes 1 "$output" "$@"
 }
 
 main "$@"
