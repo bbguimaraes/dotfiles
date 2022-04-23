@@ -5,7 +5,6 @@
 
 eval "$(dircolors)"
 alias ls='ls --color=auto'
-alias cal='cal --monday'
 PS1='$ '
 complete -C 'd completion' d
 
