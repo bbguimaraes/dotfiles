@@ -1,0 +1,9 @@
+- hosts: bbb
+  vars:
+    pkgs: >-
+      base-devel premake
+  tasks:
+  - name: install packages
+    package:
+      state: present
+      name: "{{ pkgs|split(' ') }}"
