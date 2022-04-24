@@ -1,0 +1,65 @@
+- hosts: all
+  tasks:
+  - name: partition SD card
+    parted:
+      state: present
+      device: "{{ sd_card_dev }}"
+      number: 1
+      part_start: 2048s
+      part_end: 100%
+      align: none
+  - name: format SD card
+    filesystem:
+      dev: "{{ sd_card_dev }}-part1"
+      fstype: ext4
+  - name: mount SD card
+    command:
+      argv:
+      - mount
+      - "{{ sd_card_dev }}-part1"
+      - "{{ sd_mount_root }}"
+    when: |
+      sd_mount_root not in ansible_mounts|map(attribute="mount")
+  - name: list files in root
+    command: ls "{{ sd_mount_root }}"
+    register: out
+    changed_when: false
+  - name: extract Arch Linux package
+    unarchive:
+      src: "{{ arch_pkg }}"
+      dest: "{{ sd_mount_root }}"
+    when: out.stdout in ("", "lost+found")
+  - name: install bootloader (0)
+    command:
+      argv:
+      - dd
+      - if={{ sd_mount_root }}/boot/MLO
+      - of={{ sd_card_dev }}
+      - count=1
+      - seek=1
+      - conv=notrunc
+      - bs=128k
+  - name: install bootloader (1)
+    command:
+      argv:
+      - dd
+      - if={{ sd_mount_root }}/boot/u-boot.img
+      - of={{ sd_card_dev }}
+      - count=2
+      - seek=1
+      - conv=notrunc
+      - bs=384k
+  - name: install ssh key
+    authorized_key:
+      state: present
+      user: bbguimaraes
+      path: "{{ sd_mount_root }}/home/alarm/.ssh/authorized_keys"
+      key: "{{ lookup('file', ssh_pub_key) }}"
+      manage_dir: false
+  - name: unmount SD card
+    command:
+      argv:
+      - umount
+      - "{{ sd_card_dev }}-part1"
+    when: |
+      sd_mount_root in ansible_mounts|map(attribute="mount")

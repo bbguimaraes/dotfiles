@@ -1,0 +1,21 @@
+# Host files
+user_home: /home/bbguimaraes
+arch_pkg: '{{ user_home }}/ArchLinuxARM-am33x-latest.tar.gz'
+ssh_pub_key: '{{ user_home }}/.ssh/id_rsa.pub'
+# SD card device
+sd_card_dev: /dev/disk/by-id/usb-Generic-_SD_MMC_20120501030900000-0:0
+sd_mount_root: /mnt/sd
+# External storage
+pvs:
+- /dev/disk/by-id/usb-Seagate_Backup+_BK_NA5CNF0A-0:0
+- /dev/disk/by-id/usb-Seagate_Backup+_BK_NA5CL99P-0:0
+vg: rpi_vg0
+raid_lv: raid1
+raid_dev: /dev/{{ vg }}/{{ raid_lv }}
+raid_mount_root: /mnt/rpi_raid1
+raid_mount_dir: '{{ raid_mount_root }}/rootfs/bbb'
+raid_mounts: ['home', 'var']
+# Swap
+swap_lv: swap
+swap_dev: /dev/{{ vg }}/{{ swap_lv }}
+swap_size: 8G
