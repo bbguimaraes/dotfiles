@@ -1,4 +1,16 @@
 - hosts: bbb
+  vars:
+    pkgs:
+    - >- # base
+      encfs lua man-db rsync
+    - >- # dev
+      base-devel cmake distcc strace tig
+    - >- # tools
+      openbsd-netcat smartmontools
+    - >- # graphics
+      i3-wm mesa rxvt-unicode xf86-video-fbdev xorg-server xorg-xinit
+    - >- # nngn
+      freetype2 glew glfw-x11 glm libpng
   tasks:
   - name: configure locale
     locale_gen:
@@ -9,3 +21,20 @@
       dest: /etc/locale.conf
       content: |
         LANG=en_US.UTF-8
+  - name: install packages
+    package:
+      state: present
+      name: '{{ pkgs|join(" ")|split(" ") }}'
+# - home symlinks
+#   - xinitrc
+#   - i3 config
+# - /etc/X11/xorg.conf
+#   - |
+#     Section "Device"
+#         Identifier "Frame Buffer"
+#         Driver     "fbdev"
+#     EndSection
+# - /etc/X11/Xwrappper.config
+#   - |
+#     allowed_users=anybody
+#     needs_root_rights=yes

@@ -1,0 +1,73 @@
+- hosts: all
+  tasks:
+  - name: create physical volumes / volume groups
+    lvg: state=present pvs={{ pvs }} vg={{ vg }}
+  - name: create swap logical volume
+    lvol: state=present vg={{ vg }} lv={{ swap_lv }} size={{ swap_size }}
+  - name: format swap volume
+    filesystem: dev={{ swap_dev }} fstype=swap
+  - name: format raid volume
+    filesystem: dev={{ raid_dev }} fstype=ext4
+  - name: create mount points
+    file: state=directory path={{ item }}
+    loop:
+    - '{{ sd_mount_root }}'
+    - '{{ raid_mount_root }}'
+  - name: mount SD card
+    command:
+      argv:
+      - mount
+      - -t
+      - ext4
+      - '{{ sd_card_dev }}-part1'
+      - '{{ sd_mount_root }}'
+    when: |
+      sd_mount_root not in ansible_mounts|map(attribute='mount')
+  - name: mount storage
+    command:
+      argv:
+      - mount
+      - -t
+      - ext4
+      - '{{ raid_dev }}'
+      - '{{ raid_mount_root }}'
+    when: raid_mount_root not in ansible_mounts|map(attribute='mount')
+  - name: create storage directory
+    file: state=directory path={{ item }}
+    loop:
+    - '{{ sd_mount_root }}'
+    - '{{ raid_mount_dir }}'
+  - name: list files in root
+    command: ls '{{ sd_mount_root }}'
+    register: out
+    changed_when: false
+  - name: move mounts to raid
+    shell: |
+      mv -t '{{ raid_mount_dir }}/' '{{ sd_mount_root }}/{{ item }}'
+    when: item in out.stdout_lines
+    loop: '{{ raid_mounts }}'
+  - name: add raid to fstab
+    mount:
+      state: present
+      fstab: '{{ sd_mount_root }}/etc/fstab'
+      fstype: ext4
+      src: '{{ raid_dev }}'
+      path: '{{ raid_mount_root }}'
+      opts: defaults
+  - name: add bind mounts to fstab
+    mount:
+      state: present
+      fstab: '{{ sd_mount_root }}/etc/fstab'
+      fstype: none
+      src: '{{ raid_mount_dir }}/{{ item }}'
+      path: '/{{ item }}'
+      opts: defaults,bind
+    loop: '{{ raid_mounts }}'
+  - name: unmount
+    command:
+      argv:
+      - umount
+      - '{{ item }}'
+    loop:
+    - '{{ raid_mount_root }}'
+    - '{{ sd_mount_root }}'

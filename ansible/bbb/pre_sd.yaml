@@ -1,0 +1,51 @@
+- hosts: all
+  tasks:
+  - name: partition SD card
+    parted:
+      state: present
+      device: '{{ sd_card_dev }}'
+      number: 1
+      part_start: 2048s
+      part_end: 100%
+  - name: format SD card
+    filesystem: dev={{ sd_card_dev }}-part1 fstype=ext4
+  - name: mount SD card
+    mount:
+      state: mounted
+      fstype: ext4
+      src: '{{ sd_card_dev }}-part1'
+      path: '{{ sd_mount_root }}/root'
+  - name: list files in root
+    command: ls '{{ sd_mount_root }}/root'
+    register: out
+    changed_when: false
+  - name: extract Arch Linux package
+    unarchive: src={{ arch_pkg }} dest={{ sd_mount_root }}/root
+    when: out.stdout in ("", "lost+found")
+  - name: install bootloader (0)
+    command: >
+      dd if={{ sd_mount_root }}/root/boot/MLO of={{ sd_card_dev }}
+      count=1 seek=1 conv=notrunc bs=128k
+  - name: install bootloader (1)
+    command: >
+      dd if={{ sd_mount_root }}/root/boot/u-boot.img of={{ sd_card_dev }}
+      count=2 seek=1 conv=notrunc bs=384k
+  - name: add swap entry to fstab
+    mount:
+      fstab: '{{ sd_mount_root }}/root/etc/fstab'
+      state: present
+      src: '{{ swap_dev }}'
+      path: none
+      fstype: swap
+      opts: defaults
+  - name: install ssh key
+    authorized_key:
+      state: present
+      user: bbguimaraes
+      path: '{{ sd_mount_root }}/root/home/alarm/.ssh/authorized_keys'
+      key: '{{ lookup("file", ssh_pub_key) }}'
+      manage_dir: false
+  - name: unmount SD card
+    mount: state=absent path={{ item }}
+    loop:
+    - '{{ sd_mount_root }}/root'
