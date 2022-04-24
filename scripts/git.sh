@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-CMDS=(complete authors backport diff rebase)
+CMDS=(complete authors backport bbguimaraes diff rebase)
 
 main() {
     [[ "$#" -eq 0 ]] && usage
@@ -11,6 +11,7 @@ main() {
     authors) authors "$@";;
     backport) backport "$@";;
     diff) cmd_diff "$@";;
+    bbguimaraes) bbguimaraes "$@";;
     rebase) rebase "$@";;
     *) usage;;
     esac
@@ -26,6 +27,7 @@ Commands:
     authors ARGS...
     backport REV
     diff log REV0 REV1
+    bbguimaraes exec CMD...
     rebase branches [BRANCHES...]
 EOF
     return 1
@@ -62,6 +64,26 @@ backport() {
     git add -u
     git commit --amend --no-edit
     git cherry-pick "$rev..$cur"
+}
+
+bbguimaraes() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    exec) bbguimaraes_exec "$@";;
+    *) usage;;
+    esac
+}
+
+bbguimaraes_exec() {
+    local d
+    cd ~/src/bbguimaraes/
+    for d in *; do
+        printf '\n%s\n\n' "$d"
+        pushd "$d/" > /dev/null
+        "$@"
+        popd > /dev/null
+    done
 }
 
 cmd_diff() {
