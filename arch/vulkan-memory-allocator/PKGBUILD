@@ -1,16 +1,15 @@
-# Maintainer: Bruno Barcarol Guimarães <bbguimaraes@bbguimaraes.com>
 pkgname=vulkan-memory-allocator
 pkgver=2.3.0
 pkgrel=1
-pkgdesc="Easy to integrate Vulkan memory allocation library"
+pkgdesc='Easy to integrate Vulkan memory allocation library'
 arch=('any')
-url="https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git"
-license=('custom')
+url='https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git'
+license=('MIT')
 makedepends=('git')
 source=("git+https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git#tag=v$pkgver")
 md5sums=('SKIP')
 
 package() {
-	cd "$srcdir/VulkanMemoryAllocator"
+    cd "$srcdir/VulkanMemoryAllocator"
     install -D --target-directory "$pkgdir/usr/include" src/vk_mem_alloc.h
 }
