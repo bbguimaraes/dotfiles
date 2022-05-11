@@ -65,6 +65,7 @@ CONFIGURE_ARGS = (
     "--enable-tests",
     "--enable-benchmarks",
     "--enable-tools",
+    "--enable-lua-alloc",
     "--with-opengl",
     "--with-vulkan",
     "--with-libpng",
