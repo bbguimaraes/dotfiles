@@ -25,6 +25,7 @@ main() {
         tmux split-window -t "$target.3" -l 1000 d mutt redhat
         tmux split-window -t "$target.4" -l 1000 \
             ssh -t file.emea.redhat.com screen -dR
+        tmux split-window -t "$target.5" -l 1000
         tmux select-layout -t "$target" tiled
         tmux new-window -t "$SESSION:1" d weechat
     fi
