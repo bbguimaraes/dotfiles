@@ -33,9 +33,12 @@ css() {
     cat <<'EOF'
 <style>
     body {
-        max-width: 80ch;
+        max-width: 60ch;
         margin-left: auto;
         margin-right: auto;
+    }
+    pre {
+        overflow: auto;
     }
 </style>
 EOF
@@ -49,11 +52,16 @@ hugo() {
 hugo_replace() {
     sed -e "$(cat <<'EOF'
 /^---$/,//d
-s,^{{< highlight .*>}},<code><pre>,
-s,^{{< /\s*highlight .*>}},</pre></code>,
+/^{{< highlight .*>}}$/,/^{{< \/\s*highlight .*>}}$/s/^/    /
 s,^{{< alert .*color="warning".*>}},<b>Warning: ,
 s,^{{< alert .*>}},<b>Note: ,
 s,^{{< /\s*alert .*>}},</b>,
+s,{{< (rel)\?ref "[^"]\+" >}},,
+EOF
+)" \
+    | sed -e "$(cat <<'EOF'
+/^    {{< highlight .*>}}$/d
+/^    {{< \/\s*highlight .*>}}$/d
 EOF
 )"
 }
