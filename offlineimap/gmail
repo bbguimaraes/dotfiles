@@ -8,7 +8,7 @@ filename = ~/.mutt/gmail_mailboxes
 header = 'mailboxes '
 peritem = '+%(foldername)s'
 sep = ' '
-footer = '\n'
+footer = "\nmailboxes -nonotify '+[Gmail].Spam'\n"
 
 [Account gmail]
 localrepository = gmail_local
