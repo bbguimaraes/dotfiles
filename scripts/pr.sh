@@ -5,6 +5,7 @@ main() {
     [[ "$#" -eq 0 ]] && { pr; return; }
     local cmd=$1; shift
     case "$cmd" in
+    comment) comment "$@";;
     for-ref) for_ref "$@";;
     status) status "$@";;
     watch) watch "$@";;
@@ -36,6 +37,15 @@ pr() {
     pass show test > /dev/null
     git -c "credential.helper=$helper" push --set-upstream github "$branch"
     hub pull-request
+}
+
+comment() {
+    [[ "$#" -eq 0 ]] && { echo >&2 missing argument: body; return 1; }
+    local body=$1 n
+    n=$(hub pr show --format %I)
+    hub api \
+        "repos/{owner}/{repo}/issues/$n/comments" \
+        --method POST --raw-field "body=$1"
 }
 
 for_ref() {
