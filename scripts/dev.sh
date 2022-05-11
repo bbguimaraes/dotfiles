@@ -5,6 +5,8 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    analog) exec d sink analog-stereo;;
+    hdmi) exec d sink hdmi-stereo;;
     *) usage;;
     esac
 }

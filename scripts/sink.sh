@@ -13,8 +13,16 @@ if [[ "$id" ]]; then
         pactl move-sink-input "$stream" "$id"
     done
 fi
-if [[ "$HOSTNAME" == wamozart && "$sink" == hdmi-stereo ]]; then
-    card=$(pactl list short cards | awk '{print $1; exit}')
-    pactl set-card-profile \
-        "$card" output:hdmi-stereo-extra1+input:analog-stereo
+if [[ "$HOSTNAME" == wamozart ]]; then
+    card=; profile=
+    case "$sink" in
+    hdmi-stereo)
+        card=$(pactl list short cards | awk '{print $1; exit}')
+        profile=output:hdmi-stereo-extra1+input:analog-stereo;;
+    analog-stereo)
+        card=$(pactl list short cards | awk '{print $1; exit}')
+        profile=output:analog-stereo+input:analog-stereo;;
+    esac
+    [[ "$card" && "$profile" ]] \
+        && pactl set-card-profile "$card" "$profile"
 fi
