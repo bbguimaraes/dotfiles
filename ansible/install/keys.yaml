@@ -1,0 +1,33 @@
+- hosts: desktops:&arch
+  tasks:
+  - name: check if GPG key has been imported
+    command:
+      argv:
+      - gpg2
+      - --list-secret-keys
+      - 3612A05DF0A1CB2A4C7A2E1341393B23D2144C3B
+    register: rc
+    changed_when: false
+    failed_when: false
+  - name: copy PGP key
+    command:
+      argv:
+      - gpg2
+      - --batch
+      - --import
+      - --passphrase
+      - 123123
+      stdin: "{{
+        lookup('pipe',
+          'gpg --export-secret-key --armor --passphrase 123123
+          3612A05DF0A1CB2A4C7A2E1341393B23D2144C3B')
+      }}"
+    when: rc.rc
+  - name: copy SSH keys
+    copy:
+      src: "{{ ansible_env.HOME }}/.ssh/{{ item }}"
+      dest: "{{ ansible_env.HOME }}/.ssh/{{ item }}"
+      mode: preserve
+    loop:
+    - id_rsa
+    - id_rsa.pub

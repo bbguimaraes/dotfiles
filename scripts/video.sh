@@ -52,7 +52,7 @@ conv() {
 conv_audio() {
     local in=$1; shift
     local out=${in%.*}.ogg
-    exec ffmpeg -threads "$(nproc)" -i "$in" -vn "$out" "$@"
+    [[ -e "$out" ]] || exec ffmpeg -threads "$(nproc)" -i "$in" -vn "$out" "$@"
 }
 
 playlist() {

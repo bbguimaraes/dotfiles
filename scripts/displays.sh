@@ -32,7 +32,7 @@ displays() {
     case "$where" in
     home|dock)
         if [[ "$where" == dock ]]; then second=$DOCK
-        elif [[ "$HOSTNAME" == wamozart ]]; then second=$HDMI
+        elif [[ "$HOSTNAME" == rh* ]]; then second=$HDMI
         else second=HDMI-1; fi
         case "$mode" in
         single) xrandr --output "$first" --auto --output "$second" --off;;

@@ -3,13 +3,33 @@
   vars:
     home: '{{ ansible_env.HOME }}'
     src_dir: '{{ home }}/src'
+    tmp_dir: "{{ ansible_env.TMPDIR|default('tmp') }}"
   tasks:
+  - name: clone repositories
+    git:
+      repo: https://git.bbguimaraes.com/{{ item.0 }}.git
+      dest: "{{ src_dir }}/{{ item.0 }}"
+      version: "{{ item.1 }}"
+      update: no
+    loop:
+    - ["impero", "master"]
+    - ["subs", "lbry"]
+  - name: build programs (autotools)
+    include_tasks: autotools.yaml
+    vars:
+      target: impero
+      target_bin: impero
+      dir: "{{ src_dir }}/impero"
+  - name: build programs (autotools)
+    make:
+      chdir: "{{ src_dir }}/{{ item }}"
+    loop:
+    - subs
   - name: create home directories
     file:
       state: directory
       path: '{{ home }}/{{ item }}'
     loop:
-    - .local/share/tig
     - .config/gdb
     - .config/git
     - .config/i3
@@ -20,9 +40,10 @@
     - .config/ripgrep
     - .config/tig
     - .config/vdirsyncer
-    - .local/share/nummi
+    - .local/bin
     - .local/share/subs
     - .local/share/systemd/user
+    - .local/share/tig
     - .mutt
     - .vim/colors
     - .vim/spell
@@ -43,14 +64,9 @@
     - ['khal/vdirsyncer.sh',   '.config/vdirsyncer/run.sh']
     - ['mutt/msmtprc',         '.msmtprc']
     - ['mutt/muttrc',          '.mutt/muttrc']
-    - ['mutt/muttrc_gmail',    '.mutt/muttrc_gmail']
-    - ['mutt/muttrc_proton',   '.mutt/muttrc_proton']
     - ['mutt/mailcap',         '.mutt/mailcap']
     - ['offlineimap/offlineimap@.service',
        '.local/share/systemd/user/offlineimap@.service']
-    - ['proton/proton-bridge.service',
-       '.local/share/systemd/user/proton-bridge.service']
-    - ['offlineimap/gmail',    '.config/offlineimap/gmail']
     - ['redshift.conf',        '.config/redshift.conf']
     - ['ripgrep',              '.config/ripgrep/config']
     - ['user-dirs.dirs',       '.config/user-dirs.dirs']
@@ -64,12 +80,11 @@
       dest: '{{ home }}/{{ item.1 }}'
     loop:
     - ['{{ home }}/n/archive/impero.txt', '.config/impero/commands.txt']
-    - ['{{ home }}/n/archive/money', '.local/share/nummi/db']
     - ['{{ home }}/n/archive/mutt.aliases', '.mutt/aliases']
     - ['{{ home }}/n/archive/pass', '.password-store']
     - ['{{ home }}/n/archive/vim.spl', '.vim/spell/en.utf-8.add.spl']
     - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
-    - ['{{ home }}/src/proton-bridge/proton-bridge', '.local/bin/proton-bridge']
+    - ['{{ home }}/src/impero/impero', '.local/bin/impero']
     - ['{{ home }}/src/subs/subs', '.local/bin/subs']
   - name: setup CA symlinks
     file:
@@ -79,22 +94,34 @@
     loop:
     - .mutt/tls_trust_file
     - .config/offlineimap/tls_trust_file
-  - name: ensure files have been created/imported
-    stat: 'path={{ home }}/{{ item }}'
-    register: st
-    failed_when: not st.stat.exists
+  - name: check if pass has been initialized
+    stat:
+      path: "{{ home }}/.password-store/.gpg-id"
+    register: rc
+  - name: initialize pass
+    command:
+      argv:
+      - pass
+      - init
+      - 3612A05DF0A1CB2A4C7A2E1341393B23D2144C3B
+    when: not rc.stat.exists
+  - name: check if vdirsyncer has been initialized
+    stat:
+      path: "{{ home }}/.local/share/vdirsyncer"
+    failed_when: false
+    register: rc
+  - name: create vdirsyncer directories
+    file:
+      state: directory
+      path: "{{ home }}/.local/share/vdirsyncer/{{ item }}"
     loop:
-    - .config/Nextcloud/nextcloud.cfg
-    - .gnupg/private-keys-v1.d/2BCBD7BC4D16EFE8BB81514BDD139D85894131FF.key
-    - .gnupg/private-keys-v1.d/2E2E172E019FB7185972C20A9EC30C06B7645832.key
-    - .gnupg/private-keys-v1.d/80B69EFC5B439D3F744F52E3FF80117C439C7BB2.key
-    - .gnupg/private-keys-v1.d/E57CD77CA5B02F19F9A7EFE16E263DF6B869D988.key
-    - .local/share/offlineimap
-    - .local/share/vdirsyncer
-    - .password-store
-    - .ssh/id_rsa
-    - .ssh/id_rsa.pub
-    - n
+    - nextcloud/cal
+    - nextcloud/contact_birthdays
+  - name: initialize vdirsyncer
+    shell: |
+      pass show bbguimaraes.com/nextcloud/cal \
+        | vdirsyncer discover nextcloud
+    when: not rc.stat.exists
   - name: enable and start services
     systemd:
       enabled: true
@@ -103,10 +130,22 @@
       scope: user
       daemon_reload: true
     loop:
-    - offlineimap@gmail
-    - proton-bridge
     - redshift
     - vdirsyncer
+  - name: ensure files have been created/imported
+    stat: 'path={{ home }}/{{ item }}'
+    register: st
+    failed_when: not st.stat.exists
+    loop:
+    - .config/Nextcloud/nextcloud.cfg
+    - .gnupg/private-keys-v1.d/2E2E172E019FB7185972C20A9EC30C06B7645832.key
+    - .gnupg/private-keys-v1.d/80B69EFC5B439D3F744F52E3FF80117C439C7BB2.key
+    - .local/share/offlineimap
+    - .local/share/vdirsyncer
+    - .password-store
+    - .ssh/id_rsa
+    - .ssh/id_rsa.pub
+    - n
 - hosts: desktops
   tags: urxvt
   vars:
@@ -124,16 +163,18 @@
 - hosts: desktops
   tags: weechat
   vars:
-    dir: '{{ ansible_env.HOME }}/.weechat'
+    conf_dir: '{{ ansible_env.HOME }}/.config/weechat'
+    data_dir: '{{ ansible_env.HOME }}/.local/share/weechat'
+    home: "{{ ansible_env.HOME }}"
   tasks:
   - block:
     - name: install weechat-edit-git
-      import_tasks: ../aur.yaml
+      import_tasks: aur.yaml
       vars: {"pkg": "weechat-edit-git"}
   - name: create weechat directories
     file:
       state: directory
-      path: '{{ dir }}/{{ item }}'
+      path: '{{ data_dir }}/{{ item }}'
     with_items:
     - lua
     - lua/autoload
@@ -143,15 +184,15 @@
     file:
       state: link
       src: '{{ item.0 }}'
-      dest: '{{ dir }}/{{ item.1 }}'
+      dest: '{{ data_dir }}/{{ item.1 }}'
     loop:
-    -
-      - '/usr/share/weechat/python/weechat-matrix.py'
-      - 'python/autoload/weechat-matrix.py'
-    - ['/lib/weechat/python/edit.py', 'python/autoload/edit.py']
+    - - /usr/share/weechat/python/weechat-matrix.py
+      - python/autoload/weechat-matrix.py
+    - - /usr/share/weechat/python/edit.py
+      - python/autoload/edit.py
   - name: set weechat variables
     ini_file:
-      path: '{{ ansible_env.HOME }}/.weechat/{{ item.file }}'
+      path: '{{ conf_dir }}/{{ item.file }}'
       section: '{{ item.section }}'
       option: '{{ item.opt }}'
       value: '{{ item.val }}'
@@ -180,16 +221,23 @@
       section: format
       opt: buffer_current
       val: '${format_number}${indent}${color:*white,}${name}'
-- hosts: desktops
+- hosts: desktops:&arch
   name: aur pkgs
   tags: aur
   tasks:
-  - block:
-    - import_tasks: ../aur.yaml
-      vars: {"pkg": "duc"}
-    - import_tasks: ../aur.yaml
-      vars: {"pkg": "opencl-1.2-man-doc"}
-    - import_tasks: ../aur.yaml
-      vars: {"pkg": "pam-gnupg"}
-    - import_tasks: ../aur.yaml
-      vars: {"pkg": "renderdoc"}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "duc", "keys": ["CACDA4B54202FA2F"]}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "mit-scheme", "keys": ["C9E40BAAFD0CB132"]}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "opencl-1.2-man-doc"}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "pam-gnupg"}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "renderdoc", "keys": ["AC612C3120C34695"]}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "stellarium", "keys": ["9380E47C0374E169"]}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "vim-diffchar"}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "vim-dispatch", "keys": ["E09E474A404A3A45"]}

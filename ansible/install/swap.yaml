@@ -29,4 +29,4 @@
       state: present
       path: /etc/fstab
       line: '{{ swapfile_path }} none swap sw 0 0'
-      validate: mount --fake --all --verbose
+      validate: mount --fake --all --verbose %s

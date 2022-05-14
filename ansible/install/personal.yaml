@@ -1,0 +1,40 @@
+- hosts: personal
+  vars:
+    home: '{{ ansible_env.HOME }}'
+    src_dir: '{{ home }}/src'
+  tasks:
+  - name: create home directories
+    file:
+      state: directory
+      path: '{{ home }}/{{ item }}'
+    loop:
+    - .local/share/nummi
+  - name: setup dotfile symlinks
+    file:
+      state: link
+      src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
+      dest: '{{ home }}/{{ item.1 }}'
+    loop:
+    - ['mutt/muttrc_gmail', '.mutt/muttrc_gmail']
+    - ['mutt/muttrc_proton', '.mutt/muttrc_proton']
+    - ['offlineimap/gmail', '.config/offlineimap/gmail']
+    - ['proton/proton-bridge.service',
+       '.local/share/systemd/user/proton-bridge.service']
+  - name: setup other symlinks
+    file:
+      state: link
+      src: '{{ item.0 }}'
+      dest: '{{ home }}/{{ item.1 }}'
+    loop:
+    - ['{{ home }}/n/archive/money', '.local/share/nummi/db']
+    - ['{{ home }}/src/proton-bridge/proton-bridge', '.local/bin/proton-bridge']
+  - name: enable and start services
+    systemd:
+      enabled: true
+      state: started
+      name: '{{ item }}'
+      scope: user
+      daemon_reload: true
+    loop:
+    - offlineimap@gmail
+    - proton-bridge
