@@ -1,0 +1,265 @@
+- hosts: arch
+  vars:
+    efi_part: 1
+    lvm_part: 2
+    efi_dev: "{{ disk_dev }}p{{ efi_part }}"
+    lvm_dev: "{{ disk_dev }}p{{ lvm_part }}"
+    swap_part: /dev/{{ lvm_vg }}/swap
+    root_part: /dev/{{ lvm_vg }}/root
+    home_part: /dev/{{ lvm_vg }}/home
+    root_mount: /mnt
+    efi_mount: /mnt/efi
+    home_mount: /mnt/home
+    initramfs_keyfile: /boot/initramfs.key
+  tasks:
+  - name: check required variables
+    assert:
+      that: "{{ item }} is defined"
+    loop:
+    - hostname
+    - disk_dev
+    - lvm_vg
+  - name: create EFI system partition
+    parted:
+      state: present
+      device: /dev/{{ disk_dev }}
+      label: gpt
+      number: "{{ efi_part }}"
+      flags: [esp]
+      part_start: "0MB"
+      part_end: "512MB"
+  - name: create LVM partition
+    parted:
+      state: present
+      device: /dev/{{ disk_dev }}
+      label: gpt
+      number: "{{ lvm_part }}"
+      part_start: "512MB"
+      part_end: "100%"
+  - name: format EFI system partition
+    filesystem:
+      dev: /dev/{{ efi_dev }}
+      fstype: vfat
+      opts: -F 32
+  - name: check for LUKS device
+    command:
+      argv:
+      - cryptsetup
+      - isLuks
+      - /dev/{{ lvm_dev }}
+    changed_when: false
+    failed_when: false
+    register: is_luks
+  - name: format LUKS device
+    command:
+      argv:
+      - cryptsetup
+      - luksFormat
+      - --batch-mode
+      - --type
+      - luks1
+      - --key-file
+      - /tmp/luks.key
+      - /dev/{{ lvm_dev }}
+    when: is_luks is failed
+  - name: open LUKS device
+    luks_device:
+      state: opened
+      device: /dev/{{ lvm_dev }}
+      name: lvm
+      keyfile: /tmp/luks.key
+  - name: create physical volumes / volume groups
+    lvg:
+      state: present
+      pvs: "/dev/mapper/lvm"
+      vg: "{{ lvm_vg }}"
+  - name: create swap logical volume
+    lvol:
+      state: present
+      vg: "{{ lvm_vg }}"
+      lv: swap
+      size: 8G
+  - name: create root logical volume
+    lvol:
+      state: present
+      vg: "{{ lvm_vg }}"
+      lv: root
+      size: 64G
+  - name: create home logical volume
+    lvol:
+      state: present
+      vg: "{{ lvm_vg }}"
+      lv: home
+      size: 100%FREE
+      shrink: false
+  - name: format swap partition
+    filesystem:
+      dev: "{{ swap_part }}"
+      fstype: swap
+  - name: format root partition
+    filesystem:
+      dev: "{{ root_part }}"
+      fstype: ext4
+  - name: format home partition
+    filesystem:
+      dev: "{{ home_part }}"
+      fstype: ext4
+  - name: mount root partition
+    command:
+      argv:
+      - mount
+      - "{{ root_part }}"
+      - "{{ root_mount }}"
+      warn: false
+    when: root_mount not in (ansible_mounts|map(attribute='mount'))
+  - name: create mount points
+    file:
+      state: directory
+      path: "{{ item }}"
+    loop:
+    - "{{ efi_mount }}"
+    - "{{ home_mount }}"
+  - name: activate swap
+    command:
+      argv:
+      - swapon
+      - "{{ swap_part }}"
+    when: ansible_swaptotal_mb == 0
+  - name: mount EFI partition
+    command:
+      argv:
+      - mount
+      - /dev/{{ efi_dev }}
+      - "{{ efi_mount }}"
+      warn: false
+    when: efi_mount not in (ansible_mounts|map(attribute='mount'))
+  - name: mount home partition
+    command:
+      argv:
+      - mount
+      - "{{ home_part }}"
+      - "{{ home_mount }}"
+      warn: false
+    when: "home_mount not in (ansible_mounts|map(attribute='mount'))"
+  - name: install base packages
+    command:
+      argv:
+        - pacstrap
+        - /mnt
+        - --needed
+        - base
+        - cryptsetup
+        - dhcpcd
+        - efibootmgr
+        - linux
+        - linux-firmware
+        - grub
+        - lvm2
+        - netctl
+        - openssh
+        - os-prober
+        - python
+        - vim
+        - wpa_supplicant
+  - name: create initramfs key file
+    command:
+      argv:
+      - dd
+      - bs=512
+      - count=4
+      - if=/dev/random
+      - of={{ root_mount}}/{{ initramfs_keyfile }}
+      - iflag=fullblock
+      creates: "{{ root_mount}}/{{ initramfs_keyfile }}"
+  - name: set initramfs key file permissions
+    file:
+      path: "{{ root_mount}}/{{ initramfs_keyfile }}"
+      owner: root
+      group: root
+      mode: 0
+  - name: add initramfs key file to LUKS device
+    command:
+      argv:
+      - cryptsetup
+      - --key-file
+      - /tmp/luks.key
+      - luksAddKey
+      - /dev/{{ lvm_dev }}
+      - "{{ root_mount}}/{{ initramfs_keyfile }}"
+  - name: generate fstab
+    shell: |
+      { head -n 4 /etc/fstab && genfstab -U /mnt; } > /mnt/etc/fstab
+  - name: create local time symlink
+    file:
+      state: link
+      src: /usr/share/zoneinfo/UTC
+      path: "{{ root_mount }}/etc/localtime"
+  - name: enable locale
+    lineinfile:
+      line: en_US.UTF-8 UTF-8
+      path: "{{ root_mount }}/etc/locale.gen"
+  - name: create locale.conf
+    copy:
+      dest: "{{ root_mount }}//etc/locale.conf"
+      content: LANG=en_US.UTF-8
+  - name: enable mkinitcpio hooks
+    lineinfile:
+      line: >-
+        HOOKS=(base udev autodetect keyboard keymap consolefont modconf block
+        encrypt lvm2 filesystems fsck)
+      path: "{{ root_mount }}/etc/mkinitcpio.conf"
+  - name: add initramfs key file to mkinitcpio configuration
+    lineinfile:
+      line: FILES+=({{ initramfs_keyfile }})
+      path: "{{ root_mount }}/etc/mkinitcpio.conf"
+  - name: allow booting from LUKS1-encrypted parition
+    lineinfile:
+      path: "{{ root_mount }}/etc/default/grub"
+      line: GRUB_ENABLE_CRYPTODISK=y
+  - name: preload GRUB modules
+    lineinfile:
+      path: "{{ root_mount }}/etc/default/grub"
+      line: GRUB_PRELOAD_MODULES="part_gpt part_msdos lvm"
+  - set_fact:
+      lvm_uuid: "{{ ansible_device_links.uuids[lvm_dev][0] }}"
+  - name: set kernel parameter to unlock encrypted device
+    lineinfile:
+      path: "{{ root_mount }}/etc/default/grub"
+      line:
+        'GRUB_CMDLINE_LINUX="cryptdevice=UUID={{ lvm_uuid }}:lvm
+        cryptkey=rootfs:{{ initramfs_keyfile }}
+        root={{ root_part }}"'
+  - name: create hostname file
+    copy:
+      dest: "{{ root_mount}}/etc/hostname"
+      content: "{{ hostname }}"
+  - name: enable services
+    file:
+      state: link
+      src: /usr/lib/systemd/system/{{ item }}.service
+      path: /etc/systemd/system/multi-user.target.wants/{{ item }}.service
+    loop:
+    - dhcpcd
+    - sshd
+  - name: execute arch-chroot setup
+    shell: |
+      set -eu
+      arch-chroot /mnt <<'EOF'
+      set -eu
+      hwclock --systohc
+      locale-gen
+      mkinitcpio --allpresets
+      grub-install \
+          --target=x86_64-efi \
+          --efi-directory=/efi \
+          --bootloader-id=GRUB \
+          --recheck
+      grub-mkconfig -o /boot/grub/grub.cfg
+      yes root | passwd
+      EOF
+  - name: unmount directories
+    command:
+      argv:
+      - umount
+      - --recursive
+      - "{{ root_mount }}"

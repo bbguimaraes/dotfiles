@@ -10,7 +10,7 @@
       path: '{{ src_dir }}'
   - name: clone dotfiles repository
     git:
-      repo: https://bbguimaraes@github.com/bbguimaraes/dotfiles.git
+      repo: https://git.bbguimaraes.com/dotfiles.git
       dest: '{{ src_dir }}/dotfiles'
       update: no
   - name: create home directories
@@ -23,6 +23,7 @@
   - name: setup dotfile symlinks
     file:
       state: link
+      force: true
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:

@@ -1,10 +1,14 @@
+- name: import keys
+  command:
+    argv: ["gpg2", "--recv-keys", "{{ item }}"]
+  loop: "{{ keys|default([]) }}"
 - name: check if package already installed
   command: pacman -Qqi {{ pkg }}
   ignore_errors: true
   changed_when: false
   register: installed
 - name: build packages
-  command: aur sync -c {{ pkg }}
+  command: aur sync --no-view --no-confirm {{ pkg }}
   register: rc
   when: installed is failed
 - name: update pacman cache

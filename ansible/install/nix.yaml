@@ -5,34 +5,13 @@
   tasks:
   - fail:
       msg: >
-        `nix_release_path` is required, download and extract from
-        https://releases.nixos.org/?prefix=nix
-    when: nix_release_path is undefined
-  - fail:
-      msg: >
         `nixpkgs` is required, choose the appropriate URL from
         https://channels.nixos.org
     when: nixpkgs is undefined
-  - name: create the store directory
-    become: true
-    file:
-      state: directory
-      path: /nix
-      owner: "{{ ansible_env.USER }}"
-      mode: 755
-    when: '"/nix" is not exists'
-  - name: execute bootstrap script
-    command:
-      argv:
-      - "{{ nix_release_path }}/install"
-      - --no-modify-profile
-      - --no-channel-add
-      - --no-daemon
-      creates: "{{ profile_path }}"
   - name: add channel
     command:
       argv:
-      - "{{ profile_path }}/bin/nix-channel"
+      - nix-channel
       - --add
       - "{{ nixpkgs }}"
       - nixpkgs
@@ -40,12 +19,6 @@
   - name: update channel information
     command:
       argv:
-      - "{{ profile_path }}/bin/nix-channel"
+      - nix-channel
       - --update
       creates: "{{ home }}/.nix-channels"
-  - name: source nix profile in shell profile
-    lineinfile:
-      path: "{{ home }}/.bash_profile"
-      line: >-
-        [[ -e {{ profile_path }}/etc/profile.d/nix.sh ]]
-        && source {{ profile_path }}/etc/profile.d/nix.sh
