@@ -5,7 +5,6 @@
     package:
       state: present
       name: "{{ item }}"
-    when: ansible_os_family == 'Archlinux'
     with_items:
     - grub
     - os-prober
@@ -16,30 +15,23 @@
     - >- # dev
       ansible busybox clang cloc cmake colordiff ctags dash distcc emacs gdb go
       graphviz hub ipython musl podman python-pip rust tidy tig vim-ctrlp
-      vim-fugitive vim-gitgutter
+      vim-fugitive vim-gitgutter arm-none-eabi-gcc base-devel ccache cjson dash
+      devtools doxygen encfs libc++ llvm mit-scheme mypy opengl-man-pages pocl
+      qemu renderdoc valgrind vim-tagbar
+    - >- # xorg
+      mesa xorg xorg-xinit
     - >- # graphical
       calibre chromium dmenu feh gimp i3lock i3status qt5ct redshift
-      rxvt-unicode simplescreenrecorder scrot xclip xdotool
+      rxvt-unicode simplescreenrecorder scrot xclip xdotool blender breeze
+      celluloid dunst firefox i3-wm imagemagick inkscape kdenlive
+      libreoffice-fresh mednafen picom stellarium ttf-dejavu
     - >- #audio
-      audacity
+      audacity alsa-utils hydrogen mpv musescore pavucontrol pulseaudio
+      pulseaudio-alsa pulseaudio-bluetooth
     - >- # tools
       acpi discount ffmpeg fish gnuplot inotify-tools ltrace lsof moreutils
       msmtp mutt nextcloud-client offlineimap p7zip pass perf poppler pv
       python-matplotlib ripgrep unrar strace units vdirsyncer weechat
-    arch_pkgs:
-    - >- # dev
-      arm-none-eabi-gcc base-devel ccache cjson dash devtools doxygen encfs
-      libc++ llvm mit-scheme mypy opengl-man-pages pocl qemu renderdoc valgrind
-      vim-tagbar
-    - >- # xorg
-      mesa xorg xorg-xinit
-    - >- # graphical
-      blender breeze celluloid dunst firefox i3-wm imagemagick inkscape kdenlive
-      libreoffice-fresh mednafen picom stellarium ttf-dejavu
-    - >- # audio
-      alsa-utils ardour hydrogen mpv musescore pavucontrol pulseaudio
-      pulseaudio-alsa pulseaudio-bluetooth
-    - >- # tools
       android-tools bc bind-tools bluez bluez-utils jq khal lynx openbsd-netcat
       pacman-contrib pigz pixz rlwrap sshfs unzip weechat-matrix words
       youtube-dl
@@ -52,21 +44,6 @@
       opencl-headers ocl-icd qt5-charts vulkan-intel vulkan-devel
     - >- # nngn tests
       freeglut glu
-    fedora_pkgs:
-    - >- # dev
-      autoconf automake awscli cargo cjson distcc-server docker-compose
-      fuse-encfs golang-godoc gotags libarchive-devel libcurl-devel
-      libsecret-devel openssl-devel patch plasma-breeze python3-mypy
-      python3-tabulate qt5-devel rustfmt ShellCheck
-    - >- # graphical
-      compton i3 libreoffice qpdfview-qt5
-    - >- # tools
-      bind-utils ftp fuse-sshfs hugo libolm-devel nodejs passmenu pinentry-qt
-    - >- # work
-      krb5-workstation openldap-clients pyOpenSSL python-cryptography
-      python-lxml
-    fedora_groups:
-    - '@Development tools'
   tasks:
   - name: enable multilib
     blockinfile:
@@ -76,15 +53,9 @@
       block: |
         [multilib]
         Include = /etc/pacman.d/mirrorlist
-    when: ansible_os_family == 'Archlinux'
   - name: install base packages
     package:
-      name: '{{ ((pkgs+arch_pkgs)|join(" ")).split(" ") }}'
-    when: ansible_os_family == 'Archlinux'
-  - name: install base packages
-    package:
-      name: '{{ ((pkgs+fedora_pkgs)|join(" ")).split(" ") + fedora_groups }}'
-    when: ansible_os_family == 'RedHat'
+      name: '{{ (pkgs|join(" ")).split(" ") }}'
 - hosts: all
   tasks:
   - name: enable/start services
@@ -104,8 +75,7 @@
     aurutils_repo: /var/lib/pacman/aurutils
     aurutils_gpg_key: DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A
   tasks:
-  - when: ansible_os_family == 'Archlinux'
-    block:
+  - block:
     - name: create local repository directory
       file:
         state: directory

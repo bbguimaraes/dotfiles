@@ -71,7 +71,7 @@
     - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
     - ['{{ home }}/src/proton-bridge/proton-bridge', '.local/bin/proton-bridge']
     - ['{{ home }}/src/subs/subs', '.local/bin/subs']
-  - name: setup CA symlinks (archlinux)
+  - name: setup CA symlinks
     file:
       state: link
       src: /etc/ssl/certs/ca-certificates.crt
@@ -79,16 +79,6 @@
     loop:
     - .mutt/tls_trust_file
     - .config/offlineimap/tls_trust_file
-    when: ansible_os_family == 'Archlinux'
-  - name: setup CA symlinks (fedora)
-    file:
-      state: link
-      src: /etc/ssl/certs/ca-bundle.crt
-      dest: '{{ home }}/{{ item }}'
-    loop:
-    - .mutt/tls_trust_file
-    - .config/offlineimap/tls_trust_file
-    when: ansible_os_family == 'RedHat'
   - name: ensure files have been created/imported
     stat: 'path={{ home }}/{{ item }}'
     register: st
@@ -136,8 +126,7 @@
   vars:
     dir: '{{ ansible_env.HOME }}/.weechat'
   tasks:
-  - when: ansible_os_family == 'Archlinux'
-    block:
+  - block:
     - name: install weechat-edit-git
       import_tasks: ../aur.yaml
       vars: {"pkg": "weechat-edit-git"}
@@ -150,51 +139,7 @@
     - lua/autoload
     - python
     - python/autoload
-  - name: clone repositories
-    git:
-      repo: '{{ item.0 }}'
-      dest: '{{ item.1 }}'
-      update: no
-    loop:
-    -
-      - https://github.com/poljar/weechat-matrix.git
-      - '{{ dir }}/python/weechat-matrix'
-    -
-      - https://gitlab.matrix.org/matrix-org/olm
-      - '{{ dir }}/python/olm'
-    when: ansible_os_family == 'RedHat'
-  - when: ansible_os_family == 'RedHat'
-    block:
-    - name: create olm build directory
-      file:
-        state: directory
-        path: '{{ dir }}/python/olm/build'
-    - name: build olm (cmake)
-      command:
-        cmd: cmake ..
-        chdir: '{{ dir }}/python/olm/build'
-        creates: '{{ dir }}/python/olm/build/Makefile'
-    - name: build olm (make)
-      command:
-        cmd: make
-        chdir: '{{ dir }}/python/olm/build'
-        creates: '{{ dir }}/python/olm/build/lib64/libolm.so'
-    - name: create virtualenv
-      command:
-        cmd: virtualenv '{{ dir }}/python/env'
-        creates: '{{ dir }}/python/env'
-      when: ansible_os_family == 'RedHat'
-      register: rc
-    - name: install virtualenv packages
-      command: >
-        env
-        CPATH={{ dir }}/python/olm/include
-        LIBRARY_PATH={{ dir }}/python/olm/build/lib64
-        '{{ dir }}/python/env/bin/pip'
-        install -r '{{ dir }}/python/weechat-matrix/requirements.txt'
-      when: rc.changed
   - name: create symlinks
-    when: ansible_os_family == 'Archlinux'
     file:
       state: link
       src: '{{ item.0 }}'
@@ -204,15 +149,6 @@
       - '/usr/share/weechat/python/weechat-matrix.py'
       - 'python/autoload/weechat-matrix.py'
     - ['/lib/weechat/python/edit.py', 'python/autoload/edit.py']
-  - name: create symlinks
-    file:
-      state: link
-      src: '{{ item.0 }}'
-      dest: '{{ dir }}/{{ item.1 }}'
-    loop:
-    - ['weechat-matrix/matrix', 'python/matrix']
-    - ['../weechat-matrix/main.py', 'python/autoload/matrix.py']
-    when: ansible_os_family == 'RedHat'
   - name: set weechat variables
     ini_file:
       path: '{{ ansible_env.HOME }}/.weechat/{{ item.file }}'
@@ -248,8 +184,7 @@
   name: aur pkgs
   tags: aur
   tasks:
-  - when: ansible_os_family == 'Archlinux'
-    block:
+  - block:
     - import_tasks: ../aur.yaml
       vars: {"pkg": "duc"}
     - import_tasks: ../aur.yaml

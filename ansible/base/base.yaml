@@ -12,16 +12,10 @@
       - sudo
       - tmux
       - vim
-  - name: install base system packages (arch)
+  - name: install base system packages
     package:
       state: present
       name: pkgfile
-    when: ansible_os_family == 'Archlinux'
-  - name: install base system packages (redhat)
-    package:
-      state: present
-      name: epel-release
-    when: ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora'
 - hosts: all
   tags: base
   tasks:
@@ -67,7 +61,6 @@
     command:
       argv: ['pkgfile', '--update']
       creates: /var/cache/pkgfile/core.files
-    when: ansible_os_family == 'Archlinux'
   - name: disable root SSH password login
     lineinfile:
       dest: /etc/ssh/sshd_config
@@ -81,21 +74,10 @@
     timezone:
       name: UTC
       hwclock: UTC
-  - name: check if the ntp service is enabled (arch)
+  - name: check if the ntp service is enabled
     command: timedatectl show --property NTP --value
     register: rc
     changed_when: False
-    when: ansible_os_family == 'Archlinux'
-  - name: enable ntp service (arch)
+  - name: enable ntp service
     command: timedatectl set-ntp yes
-    when: ansible_os_family == 'Archlinux' and rc.stdout == "no"
-  - name: check if the ntp service is enabled (redhat)
-    command: timedatectl status
-    register: rc
-    changed_when: False
-    when: ansible_os_family == 'RedHat'
-  - name: enable ntp service (redhat)
-    command: timedatectl set-ntp yes
-    when: |
-      ansible_os_family == 'RedHat'
-      and 'NTP enabled: no' in rc.stdout
+    when: rc.stdout == "no"
