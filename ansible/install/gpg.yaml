@@ -1,7 +1,6 @@
 - hosts: all
   tasks:
-  - when: ansible_os_family == 'Archlinux'
-    block:
+  - block:
     - import_tasks: ../aur.yaml
       vars: {"pkg": "pam-gnupg"}
     - name: enable for console logins
