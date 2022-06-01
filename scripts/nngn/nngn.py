@@ -128,6 +128,12 @@ CHECKS = {
         "cxxflags": (*CXXFLAGS, *DEBUG_CXXFLAGS),
         "ldflags": LINUX_LDFLAGS,
     },
+    "clang_release": {
+        "name": "Clang release",
+        "compiler": "clang++",
+        "target": "check",
+        "ldflags": LINUX_LDFLAGS,
+    },
     "gcc_release": {
         "name": "GCC release",
         "compiler": "g++",
