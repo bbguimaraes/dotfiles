@@ -66,6 +66,7 @@ CONFIGURE_ARGS = (
     "--enable-benchmarks",
     "--enable-tools",
     "--enable-lua-alloc",
+    "--with-openal",
     "--with-opengl",
     "--with-vulkan",
     "--with-libpng",
@@ -165,8 +166,9 @@ CHECKS = {
         "make_args": (
             "DISTCHECK_CONFIGURE_FLAGS=" + " ".join((
                 "--enable-tests", "--enable-benchmarks", "--enable-tools",
-                "--with-opengl", "--with-vulkan", "--with-libpng",
-                "--with-freetype2", "--with-opencl",
+                "--enable-lua-alloc",
+                "--with-openal", "--with-opengl", "--with-vulkan",
+                "--with-libpng", "--with-freetype2", "--with-opencl",
             )),
         ),
     },
