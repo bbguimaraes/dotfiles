@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: desktops:&arch
   tasks:
   - block:
     - import_tasks: ../aur.yaml

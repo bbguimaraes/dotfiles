@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: bbguimaraes.com
   tasks:
   - name: check if user centos exists
     command: getent passwd centos
@@ -33,7 +33,7 @@
     service:
       state: restarted
       name: fail2ban
-- hosts: all
+- hosts: bbguimaraes.com
   tags: pkgs
   tasks:
   - name: install packages

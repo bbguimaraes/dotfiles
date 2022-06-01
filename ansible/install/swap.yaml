@@ -1,4 +1,4 @@
-- hosts: swap
+- hosts: all
   vars:
     swapfile_path: /var/swapfile
     swapfile_size_kb: 4096

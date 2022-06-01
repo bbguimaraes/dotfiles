@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: desktops
   tasks:
   - name: add udev rule
     copy:

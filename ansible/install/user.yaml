@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: desktops
   tags: base
   vars:
     home: '{{ ansible_env.HOME }}'
@@ -107,7 +107,7 @@
     - proton-bridge
     - redshift
     - vdirsyncer
-- hosts: all
+- hosts: desktops
   tags: urxvt
   vars:
     home: '{{ ansible_env.HOME }}'
@@ -121,7 +121,7 @@
       state: link
       src: '{{ home }}/.urxvt/ext/urxvt-resize-font/resize-font'
       dest: '{{ home }}/.urxvt/ext/resize-font'
-- hosts: all
+- hosts: desktops
   tags: weechat
   vars:
     dir: '{{ ansible_env.HOME }}/.weechat'
@@ -180,7 +180,7 @@
       section: format
       opt: buffer_current
       val: '${format_number}${indent}${color:*white,}${name}'
-- hosts: all
+- hosts: desktops
   name: aur pkgs
   tags: aur
   tasks:
