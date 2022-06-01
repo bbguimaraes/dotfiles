@@ -1,14 +1,4 @@
-- hosts: all
-  tags: base_sys_pkgs
-  tasks:
-  - name: install base system packages
-    package:
-      state: present
-      name: "{{ item }}"
-    with_items:
-    - grub
-    - os-prober
-- hosts: all
+- hosts: desktops:&arch
   tags: base_pkgs
   vars:
     pkgs:
@@ -56,7 +46,7 @@
   - name: install base packages
     package:
       name: '{{ (pkgs|join(" ")).split(" ") }}'
-- hosts: all
+- hosts: desktops:&arch
   tasks:
   - name: enable/start services
     service:
@@ -68,7 +58,7 @@
       name: dev.i915.perf_stream_paranoid
       value: '0'
       state: present
-- hosts: all
+- hosts: desktops:&arch
   tags: aurutils
   vars:
     user: bbguimaraes
@@ -137,7 +127,7 @@
           Server = file://{{ aurutils_repo }}
     - name: update pacman cache
       command: pacman -Sy
-- hosts: all
+- hosts: desktops:&arch
   tags: misc
   tasks:
   - name: disable pulseaudio esound module
