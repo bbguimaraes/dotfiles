@@ -1,0 +1,75 @@
+- hosts: work
+  vars:
+    certificates:
+    - - https://password.corp.redhat.com/legacy.crt
+      - legacy.crt
+      - Red Hat IS CA
+    - - https://password.corp.redhat.com/RH-IT-Root-CA.crt
+      - RH-IT-Root-CA.crt
+      - Red Hat IT Root CA
+    pkgs:
+    - >-
+      krb5 openvpn
+  tasks:
+  - name: install packages
+    package:
+      name: '{{ (pkgs|join(" ")).split(" ") }}'
+  - name: create configuration directories
+    file:
+      state: directory
+      path: "{{ item }}"
+    loop:
+    - /etc/krb5.conf.d
+  - name: initialize Kerberos configuration file
+    copy:
+      content: |
+        includedir /etc/krb5.conf.d
+      dest: /etc/krb5.conf
+  - name: copy configuration files
+    copy:
+      src: "{{ item }}"
+      dest: "{{ item }}"
+      mode: preserve
+    loop:
+    - /etc/krb5.conf.d/redhat.conf
+    - /etc/openvpn/RH-IT-Root-CA.crt
+  - name: copy OpenVPN configuration file
+    copy:
+      src: ../work/openvpn.conf
+      dest: /etc/openvpn/client/redhat_brq.conf
+      mode: preserve
+  - name: copy VPN sudoer script
+    copy:
+      src: ../work/openvpn.sh
+      dest: /usr/local/bin/openvpn.sh
+      mode: preserve
+  - name: allow wheel to start a VPN connection without a password
+    copy:
+      dest: /etc/sudoers.d/openvpn
+      owner: root
+      group: root
+      mode: 0440
+      validate: visudo -cf %s
+      content: |
+        %wheel ALL=(ALL) NOPASSWD: /usr/local/bin/openvpn.sh *
+  - name: list trusted certificates
+    command:
+      argv:
+      - trust
+      - list
+    register: trust
+    changed_when: false
+  - name: download certificates
+    get_url:
+      url: "{{ item.0 }}"
+      dest: /tmp/{{ item.1 }}
+    when: "item.2 not in trust.stdout"
+    loop: "{{ certificates }}"
+  - name: trust certificates
+    command:
+      argv:
+      - trust
+      - anchor
+      - /tmp/{{ item.1 }}
+    when: "item.2 not in trust.stdout"
+    loop: "{{ certificates }}"
