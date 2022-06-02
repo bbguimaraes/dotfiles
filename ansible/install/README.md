@@ -69,6 +69,13 @@ For personal systems:
 
     $ ansible-playbook ansible/install/personal.yaml
 
+For work:
+
+    $ ansible-playbook --user root ansible/install/work.yaml
+    $ ansible-playbook ansible/install/work_user.yaml
+
+Enable Kerberos in Firefox: https://wiki.archlinux.org/title/Kerberos#Firefox.
+
 Conclusion
 ----------
 

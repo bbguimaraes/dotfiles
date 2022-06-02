@@ -11,7 +11,7 @@ main() {
     complete) cmd_complete;;
     keyboard) keyboard;;
     services) services;;
-    wamozart) wamozart;;
+    work) work;;
     *) usage;;
     esac
 }
@@ -26,7 +26,7 @@ Commands:
     complete
     keyboard
     services
-    wamozart
+    work
 EOF
     return 1
 }
@@ -41,21 +41,20 @@ cmd_complete() {
 }
 
 cmd_all() {
-    if [[ "$HOSTNAME" == wamozart ]]; then
-        wamozart
-    else
-        pass show test > /dev/null
-    fi
+    case "$HOSTNAME" in
+    rh*) work;;
+    *) pass show test > /dev/null;;
+    esac
     command d cal
-    command d mail
+    [[ "$HOSTNAME" == rh* ]] && command d mail
     init_temp
     keyboard
     services
 }
 
-wamozart() {
-    if ! nmcli connection show --active | grep -q brq_vpn; then
-        command d office vpn
+work() {
+    if ! ip link show tun0 > /dev/null ; then
+        sudo /usr/local/bin/openvpn.sh redhat_brq.conf
     fi
     if ! klist > /dev/null; then
         tmux split-window sh -c 'kinit bbarcaro'
