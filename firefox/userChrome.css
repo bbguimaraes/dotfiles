@@ -1,0 +1,16 @@
+/*
+ * https://support.mozilla.org/en-US/questions/1269392
+ * http://kb.mozillazine.org/UserContent.css
+ *
+ * about:config -> toolkit.legacyUserProfileCustomizations.stylesheets = true
+ */
+@-moz-document url(chrome://browser/content/browser.xhtml) {
+    #main-window,
+    browser[type="content-primary"],
+    browser[type="content"],
+    tabbrowser#content,
+    #content,
+    browser[type="content"] > html {
+        background: #323234 !important;
+    }
+}
