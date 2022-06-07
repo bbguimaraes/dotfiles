@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-ADDR=192.168.0.5
+ADDR=192.168.0.4
 PORT=2121
 ARGS=(--user anonymous:)
 ROOT=/storage/emulated/0
