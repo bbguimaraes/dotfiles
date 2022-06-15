@@ -1,0 +1,25 @@
+pkgname=doxygen-lua
+pkgver=v0.04
+pkgrel=1
+arch=(any)
+depends=(perl)
+url=https://github.com/alecchen/doxygen-lua.git
+makedepends=('git' 'perl-module-install')
+source=("git+https://github.com/alecchen/doxygen-lua.git#tag=$pkgver")
+md5sums=('SKIP')
+
+build() {
+  cd "$srcdir/$pkgname"
+  perl Makefile.PL
+  make
+}
+
+check() {
+  cd "$srcdir/$pkgname"
+  make test
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make install INSTALLDIRS=vendor DESTDIR="$pkgdir"
+}
