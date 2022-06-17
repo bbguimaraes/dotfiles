@@ -6,7 +6,7 @@
   - fail:
       msg: >
         `nixpkgs` is required, choose the appropriate URL from
-        https://channels.nixos.org
+        https://channels.nixos.org (e.g. https://nixos.org/channels/nixos-22.05)
     when: nixpkgs is undefined
   - name: add channel
     command:
