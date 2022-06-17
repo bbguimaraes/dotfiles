@@ -42,7 +42,7 @@
       state: present
       path: /etc/sudoers
       validate: visudo -cf %s
-      line: '#includedir /etc/sudoers.d'
+      line: '@includedir /etc/sudoers.d'
   - name: allow wheel to sudo
     copy:
       dest: /etc/sudoers.d/0_wheel
