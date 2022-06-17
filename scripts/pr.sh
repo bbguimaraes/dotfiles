@@ -49,16 +49,24 @@ comment() {
 }
 
 for_ref() {
-    [[ "$#" -eq 0 ]] && set -- HEAD
-    local x j
-    for x; do
-        x=$(git rev-parse "$x")
-        j=$(hub api "search/issues?q=org:{owner}+repo:{repo}+sha:$x")
+    local open= rev url j
+    case "$#" in
+    0) set -- HEAD;;
+    *) [[ "$1" == -o ]] && { open=1; shift; };;
+    esac
+    for rev; do
+        rev=$(git rev-parse "$rev")
+        j=$(hub api "search/issues?q=org:{owner}+repo:{repo}+sha:$rev")
         if [[ "$(jq <<< "$j" .total_count)" -eq 0 ]]; then
-            echo "$x"
+            echo "$rev"
         else
-            printf '%s ' "$x"
-            jq --raw-output <<< "$j" '[.items[].html_url]|join(" ")'
+            printf %s "$rev"
+            for url in $( \
+                jq --raw-output <<< "$j" '[.items[].html_url]|join(" ")' \
+            ); do
+                [[ "$open" ]] && xdg-open "$url"
+                echo " $url"
+            done
         fi
     done
 }
