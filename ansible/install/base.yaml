@@ -7,6 +7,7 @@
       name:
       - bash-completion
       - git
+      - man-pages
       - openssh
       - rxvt-unicode-terminfo
       - sudo

@@ -6,15 +6,15 @@
       ansible arm-none-eabi-gcc base-devel busybox ccache cjson clang cloc cmake
       colordiff ctags dash dash devtools distcc doxygen emacs encfs gdb go
       graphviz hub ipython libc++ llvm musl mypy opengl-man-pages pocl podman
-      python-pip qemu rust tidy tig valgrind vim-ctrlp vim-fugitive
-      vim-gitgutter vim-tagbar
+      python-pip python-virtualenv qemu-base qemu-ui-sdl rust tidy tig valgrind
+      vim-ctrlp vim-fugitive vim-gitgutter vim-tagbar
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
       blender breeze calibre celluloid chromium dmenu dunst feh firefox gimp
       i3lock i3status i3-wm imagemagick inkscape kdenlive libreoffice-fresh
-      mednafen picom qt5ct redshift rxvt-unicode scrot simplescreenrecorder
-      ttf-dejavu xclip xdotool
+      mednafen mupdf picom qt5ct redshift rxvt-unicode scrot
+      simplescreenrecorder ttf-dejavu xclip xdotool
     - >- #audio
       alsa-utils audacity hydrogen mpv musescore pavucontrol pulseaudio
       pulseaudio-alsa pulseaudio-bluetooth
