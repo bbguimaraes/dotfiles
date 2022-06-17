@@ -1,12 +1,19 @@
 #!/bin/bash
 set -euo pipefail
 
-cd ~/src
-git clone --origin origin "https://bbguimaraes@git.bbguimaraes.com/$1.git"
-git -C "$1" config user.email bbguimaraes@bbguimaraes.com
+GIT=https://bbguimaraes@git.bbguimaraes.com
+GITLAB=https://bbguimaraes@gitlab.bbguimaraes.com/bbguimaraes
+GITHUB=https://bbguimaraes@github.com/bbguimaraes
+DST=$HOME/src/$1
+
+[[ -e "$DST" ]] || git -C ~/src clone --origin origin "$GIT/$1.git"
+cd "$DST"
+[[ "$HOSTNAME" == rh* ]] || git config user.email bbguimaraes@bbguimaraes.com
+remotes=$(git remote)
 while read -r name url; do
-    git -C "$1" remote add "$name" "$url"
+    grep --quiet --line-regexp "$name" <<< "$remotes" && continue
+    git remote add "$name" "$url"
 done <<EOF
-gitlab https://bbguimaraes@gitlab.bbguimaraes.com/bbguimaraes/$1.git
-github https://bbguimaraes@github.com/bbguimaraes/$1.git
+gitlab $GITLAB/$1.git
+github $GITHUB/$1.git
 EOF
