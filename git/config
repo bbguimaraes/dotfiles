@@ -5,6 +5,7 @@
     defaultBranch = master
 [user]
     name = Bruno Barcarol Guimarães
+    email = bbguimaraes@bbguimaraes.com
 [push]
     default = simple
 [pull]

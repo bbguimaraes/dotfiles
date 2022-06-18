@@ -1,3 +1,5 @@
+rmanzarek ansible_connection=local
+
 [desktops]
 tjobim
 rmanzarek
