@@ -3,6 +3,15 @@
     home: '{{ ansible_env.HOME }}'
     src_dir: '{{ home }}/src'
   tasks:
+  - name: clone proton-bridge
+    git:
+      repo: https://github.com/ProtonMail/proton-bridge.git
+      dest: "{{ src_dir }}/proton-bridge"
+      update: no
+  - name: build proton-bridge
+    make:
+      chdir: "{{ src_dir }}/proton-bridge"
+      target: build-nogui
   - name: create home directories
     file:
       state: directory
