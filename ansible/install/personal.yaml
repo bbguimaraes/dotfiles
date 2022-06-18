@@ -45,3 +45,10 @@
       daemon_reload: true
     loop:
     - proton-bridge
+  - name: make scripts in Nextcloud executable
+    file:
+      state: file
+      path: "{{ home }}/{{ item }}"
+      mode: "0755"
+    loop:
+    - n/comp/scripts/dev.sh
