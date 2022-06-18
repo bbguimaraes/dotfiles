@@ -140,7 +140,6 @@
     - .config/Nextcloud/nextcloud.cfg
     - .gnupg/private-keys-v1.d/2E2E172E019FB7185972C20A9EC30C06B7645832.key
     - .gnupg/private-keys-v1.d/80B69EFC5B439D3F744F52E3FF80117C439C7BB2.key
-    - .local/share/offlineimap
     - .local/share/vdirsyncer
     - .password-store
     - .ssh/id_rsa

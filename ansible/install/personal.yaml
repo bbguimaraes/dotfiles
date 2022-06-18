@@ -15,9 +15,7 @@
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['mutt/muttrc_gmail', '.mutt/muttrc_gmail']
     - ['mutt/muttrc_proton', '.mutt/muttrc_proton']
-    - ['offlineimap/gmail', '.config/offlineimap/gmail']
     - ['proton/proton-bridge.service',
        '.local/share/systemd/user/proton-bridge.service']
   - name: setup other symlinks
@@ -36,5 +34,4 @@
       scope: user
       daemon_reload: true
     loop:
-    - offlineimap@gmail
     - proton-bridge
