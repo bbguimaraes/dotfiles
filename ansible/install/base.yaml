@@ -71,6 +71,7 @@
   - name: disable root SSH password login
     lineinfile:
       dest: /etc/ssh/sshd_config
+      regexp: '^PermitRootLogin '
       line: 'PermitRootLogin prohibit-password'
   - name: enable and start sshd
     service:
