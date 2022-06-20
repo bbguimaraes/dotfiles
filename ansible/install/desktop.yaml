@@ -16,8 +16,7 @@
       mednafen mupdf picom qt5ct redshift rxvt-unicode scrot
       simplescreenrecorder ttf-dejavu xclip xdotool
     - >- #audio
-      alsa-utils audacity hydrogen mpv musescore pavucontrol pulseaudio
-      pulseaudio-alsa pulseaudio-bluetooth
+      alsa-utils audacity hydrogen mpv musescore pavucontrol pipewire
     - >- # tools
       acpi android-tools bc bind-tools bluez bluez-utils discount ffmpeg fish
       gnuplot inetutils inotify-tools jq khal lsof ltrace lynx moreutils msmtp
