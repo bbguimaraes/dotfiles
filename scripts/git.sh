@@ -139,14 +139,13 @@ rebase() {
 }
 
 rebase_branches() {
-    local x
-    git switch master
+    local base x n=0
+    base=$(git rev-parse HEAD)
     [[ "$#" -eq 0 ]] && set -- $(git branch --no-merged)
-    git rebase master "$1"
-    shift
     for x; do
-        sleep 1 # for unique timestamps
-        git rebase master "$x"
+        git merge-base --is-ancestor "$base" "$x" && continue
+        sleep "$n"; n=1 # for unique timestamps
+        git rebase "$base" "$x"
     done
 }
 
