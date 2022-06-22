@@ -11,19 +11,28 @@
       version: "{{ item.1 }}"
       update: no
     loop:
+    - ["custos", "master"]
     - ["impero", "master"]
     - ["subs", "lbry"]
+  - name: build programs (make)
+    make:
+      chdir: "{{ src_dir }}/{{ item }}"
+    loop:
+    - subs
   - name: build programs (autotools)
     include_tasks: autotools.yaml
     vars:
       target: impero
       target_bin: impero
       dir: "{{ src_dir }}/impero"
-  - name: build programs (autotools)
-    make:
-      chdir: "{{ src_dir }}/{{ item }}"
+  - name: build programs (premake)
+    include_tasks: premake.yaml
+    vars:
+      target: "{{ item }}"
+      target_bin: "{{ item }}"
+      dir: "{{ src_dir }}/{{ item }}"
     loop:
-    - subs
+    - custos
   - name: create home directories
     file:
       state: directory
@@ -72,3 +81,12 @@
     - ['vim/preto.vim',        '.vim/colors/preto.vim']
     - ['xorg/xinitrc',         '.xinitrc']
     - ['xorg/Xresources',      '.Xresources']
+  - name: setup other symlinks
+    file:
+      state: link
+      force: true
+      src: '{{ home }}/{{ item.0 }}'
+      dest: '{{ home }}/{{ item.1 }}'
+    loop:
+    - - src/custos/src/bin/release/custos
+      - .local/bin/custos
