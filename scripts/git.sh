@@ -24,7 +24,8 @@ Usage: $0 CMD ARGS...
 Commands:
 
     complete
-    authors ARGS...
+    authors file ARGS...
+    authors weekday ARGS...
     backport REV
     diff log REV0 REV1
     bbguimaraes exec CMD...
@@ -43,10 +44,39 @@ cmd_complete() {
 }
 
 authors() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    file) authors_file "$@";;
+    weekday) authors_weekday "$@";;
+    *) usage;;
+    esac
+}
+
+authors_file() {
     git blame --porcelain "$@" \
         | awk '$1 ~ /^author(-mail)?$/ { sub("^\\S+ ", ""); print; }' \
         | awk 'NR % 2 { printf("%s ", $0); next } 1' \
         | sort -u
+}
+
+authors_weekday() {
+    local out
+    out=$( \
+        git log --format=%ad --date=format-local:'%a %u' "$@" \
+        | sort | uniq -c | sort -nk 3,3)
+    printf '%s\ne\n%s\n' "$out" "$out" | gnuplot -e "$(cat <<'EOF'
+set term dumb;
+set key off;
+set label;
+set boxwidth 0.5 relative;
+set offsets 0.5, 0.5;
+set yrange [0:];
+plot
+    "-" using 0:1:xtic(2) with boxes,
+    "" using 0:1:1 with labels center offset 0, 1 notitle;
+EOF
+)"
 }
 
 backport() {
