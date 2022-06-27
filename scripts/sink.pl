@@ -39,6 +39,8 @@ sub map_sink_name {
             return "sofhdadsp__sink";
         } elsif($sink eq "hdmi-stereo") {
             return "sofhdadsp_4__sink";
+        } elsif($sink eq "bluez") {
+            return "bluez_output.B8_F6_53_C4_6B_53.a2dp-sink";
         }
     }
 }
