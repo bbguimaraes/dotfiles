@@ -8,11 +8,15 @@ sub main {
     return print @sinks if !$sink;
     my $id = find_sink(map_sink_name($sink, `hostname`), \@sinks);
     die "sink $sink not found" if !$id;
-    system "pactl set-default-sink $id";
+    exec_cmd("pactl", "set-default-sink", "$id");
     foreach(`pactl list short sink-inputs`) {
         my @f = split;
-        system "pactl move-sink-input $f[0] $id";
+        exec_cmd("pactl", "move-sink-input", $f[0], $id);
     }
+}
+
+sub exec_cmd {
+    die "command failed: @_" if system(@_);
 }
 
 sub find_sink {
