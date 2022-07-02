@@ -12,6 +12,7 @@
     make:
       chdir: "{{ src_dir }}/proton-bridge"
       target: build-nogui
+    when: '(src_dir + "/proton-bridge/proton-bridge") is not exists'
   - name: create home directories
     file:
       state: directory

@@ -19,6 +19,7 @@
 - name: execute make
   make:
     chdir: "{{ tmp_dir }}/{{ target }}"
+  when: (dir + "/" + target_bin) is not exists
 - name: copy executable to directory
   copy:
     remote_src: true

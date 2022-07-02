@@ -16,9 +16,11 @@
     - ["subs", "lbry"]
   - name: build programs (make)
     make:
-      chdir: "{{ src_dir }}/{{ item }}"
+      chdir: "{{ src_dir }}/{{ item.0 }}"
+    when: (src_dir + "/" + item.1) is not exists
     loop:
-    - subs
+    - - subs
+        subs
   - name: build programs (autotools)
     include_tasks: autotools.yaml
     vars:
