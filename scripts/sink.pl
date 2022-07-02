@@ -13,6 +13,7 @@ sub main {
         my @f = split;
         exec_cmd("pactl", "move-sink-input", $f[0], $id);
     }
+    set_profile($sink);
 }
 
 sub exec_cmd {
@@ -37,6 +38,21 @@ sub map_sink_name {
             return "sofhdadsp_4__sink";
         }
     }
+}
+
+sub set_profile {
+    my $sink = shift;
+    my $profile;
+    if($sink eq "analog-stereo") {
+        $profile = "output:analog-stereo+input:analog-stereo";
+    } elsif($sink eq "hdmi-stereo") {
+        $profile = "output:hdmi-stereo-extra1+input:analog-stereo";
+    } else {
+        return
+    }
+    my @cards = `pactl list short cards`;
+    my $card = (split(" ", $cards[0]))[1];
+    exec_cmd("pactl", "set-card-profile", $card, $profile);
 }
 
 main @ARGV;
