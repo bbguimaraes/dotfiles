@@ -52,3 +52,5 @@
       mode: "0755"
     loop:
     - n/comp/scripts/dev.sh
+  - import_tasks: aur.yaml
+    vars: {"pkg": "lbrynet-bin"}
