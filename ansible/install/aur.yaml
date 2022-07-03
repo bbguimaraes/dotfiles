@@ -7,10 +7,30 @@
   ignore_errors: true
   changed_when: false
   register: installed
-- name: build packages
-  command: aur sync --no-view --no-confirm {{ pkg }}
+- name: build packages (sync)
+  command:
+    argv:
+    - aur
+    - sync
+    - --syncdeps
+    - --rmdeps
+    - --no-confirm
+    - --no-view
+    - "{{ pkg }}"
   register: rc
-  when: installed is failed
+  when: installed is failed and dir is not defined
+- name: build packages (dir)
+  command:
+    argv:
+    - aur
+    - build
+    - --syncdeps
+    - --rmdeps
+    - --no-confirm
+    - "{{ pkg }}"
+    chdir: "{{ dir }}"
+  register: rc
+  when: installed is failed and dir is defined
 - name: update pacman cache
   command: pacman -Sy
   when: rc is changed
