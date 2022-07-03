@@ -55,3 +55,7 @@
     - n/comp/scripts/dev.sh
   - import_tasks: aur.yaml
     vars: {"pkg": "lbrynet-bin"}
+  - import_tasks: aur.yaml
+    vars:
+      pkg: doxygen-lua
+      dir: "{{ home }}/src/dotfiles/arch/doxygen-lua"
