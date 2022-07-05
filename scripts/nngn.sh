@@ -10,6 +10,7 @@ main() {
     check) subdir nngn.py check "$@";;
     configure) subdir nngn.py configure "$@";;
     launcher) launcher;;
+    plot) plot "$@";;
     *) usage;;
     esac
 }
@@ -23,6 +24,7 @@ Commands:
     check DIR CHECKS [-- CONFIGURE_ARGS...]
     configure DIR CHECKS [-- CONFIGURE_ARGS...]
     launcher
+    plot time
 EOF
     return 1
 }
@@ -39,6 +41,19 @@ launcher() {
     [[ -e "$t/$p" ]] && exec "$t/$p" "$PWD/sock"
     t=$(find /tmp/nngn -mindepth 1 -maxdepth 1 -print -quit)
     [[ "$t" ]] && exec "$t/$p" "$PWD/sock"
+}
+
+plot() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    time) plot_time "$@";;
+    *) usage;;
+    esac
+}
+
+plot_time() {
+    { echo g l; ts $'f %s\nd l'; } | nngn_plot
 }
 
 main "$@"
