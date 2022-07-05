@@ -35,30 +35,32 @@ displays() {
         elif [[ "$HOSTNAME" == rh* ]]; then second=$HDMI
         else second=HDMI-1; fi
         case "$mode" in
-        single) xrandr --output "$first" --auto --output "$second" --off;;
+        single)
+            xrandr \
+                --output "$first" --auto --primary \
+                --output "$second" --off;;
         mirror)
             xrandr \
-                --output "$first" --auto \
+                --output "$first" --auto --primary \
                 --output "$second" --auto \
                 --mode 1920x1080 -r 60 --same-as "$first";;
         dual)
             xrandr \
                 --output "$first" --auto \
-                --output "$second" --auto \
+                --output "$second" --auto --primary \
                 --mode 1920x1080 -r 60 --above "$first"
             workspaces "$first" "$second";;
         tv) xrandr \
             --output "$first" --off \
-            --output "$second" --auto --mode 1920x1080 -r 60;;
+            --output "$second" --auto --primary --mode 1920x1080 -r 60;;
         120hz) xrandr \
             --output "$first" --off \
-            --output "$second" --auto --mode 1920x1080 -r 120;;
+            --output "$second" --auto --primary --mode 1920x1080 -r 120;;
         4k) xrandr \
             --output "$first" --off \
-            --output "$second" --auto --mode 4096x2160;;
+            --output "$second" --auto --primary --mode 4096x2160;;
         esac
     esac
-    xrandr --output $first --output $second
 }
 
 toggle() {
