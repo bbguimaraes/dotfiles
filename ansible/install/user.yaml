@@ -133,7 +133,15 @@
       value: '{{ item.val }}'
     loop:
     - opt: beep.conditions
-      val: ${tg_displayed}
+      val: '"${tg_displayed}"'
+      file: trigger.conf
+      section: trigger
+    - opt: beep.command
+      val: '"/print -beep"'
+      file: trigger.conf
+      section: trigger
+    - opt: beep.hook
+      val: print
       file: trigger.conf
       section: trigger
     - file: weechat.conf
