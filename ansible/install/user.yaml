@@ -114,10 +114,17 @@
       src: '{{ item.0 }}'
       dest: '{{ data_dir }}/{{ item.1 }}'
     loop:
-    - - /usr/share/weechat/python/weechat-matrix.py
-      - python/autoload/weechat-matrix.py
     - - /usr/share/weechat/python/edit.py
       - python/autoload/edit.py
+  - name: create symlinks (matrix)
+    file:
+      state: link
+      src: '{{ item.0 }}'
+      dest: '{{ data_dir }}/{{ item.1 }}'
+    loop:
+    - - /usr/share/weechat/python/weechat-matrix.py
+      - python/autoload/weechat-matrix.py
+    when: "'personal' in group_names"
   - name: set weechat variables
     ini_file:
       path: '{{ conf_dir }}/{{ item.file }}'
