@@ -55,6 +55,7 @@ cmd_all() {
 work() {
     if ! ip link show tun0 > /dev/null ; then
         sudo /usr/local/bin/openvpn.sh redhat_brq.conf
+        until ip link show tun0 > /dev/null; do sleep 0.5; done
     fi
     if ! klist > /dev/null; then
         tmux split-window sh -c 'kinit bbarcaro'
