@@ -13,7 +13,6 @@ order += "disk /tmp"
 order += "wireless _first_"
 order += "ethernet enp0s25"
 order += "battery 0"
-order += "battery 1"
 order += "tztime date"
 
 load {
@@ -49,10 +48,6 @@ ethernet enp0s25 {
 }
 
 battery 0 {
-    format = "%status %percentage %remaining"
-}
-
-battery 1 {
     format = "%status %percentage %remaining"
 }
 
