@@ -14,11 +14,6 @@ order += "wireless _first_"
 order += "ethernet enp0s25"
 order += "battery 0"
 order += "battery 1"
-order += "tztime pacific"
-order += "tztime eastern"
-order += "tztime brazil"
-order += "tztime prague"
-order += "tztime utc"
 order += "tztime date"
 
 load {
@@ -73,30 +68,6 @@ disk "/tmp" {
     format = "/tmp %avail"
 }
 
-tztime pacific {
-    format = "P: %H:%M"
-    timezone = "US/Pacific"
-}
-
-tztime eastern {
-    format = "E: %H:%M"
-    timezone = "US/Eastern"
-}
-
-tztime brazil {
-    format = "BR: %H:%M"
-    timezone = "America/Sao_Paulo"
-}
-
-tztime prague {
-    format = "CE: %H:%M"
-    timezone = "Europe/Prague"
-}
-
-tztime utc {
-    format = "%H:%M:%S"
-}
-
 tztime date {
-    format = "%Y-%m-%d"
+    format = "%Y-%m-%dT%H:%M:%S"
 }
