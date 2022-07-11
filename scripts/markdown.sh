@@ -2,7 +2,7 @@
 set -euo pipefail
 
 main() {
-    [[ "$#" -eq 0 ]] && usage
+    [[ "$#" -eq 0 ]] && { simple; return; }
     local cmd=$1; shift
     case "$cmd" in
     simple) simple "$@";;
