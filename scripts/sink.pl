@@ -31,9 +31,6 @@ sub find_sink {
 
 sub map_sink_name {
     my ($sink, $host) = @_;
-    if($sink eq "bluez") {
-        return "bluez_sink.B8_F6_53_C4_6B_53.a2dp_sink";
-    }
     if($host =~ /^rh/) {
         if($sink eq "analog-stereo") {
             return "sofhdadsp__sink";
@@ -41,6 +38,10 @@ sub map_sink_name {
             return "sofhdadsp_4__sink";
         } elsif($sink eq "bluez") {
             return "bluez_output.B8_F6_53_C4_6B_53.a2dp-sink";
+        }
+    } else {
+        if($sink eq "bluez") {
+            return "bluez_sink.B8_F6_53_C4_6B_53.a2dp_sink";
         }
     }
 }
