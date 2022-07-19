@@ -59,3 +59,7 @@
     vars:
       pkg: doxygen-lua
       dir: "{{ home }}/src/dotfiles/arch/doxygen-lua"
+  - import_tasks: aur.yaml
+    vars:
+      pkg: vulkan-memory-allocator
+      dir: "{{ home }}/src/dotfiles/arch/vulkan-memory-allocator"
