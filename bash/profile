@@ -6,6 +6,7 @@ export EDITOR=vim
 export TERMINAL=urxvt
 export PATH=$HOME/.local/bin${PATH+:$PATH}
 [[ "$HOSTNAME" == rh* ]] && PATH=$PATH:$HOME/go/bin
+export NIX_SHELL_PRESERVE_PROMPT=1
 export PASSWORD_STORE_X_SELECTION=primary
 export QT_QPA_PLATFORMTHEME=qt5ct
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
