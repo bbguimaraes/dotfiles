@@ -8,8 +8,8 @@ main() {
     [[ "$#" -eq 0 ]] && { brightness; return; }
     local cmd=$1; shift
     case "$cmd" in
-    *) brightness "$cmd" "$@";;
     gui) gui "$@";;
+    *) brightness "$cmd" "$@";;
     esac
 }
 
