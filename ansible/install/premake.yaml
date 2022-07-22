@@ -1,0 +1,14 @@
+- name: check target
+  stat:
+    path: "{{ dir }}/{{ target_bin }}"
+  register: rc
+- name: create Makefile
+  command:
+    chdir: "{{ dir }}"
+    argv: ["premake5", "gmake2"]
+    creates: "{{ dir }}/Makefile"
+- name: execute make
+  make:
+    chdir: "{{ dir }}"
+    params: config=release
+  when: (dir + "/" + target_bin) is not exists
