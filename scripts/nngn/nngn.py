@@ -203,6 +203,8 @@ CHECKS = {
     },
 }
 
+TITLE_FMT = "=== [{}/{}] {} ===\n"
+
 def main(*args):
     args = parse_args(args)
     if not args:
@@ -244,7 +246,7 @@ def cmd_configure(dir, names, args):
         if i != 0:
             print()
         check = make_check(CHECKS[name])
-        print("===", check.name, "===\n")
+        print(TITLE_FMT.format(i, len(names), check.name))
         configure(os.path.join(dir, name), name, check, args)
 
 def cmd_check(dir, names, args):
@@ -268,6 +270,7 @@ def cmd_check(dir, names, args):
             for i, (name, check) in enumerate(zip(names, checks)):
                 if i != 0:
                     print()
+                print(TITLE_FMT.format(i, len(names), check.name))
                 results.append(
                     exec_test(os.path.join(dir, name), check, args, env))
         except KeyboardInterrupt:
@@ -322,7 +325,6 @@ def exec_test(dir: str, check: Check, args: List[str], env: Dict) -> Result:
     if l := check.linker:
         cmd.append(f"CXXLD={l}")
     cmd.extend(args)
-    print("===", check.name, "===\n")
     print("cmd:\n")
     for c in cmd:
         print("-", c)
