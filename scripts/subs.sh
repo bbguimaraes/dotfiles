@@ -14,6 +14,7 @@ main() {
     audio) audio "$@";;
     complete) cmd_complete;;
     dailywire) "${VIDEOS[@]}" --tags dailywire --unwatched | "${VIM[@]}";;
+    download) download;;
     enqueue)
         subs videos --unwatched --untagged --flat --fields url \
             | xargs celluloid --enqueue;;
@@ -51,6 +52,7 @@ Commands:
     audio FILES...
     complete
     dailywire
+    download
     enqueue
     play ARGS...
     unwatched
@@ -75,6 +77,13 @@ cmd_complete() {
     1) compgen -W "${CMDS[*]}";;
     2) compgen -W "${CMDS[*]}" "${line[$((n - 1))]}";;
     esac
+}
+
+download() {
+    awk '{print $2}' \
+        | xargs --max-args 1 --max-procs 0 \
+            bash -c 'while ! "$@" && [[ "$?" -le 128 ]]; do sleep 1; done' \
+            bash youtube-dl
 }
 
 main "$@"
