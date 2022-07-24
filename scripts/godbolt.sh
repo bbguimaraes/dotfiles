@@ -49,6 +49,9 @@ CXX_INCLUDES_PROG=$(cat <<'EOF'
 #include <span>
 #include <string>
 #include <string_view>
+#include <tuple>
+#include <type_traits>
+#include <utility>
 #include <vector>
 
 #define FWD(x) std::forward<decltype(x)>(x)
