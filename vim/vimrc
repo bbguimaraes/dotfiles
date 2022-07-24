@@ -72,6 +72,10 @@ nnoremap <leader>tp :setlocal invpaste<cr>
 nnoremap <leader>ts :call ToggleSyntax()<cr>
 nnoremap <leader>tw :setlocal invwrap<cr>
 
+nnoremap <leader>cO :silent '<,'> call Comment()<cr>
+nnoremap <leader>co
+\   :silent 1,'<-1 call Comment()<cr>
+\   :silent '>+1,$ call Comment()<cr>
 nnoremap <leader>ct :checktime<cr>
 nnoremap <leader>dd :GitGutterToggle<cr>
 nnoremap <leader>dw :windo setlocal invdiff invscrollbind<cr>
@@ -96,6 +100,30 @@ nnoremap <silent> <leader>rt :%s/\s\+$//<cr>
 nnoremap <leader>nc /^\(<<<<<<< \\|=======\\|>>>>>>> \)<cr>
 
 vnoremap <leader>. :normal .<cr>
+vnoremap <leader>cO :silent call Comment()<cr>
+vnoremap <leader>co :silent call CommentOthers()<cr>
+
+function! CommentFromFileType()
+    if &filetype == "plaintex"
+        return "%"
+    elseif &filetype == "perl"
+        return "#"
+    endif
+    return "//"
+endfunction
+
+function! CommentFromFileTypeEscaped()
+    return escape(CommentFromFileType(), "/")
+endfunction
+
+function! Comment()
+    execute ":s/^/" . CommentFromFileTypeEscaped() . "/"
+endfunction
+
+function! CommentOthers() range
+    execute ":1,'<-1 s/^/" . CommentFromFileTypeEscaped() . "/"
+    execute ":'>+1,$ s/^/" . CommentFromFileTypeEscaped() . "/"
+endfunction
 
 function! ToggleHeader()
     let l:f = ""
