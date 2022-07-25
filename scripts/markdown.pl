@@ -2,7 +2,9 @@
 use strict;
 use warnings;
 
-use constant MARKDOWN => ('markdown', '-f', 'fencedcode,footnote,links');
+use constant MARKDOWN => (
+    'markdown', '-f', 'autolink,fencedcode,footnote,links',
+);
 
 sub main {
     my $cmd = shift;
