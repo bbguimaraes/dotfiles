@@ -72,6 +72,7 @@ nnoremap <leader>tp :setlocal invpaste<cr>
 nnoremap <leader>ts :call ToggleSyntax()<cr>
 nnoremap <leader>tw :setlocal invwrap<cr>
 
+nnoremap <leader>b :CtrlPBuffer<cr>
 nnoremap <leader>cO :silent '<,'> call Comment()<cr>
 nnoremap <leader>co
 \   :silent 1,'<-1 call Comment()<cr>
