@@ -27,10 +27,12 @@
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['bash/profile',         '.bash_profile']
-    - ['bash/bashrc',          '.bashrc']
-    - ['git/config',           '.config/git/config']
-    - ['bash/inputrc',         '.inputrc']
-    - ['tmux.conf',            '.tmux.conf']
-    - ['vim/preto.vim',        '.vim/colors/preto.vim']
-    - ['vim/vimrc',            '.vimrc']
+    - ['bash/profile', '.bash_profile']
+    - ['bash/bashrc',  '.bashrc']
+    - ['git/config',   '.config/git/config']
+    - ['bash/inputrc', '.inputrc']
+    - ['tmux.conf',    '.tmux.conf']
+    - ['vim/colors',   '.vim/colors']
+    - ['vim/ftplugin', '.vim/ftplugin']
+    - ['vim/plugin',   '.vim/plugin']
+    - ['vim/vimrc',    '.vimrc']
