@@ -6,6 +6,7 @@ main() {
     local cmd=$1; shift
     case "$cmd" in
     token) token "$@";;
+    pw) pw "$@";;
     *) usage;;
     esac
 }
@@ -36,6 +37,14 @@ login
 bbguimaraes
 $(pass show comp/protonmail/pw)
 EOF
+    start
+}
+
+pw() {
+    local pw
+    stop
+    pw=$(proton-bridge --cli <<< info | awk '/^Password:/{print$2}')
+    pass insert --force comp/protonmail/tjobim <<< "$pw"
     start
 }
 
