@@ -21,13 +21,22 @@ EOF
     return 1
 }
 
-token() {
+stop() {
     systemctl --user stop proton-bridge.service
+}
+
+start() {
+    systemctl --user start proton-bridge.service
+}
+
+token() {
+    stop
     proton-bridge --cli <<EOF
-login bbguimaraes
+login
+bbguimaraes
 $(pass show comp/protonmail/pw)
 EOF
-    systemctl --user start proton-bridge.service
+    start
 }
 
 main "$@"
