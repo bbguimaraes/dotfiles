@@ -31,12 +31,12 @@
   - name: setup other symlinks
     file:
       state: link
-      src: '{{ item.0 }}'
+      src: '{{ home }}/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['{{ home }}/n/comp/scripts/dev.sh', '.local/bin/d']
-    - ['{{ home }}/n/archive/money', '.local/share/nummi/db']
-    - ['{{ home }}/src/proton-bridge/proton-bridge', '.local/bin/proton-bridge']
+    - ['src/dotfiles/scripts/dev.sh', '.local/bin/d']
+    - ['n/archive/money', '.local/share/nummi/db']
+    - ['src/proton-bridge/proton-bridge', '.local/bin/proton-bridge']
   - name: enable and start services
     systemd:
       enabled: true
@@ -46,13 +46,6 @@
       daemon_reload: true
     loop:
     - proton-bridge
-  - name: make scripts in Nextcloud executable
-    file:
-      state: file
-      path: "{{ home }}/{{ item }}"
-      mode: "0755"
-    loop:
-    - n/comp/scripts/dev.sh
   - import_tasks: aur.yaml
     vars: {"pkg": "lbrynet-bin"}
   - import_tasks: aur.yaml

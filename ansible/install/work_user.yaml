@@ -17,7 +17,7 @@
       src: '{{ home }}/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['n/comp/scripts/dev.sh', '.local/bin/d']
+    - ['src/dotfiles/scripts/dev.sh', '.local/bin/d']
     - ['n/archive/work/redhat', 'rh']
     - ['rh/scripts/gotestsum.sh', '.local/bin/gotestsum']
     - ['rh/scripts/redhat.sh', '.local/bin/rh']
@@ -36,7 +36,6 @@
       path: "{{ home }}/{{ item }}"
       mode: "0755"
     loop:
-    - n/comp/scripts/dev.sh
     - rh/scripts/gotestsum.sh
     - rh/scripts/redhat.sh
 - hosts: desktops:&work:&arch
