@@ -35,9 +35,9 @@ EOF
 
 compress() {
     local in=$1; shift
-    exec ffmpeg \
+    ffmpeg \
         -threads "$(nproc)" -i "$in" \
-        -acodec copy -quality realtime -speed 0 -crf 33 "$@"
+        -cpu-used 0 -acodec copy -quality realtime -speed 0 -crf 33 "$@"
 }
 
 conv() {
@@ -52,7 +52,8 @@ conv() {
 conv_audio() {
     local in=$1; shift
     local out=${in%.*}.ogg
-    [[ -e "$out" ]] || exec ffmpeg -threads "$(nproc)" -i "$in" -vn "$out" "$@"
+    [[ -e "$out" ]] \
+        || exec ffmpeg -threads "$(nproc)" -i "$in" -cpu-used 0 -vn "$out" "$@"
 }
 
 playlist() {
@@ -71,7 +72,9 @@ playlist() {
 
 poster() {
     local t=$1 input=$2 output=$3; shift 3
-    ffmpeg -i "$input" -ss "$t" -vframes 1 "$output" "$@"
+    ffmpeg \
+        -threads "$(nproc)" -i "$input" \
+        -cpu-used 0 -ss "$t" -vframes 1 "$output" "$@"
 }
 
 main "$@"
