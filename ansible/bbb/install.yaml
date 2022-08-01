@@ -1,9 +1,11 @@
 - hosts: bbb
-  vars:
-    pkgs: >-
-      base-devel premake
   tasks:
-  - name: install packages
-    package:
+  - name: configure locale
+    locale_gen:
+      name: en_US.UTF-8
       state: present
-      name: "{{ pkgs|split(' ') }}"
+  - name: create locale.conf
+    copy:
+      dest: /etc/locale.conf
+      content: |
+        LANG=en_US.UTF-8
