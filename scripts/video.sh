@@ -27,7 +27,9 @@ Commands:
     conv audio FILE
     split ARGS...
     compress FILE ARGS...
-    playlist NAME URL
+    playlist URL
+    playlist urls URL
+    playlist txt NAME URL
     poster TIME SRC DST ARGS...
 EOF
     return 1
@@ -57,6 +59,30 @@ conv_audio() {
 }
 
 playlist() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    http://|https://) playlist_json "$@";;
+    urls) playlist_urls "$@";;
+    txt) playlist_txt "$@";;
+    *) usage;;
+    esac
+}
+
+playlist_json() {
+    youtube-dl --dump-single-json "$@"
+}
+
+playlist_urls() {
+    local jq_cmd='
+.entries[]
+    | ["https://youtube.com/watch?v=" + .id, .title]
+    | join(" ")
+'
+    playlist_json "$@" | jq --raw-output "$jq_cmd"
+}
+
+playlist_txt() {
     local name=$1 url=$2; shift 2
     if ! [[ -f "$name.json" ]]; then
         youtube-dl --dump-json --ignore-errors "$url" "$@" \
