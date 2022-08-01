@@ -6,6 +6,7 @@ main() {
     local cmd=$1; shift
     case "$cmd" in
     comment) comment "$@";;
+    for-file) for_file "$@";;
     for-ref) for_ref "$@";;
     status) status "$@";;
     watch) watch "$@";;
@@ -19,6 +20,7 @@ Usage: $0 [CMD ARGS...]
 
 Commands:
 
+    for-file PATH...
     for-ref REFS...
     status HUB_ARGS...
     watch HUB_ARGS...
@@ -46,6 +48,17 @@ comment() {
     hub api \
         "repos/{owner}/{repo}/issues/$n/comments" \
         --method POST --raw-field "body=$1"
+}
+
+for_file() {
+    local open=
+    [[ "$#" -ne 0 ]] && [[ "$1" == -o ]] && { open=1; shift; }
+    [[ "$#" -eq 0 ]] && usage
+    local f r
+    for f; do
+        r=$(git log --format=%h --max-count 1 -- "$f")
+        [[ "$r" ]] && for_ref ${open:+-o} "$r"
+    done
 }
 
 for_ref() {
