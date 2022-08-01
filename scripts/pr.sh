@@ -50,10 +50,8 @@ comment() {
 
 for_ref() {
     local open= rev url j
-    case "$#" in
-    0) set -- HEAD;;
-    *) [[ "$1" == -o ]] && { open=1; shift; };;
-    esac
+    [[ "$#" -ne 0 ]] && [[ "$1" == -o ]] && { open=1; shift; }
+    [[ "$#" -eq 0 ]] && set -- HEAD
     for rev; do
         rev=$(git rev-parse "$rev")
         j=$(hub api "search/issues?q=org:{owner}+repo:{repo}+sha:$rev")
