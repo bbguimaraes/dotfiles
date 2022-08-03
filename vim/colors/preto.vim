@@ -238,7 +238,9 @@ let g:rbpt_colorpairs = [
 function! PretoToggleComments()
     if hlget("Comment")[0].ctermfg == s:palette.white[0]
         call s:HL("Comment", s:palette.gray05, s:palette.black, 'bold')
+        echo "comments off"
     else
         call s:HL("Comment", s:palette.white, s:palette.black, 'bold')
+        echo "comments on"
     endif
 endfunction

@@ -8,7 +8,7 @@ nnoremap <leader>b :CtrlPBuffer<cr>
 nnoremap <leader>cp :r! xclip -selection clipboard -out<cr>
 nnoremap <leader>ct :checktime<cr>
 nnoremap <leader>dd :GitGutterToggle<cr>
-nnoremap <leader>dw :windo setlocal invdiff invscrollbind<cr>
+nnoremap <leader>dw :windo setlocal invdiff invscrollbind<cr>:setlocal diff?<cr>
 nnoremap <leader>e :CtrlP<cr>
 nnoremap <leader>h :set hlsearch \| let @/ = expand("<cword>")<cr>
 nnoremap <leader>m :w \| Make<cr>
@@ -21,12 +21,12 @@ nnoremap <silent> <leader>op
 nnoremap <leader>p :r! xclip -out<cr>
 nnoremap <silent> <leader>rt :%s/\s\+$//<cr>
 nnoremap <leader>s :source $MYVIMRC<cr>
-nnoremap <leader>tn :setlocal invnumber<cr>
-nnoremap <leader>tp :setlocal invpaste<cr>
+nnoremap <leader>tn :setlocal invnumber<cr>:setlocal number?<cr>
+nnoremap <leader>tp :setlocal invpaste<cr>:setlocal paste?<cr>
 nnoremap <leader>ts :call ToggleSyntax()<cr>
 nnoremap <leader>tt :TagbarToggle<cr>
 nnoremap <leader>tu :Dispatch! ctags -R<cr>
-nnoremap <leader>tw :setlocal invwrap<cr>
+nnoremap <leader>tw :setlocal invwrap<cr>:setlocal wrap?<cr>
 nnoremap <leader>vr :execute "resize " . line("$")<cr>
 nnoremap <leader>w :write \| :call system("d do")<cr><c-l>
 
