@@ -23,7 +23,7 @@
       mutt nextcloud-client nix offlineimap openbsd-netcat p7zip pacman-contrib
       pass perf pigz pixz poppler pv python-matplotlib ripgrep rlwrap sshfs
       strace units unrar unzip vdirsyncer weechat weechat-matrix words
-      youtube-dl
+      youtube-dl yq
     - >- # aurutils
       diffstat expac pacutils parallel wget
     - >- # wine
