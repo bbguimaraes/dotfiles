@@ -26,3 +26,4 @@
     src: "{{ tmp_dir }}/{{ target }}/{{ target_bin }}"
     dest: "{{ dir }}/{{ target_bin }}"
     mode: preserve
+  when: (dir + "/" + target_bin) is not exists
