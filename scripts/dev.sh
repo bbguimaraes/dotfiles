@@ -152,7 +152,7 @@ office() {
 }
 
 p() {
-    local p=/tmp/p local m=$HOME/p
+    local dst=/tmp/p src=$HOME/p
     mkdir --parents "$src" "$dst"
     awk -v "dst=$dst" '$2 == dst { exit 1 }' < /proc/mounts \
         && encfs "$src" "$dst"
