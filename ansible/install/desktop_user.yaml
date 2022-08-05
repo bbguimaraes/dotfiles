@@ -40,6 +40,7 @@
       state: directory
       path: '{{ home }}/{{ item }}'
     loop:
+    - .config/ccache
     - .config/gdb
     - .config/git
     - .config/i3
@@ -63,6 +64,7 @@
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
+    - ['ccache.conf',          '.config/ccache/ccache.conf']
     - ['gdb/init',             '.config/gdb/gdbinit']
     - ['git/tigrc',            '.config/tig/config']
     - ['i3/config',            '.config/i3/config']
