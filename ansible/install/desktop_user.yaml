@@ -82,7 +82,6 @@
     - ['redshift.conf',        '.config/redshift.conf']
     - ['ripgrep',              '.config/ripgrep/config']
     - ['user-dirs.dirs',       '.config/user-dirs.dirs']
-    - ['vim/preto.vim',        '.vim/colors/preto.vim']
     - ['xorg/xinitrc',         '.xinitrc']
     - ['xorg/Xresources',      '.Xresources']
   - name: setup other symlinks
