@@ -174,12 +174,8 @@ CHECKS = {
         "compiler": "g++",
         "target": "distcheck",
         "make_args": (
-            "DISTCHECK_CONFIGURE_FLAGS=" + " ".join((
-                "--enable-tests", "--enable-benchmarks", "--enable-tools",
-                "--enable-lua-alloc",
-                "--with-openal", "--with-opengl", "--with-vulkan",
-                "--with-libpng", "--with-freetype2", "--with-opencl",
-            )),
+            "DISTCHECK_CONFIGURE_FLAGS="
+                + " ".join((*CONFIGURE_ARGS, "--with-opencl")),
         ),
     },
     "tidy": {
