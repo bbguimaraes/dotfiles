@@ -13,7 +13,9 @@ function! TabLine(short)
         let len_i = len(TabLabel(i, sel, a:short))
         let total_len += len_i + 4
         if a:short && &columns < total_len && i_sel < i
-            let s ..= '%#TabLine#  >'
+            let s ..= '%#TabLine#  '
+            let s ..= repeat(' ', &columns + len_i - total_len + 1)
+            let s ..= '>'
             break
         endif
         let s ..= printf(
