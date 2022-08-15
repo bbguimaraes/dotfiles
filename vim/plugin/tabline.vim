@@ -10,16 +10,15 @@ function! TabLine(short)
     for i in range(tabpagenr('$'))
         let i += 1
         let sel = i == i_sel
-        let total_len += len(TabLabel(i, sel, 0)) + 4
+        let len_i = len(TabLabel(i, sel, a:short))
+        let total_len += len_i + 4
+        if a:short && &columns < total_len && i_sel < i
+            let s ..= '%#TabLine#  >'
+            break
+        endif
         let s ..= printf(
 \           '%%#%s#%%%dT  %%{TabLabel(%d, %d, %d)}  ',
 \           sel ? 'TabLineSel' : 'TabLine', i, i, sel, a:short)
-        if a:short && &columns < total_len && i_sel <= i
-            if i != tabpagenr('$')
-                let s ..= '%#TabLine#  >'
-            endif
-            break
-        endif
     endfor
     let s ..= '%#TabLineFill#%T'
     if !a:short && &columns < total_len
