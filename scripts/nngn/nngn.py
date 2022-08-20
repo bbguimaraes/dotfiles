@@ -43,7 +43,7 @@ LINUX_LDFLAGS = (
 
 MINGW = "x86_64-w64-mingw32"
 def MINGW_SETUP(d: str):
-    if not os.path.exists(os.path.join(d, "mingw")):
+    if not os.path.exists(os.path.join(d, "mingw/include/lua.h")):
         if os.path.exists("scripts/src_build.sh"):
             subprocess.check_call(
                 ("scripts/src_build.sh", "mingw", d),
@@ -56,7 +56,7 @@ def WASM_SETUP(d: str):
         os.symlink(os.path.join(d, "nngn.js"), "nngn.js")
     if not os.path.lexists("nngn.wasm"):
         os.symlink(os.path.join(d, "nngn.wasm"), "nngn.wasm")
-    if not os.path.exists(os.path.join(d, "emscripten")):
+    if not os.path.exists(os.path.join(d, "emscripten/include/lua.h")):
         if os.path.exists("scripts/src_build.sh"):
             subprocess.check_call(("scripts/src_build.sh", "emscripten", d))
 
