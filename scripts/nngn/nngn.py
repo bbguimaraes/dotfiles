@@ -180,6 +180,9 @@ CHECKS = {
             "--disable-benchmarks",
             "--disable-tools",
             "--disable-tests",
+            "--with-opengl",
+            "--with-libpng",
+            "--with-freetype2",
             "--without-opencl",
             "--without-vulkan",
             "PKG_CONFIG_LIBDIR=" + os.path.join(
