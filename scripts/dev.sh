@@ -3,7 +3,7 @@ set -euo pipefail
 
 CMDS=(
     analog beep blue c cal complete compose custos date every f fmt hdmi http
-    lock mail man money mpv mutt nosuspend office p paste pause ping pull
+    lock mail man money mpv mutt nosuspend office p paste pause picom ping pull
     suspend todo ts until vtr w weechat
 )
 
@@ -36,6 +36,9 @@ main() {
     p) p "$@";;
     paste) exec curl -F 'f:1=<-' ix.io;;
     pause) pause;;
+    picom) exec picom \
+        --backend glx --vsync --no-fading-openclose \
+        --fade-in-step 1 --fade-out-step 1 --inactive-opacity 1;;
     ping) exec mpv --no-terminal ~/n/archive/ping.flac;;
     pull) pull "$@";;
     suspend) (d lock); exec systemctl suspend;;
