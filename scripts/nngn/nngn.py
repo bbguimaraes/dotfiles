@@ -169,20 +169,6 @@ CHECKS = {
         "cxxflags": (*DEBUG_CXXFLAGS, "-isystem", "mingw/include"),
         "ldflags": ("-L", "mingw/lib"),
     },
-    "distcheck": {
-        "name": "distcheck",
-        "compiler": "g++",
-        "target": "distcheck",
-        "make_args": (
-            "DISTCHECK_CONFIGURE_FLAGS="
-                + " ".join((*CONFIGURE_ARGS, "--with-opencl")),
-        ),
-    },
-    "tidy": {
-        "name": "tidy",
-        "target": "tidy",
-        "make_args": ("--keep-going",),
-    },
     "wasm": {
         "name": "Web Assembly",
         "setup": WASM_SETUP,
@@ -201,6 +187,20 @@ CHECKS = {
         "cxxflags": (
             "-g0", "-isystem emscripten/include", "-Wno-old-style-cast"),
         "ldflags": ("-L", "emscripten/lib"),
+    },
+    "distcheck": {
+        "name": "distcheck",
+        "compiler": "g++",
+        "target": "distcheck",
+        "make_args": (
+            "DISTCHECK_CONFIGURE_FLAGS="
+                + " ".join((*CONFIGURE_ARGS, "--with-opencl")),
+        ),
+    },
+    "tidy": {
+        "name": "tidy",
+        "target": "tidy",
+        "make_args": ("--keep-going",),
     },
 }
 
