@@ -27,7 +27,7 @@ Commands:
     authors file ARGS...
     authors weekday ARGS...
     backport REV
-    diff log REV0 REV1
+    diff log [DIFF_ARGS...] REV0 REV1
     bbguimaraes exec CMD...
     rebase branches [BRANCHES...]
 EOF
@@ -121,12 +121,18 @@ cmd_diff() {
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
     log) diff_log "$@";;
-    *) echo >&2 "invalid command: rebase $cmd"; return 1
+    *) usage;;
     esac
 }
 
 diff_log() {
-    diff -u <(git log --format=%s "$1" --) <(git log --format=%s "$2" --)
+    [[ "$#" -lt 2 ]] && usage
+    local args=("${@:1}")
+    local n=${#args[@]}
+    diff \
+        "${args[@]:0:$n - 2}" \
+        <(git log --format=%s "${args[$n - 2]}" --) \
+        <(git log --format=%s "${args[$n - 1]}" --)
 }
 
 rebase() {
@@ -134,7 +140,7 @@ rebase() {
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
     branches) rebase_branches "$@";;
-    *) echo >&2 "invalid command: rebase $cmd"; return 1
+    *) usage;;
     esac
 }
 
