@@ -185,6 +185,7 @@ CHECKS = {
             "--with-freetype2",
             "--without-opencl",
             "--without-vulkan",
+            "EMMAKEN_JUST_CONFIGURE=1",
             "PKG_CONFIG_LIBDIR=" + os.path.join(
                 os.path.abspath(os.curdir),
                 "scripts/emscripten/pkgconfig"),
