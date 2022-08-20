@@ -23,8 +23,11 @@ SANITIZERS = (
     "pointer-compare", "pointer-subtract",
 )
 
-CXXFLAGS = ("-g3", "-gdwarf-4")
-DEBUG_CXXFLAGS=("-O0", "-UNDEBUG", "-Wnull-dereference", "-Wnonnull")
+CXXFLAGS = ("-g3", "-gdwarf-4", "-ffunction-sections")
+DEBUG_CXXFLAGS= (
+    "-ffunction-sections", "-O0", "-UNDEBUG",
+    "-Wnull-dereference", "-Wnonnull",
+)
 SANITIZERS_CXXFLAGS = (
     *CXXFLAGS,
     "-D_GLIBCXX_SANITIZE_VECTOR",
@@ -35,7 +38,7 @@ SANITIZERS_CXXFLAGS = (
 )
 LINUX_LDFLAGS = (
     "-fuse-ld=gold",
-    "-Wl,--threads,--preread-archive-symbols",
+    "-Wl,--threads,--preread-archive-symbols,--gc-sections",
 )
 
 MINGW = "x86_64-w64-mingw32"
