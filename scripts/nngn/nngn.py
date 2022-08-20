@@ -9,7 +9,7 @@ import time
 from typing import Dict, List
 
 Check = collections.namedtuple("Check", (
-    "name", "configure", "configure_args", "compiler", "linker",
+    "name", "configure", "configure_args", "make", "compiler", "linker",
     "target", "cxxflags", "ldflags", "libs", "env", "make_args",
     "setup"))
 Result = collections.namedtuple("Result", ("code", "time"))
@@ -197,6 +197,7 @@ CHECKS = {
                 os.path.abspath(os.curdir),
                 "scripts/emscripten/pkgconfig"),
         ),
+        "make": ("emmake", "make"),
         "cxxflags": (
             "-g0", "-isystem emscripten/include", "-Wno-old-style-cast"),
         "ldflags": ("-L", "emscripten/lib"),
@@ -317,7 +318,11 @@ def setup_env(tmp: str) -> Dict:
     return ret
 
 def exec_test(dir: str, check: Check, args: List[str], env: Dict) -> Result:
-    cmd = ["make"]
+    cmd = []
+    if m := check.make:
+        cmd.extend(m)
+    else:
+        cmd.append("make")
     if check.target:
         cmd.append(check.target)
     if check.make_args:
