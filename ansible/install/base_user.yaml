@@ -32,6 +32,7 @@
     - ['git/config',   '.config/git/config']
     - ['bash/inputrc', '.inputrc']
     - ['tmux.conf',    '.tmux.conf']
+    - ['vim/after',    '.vim/after']
     - ['vim/colors',   '.vim/colors']
     - ['vim/ftplugin', '.vim/ftplugin']
     - ['vim/plugin',   '.vim/plugin']
