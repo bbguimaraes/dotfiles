@@ -2,5 +2,9 @@
 set -euo pipefail
 
 p=$(pass show bbguimaraes.com/nextcloud/cal)
-while timeout 5m vdirsyncer --verbosity WARNING sync --force-delete <<< "$p"
-do sleep 5m; done
+cmd='timeout 5m vdirsyncer --verbosity WARNING sync --force-delete'
+max=3 n=$max
+while { $cmd <<< "$p" && n=$max; } || [[ "$((--n))" -ne 0 ]]; do
+    sleep 5m
+done
+exit 1
