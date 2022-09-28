@@ -64,6 +64,7 @@
       name: dev.i915.perf_stream_paranoid
       value: '0'
       state: present
+      sysctl_file: /etc/sysctl.d/i915.conf
 - hosts: desktops:&arch
   tags: aurutils
   vars:
