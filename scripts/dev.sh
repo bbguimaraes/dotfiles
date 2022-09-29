@@ -4,7 +4,7 @@ set -euo pipefail
 CMDS=(
     analog beep blue c cx cal complete compose custos date every f fmt hdmi http
     lock mail man money mpv mutt nosuspend office p paste pause picom ping pull
-    suspend todo ts until vtr w weechat
+    sshfs suspend todo ts until vtr w weechat
 )
 
 main() {
@@ -42,6 +42,7 @@ main() {
         --fade-in-step 1 --fade-out-step 1 --inactive-opacity 1;;
     ping) exec mpv --no-terminal ~/n/archive/ping.flac;;
     pull) pull "$@";;
+    sshfs) exec sshfs -o ServerAliveInterval=15 -o reconnect "$@";;
     suspend) (d lock); exec systemctl suspend;;
     todo) exec "$VISUAL" \
         -c "source $HOME/src/dotfiles/vim/todo.vim" \
