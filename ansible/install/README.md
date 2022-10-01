@@ -64,6 +64,7 @@ Start XOrg, configure Nextcloud, synchronize files, then:
         --extra-vars nixpkgs=https://nixos.org/channels/nix-22.05 \
         ansible/install/nix.yaml
     $ ansible-playbook --user root ansible/install/gpg_pam.yaml
+    $ ansible-playbook ansible/install/gpg_pam_user.yaml
 
 For personal systems:
 

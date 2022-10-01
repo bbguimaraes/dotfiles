@@ -5,7 +5,7 @@
       state: present
       dest: /etc/pam.d/system-local-login
       block: |
-        auth     optional  pam_gnupg.so
+        auth     optional  pam_gnupg.so store-only
         session  optional  pam_gnupg.so
   - name: enable for i3lock
     lineinfile:
