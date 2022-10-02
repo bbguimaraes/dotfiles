@@ -15,7 +15,7 @@
       i3lock i3status i3-wm imagemagick inkscape kdenlive libreoffice-fresh
       mednafen mupdf picom qt5ct redshift rxvt-unicode scrot
       simplescreenrecorder ttf-dejavu xclip xdotool
-    - >- #audio
+    - >- # audio
       alsa-utils audacity hydrogen mpv musescore pavucontrol pipewire
     - >- # tools
       acpi android-tools bc bind-tools bluez bluez-utils discount ffmpeg fish
@@ -28,6 +28,8 @@
       diffstat expac pacutils parallel wget
     - >- # wine
       lib32-mesa mingw-w64 wine wine-mono
+    - >- # games
+      rogue
     - >- # nngn
       boost clinfo emscripten glew glfw-x11 glm intel-compute-runtime ocl-icd
       opencl-headers qt5-charts vulkan-devel vulkan-intel
