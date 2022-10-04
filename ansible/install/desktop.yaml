@@ -18,12 +18,12 @@
     - >- # audio
       alsa-utils audacity hydrogen mpv musescore pavucontrol pipewire
     - >- # tools
-      acpi android-tools bc bind-tools bluez bluez-utils discount ffmpeg fish
-      gnuplot inetutils inotify-tools jq khal lsof ltrace lynx moreutils msmtp
-      mutt nextcloud-client nix offlineimap openbsd-netcat p7zip pacman-contrib
-      pass perf pigz pixz poppler pv python-matplotlib ripgrep rlwrap sshfs
-      strace units unrar unzip vdirsyncer weechat weechat-matrix words
-      youtube-dl yq
+      acpi android-tools bc bind-tools bluez bluez-utils cups cups-pdf discount
+      ffmpeg fish gnuplot inetutils inotify-tools jq khal lsof ltrace lynx
+      moreutils msmtp mutt nextcloud-client nix offlineimap openbsd-netcat p7zip
+      pacman-contrib pass perf pigz pixz poppler pv python-matplotlib qrencode
+      ripgrep rlwrap sshfs strace units unrar unzip vdirsyncer weechat
+      weechat-matrix words youtube-dl yq
     - >- # aurutils
       diffstat expac pacutils parallel wget
     - >- # wine
@@ -60,7 +60,10 @@
     service:
       enabled: true
       state: started
-      name: bluetooth
+      name: '{{ item }}'
+    loop:
+    - bluetooth
+    - cups
   - name: disable perf paranoid mode for Vulkan
     sysctl:
       name: dev.i915.perf_stream_paranoid
