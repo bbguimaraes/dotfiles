@@ -70,6 +70,15 @@
       value: '0'
       state: present
       sysctl_file: /etc/sysctl.d/i915.conf
+  - name: enable unprivileged package list updates
+    copy:
+      dest: /etc/sudoers.d/pacman
+      owner: root
+      group: root
+      mode: 0440
+      validate: visudo -cf %s
+      content: |
+        %wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman -Sy
 - hosts: desktops:&arch
   tags: aurutils
   vars:
