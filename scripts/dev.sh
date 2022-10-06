@@ -2,7 +2,7 @@
 set -euo pipefail
 
 CMDS=(
-    analog beep blue c cal complete compose custos date every f fmt hdmi http
+    analog beep blue c cx cal complete compose custos date every f fmt hdmi http
     lock mail man money mpv mutt nosuspend office p paste pause picom ping pull
     suspend todo ts until vtr w weechat
 )
@@ -19,6 +19,7 @@ main() {
     completion) completion "$@";;
     compose) exec less /usr/share/X11/locale/en_US.UTF-8/Compose;;
     custos) exec custos --clear --modules load,thermal,date;;
+    cx) xclip -out | xargs "$@";;
     date) exec date --utc +%Y-%m-%dT%H:%M:%SZ "$@";;
     every) every "$@";;
     f) xclip -out | exec xargs firefox;;
