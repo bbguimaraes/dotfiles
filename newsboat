@@ -1,0 +1,20 @@
+# nextcloud
+urls-source "ocnews"
+ocnews-url "https://nextcloud.bbguimaraes.com"
+ocnews-login "bbguimaraes"
+ocnews-passwordeval "pass show bbguimaraes.com/nextcloud/news"
+# reload
+auto-reload yes
+reload-threads 8
+reload-time 15
+# keys
+bind-key j down
+bind-key k up
+bind-key ^D pagedown
+bind-key ^U pageup
+# colors
+color listnormal_unread default default bold
+color listfocus default default reverse
+color listfocus_unread black white
+color info default black bold
+color title default black bold

@@ -47,11 +47,13 @@
     - .config/i3status
     - .config/impero
     - .config/khal
+    - .config/newsboat
     - .config/offlineimap
     - .config/ripgrep
     - .config/tig
     - .config/vdirsyncer
     - .local/bin
+    - .local/share/newsboat
     - .local/share/subs
     - .local/share/systemd/user
     - .local/share/tig
@@ -77,6 +79,7 @@
     - ['mutt/msmtprc',         '.msmtprc']
     - ['mutt/muttrc',          '.mutt/muttrc']
     - ['mutt/mailcap',         '.mutt/mailcap']
+    - ['newsboat',             '.config/newsboat/config']
     - ['offlineimap/offlineimap@.service',
        '.local/share/systemd/user/offlineimap@.service']
     - ['redshift.conf',        '.config/redshift.conf']

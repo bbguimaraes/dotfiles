@@ -20,10 +20,10 @@
     - >- # tools
       acpi android-tools bc bind-tools bluez bluez-utils cups cups-pdf discount
       ffmpeg fish gnuplot inetutils inotify-tools jq khal lsof ltrace lynx
-      moreutils msmtp mutt nextcloud-client nix offlineimap openbsd-netcat p7zip
-      pacman-contrib pass perf pigz pixz poppler pv python-matplotlib qrencode
-      ripgrep rlwrap sshfs strace units unrar unzip vdirsyncer weechat
-      weechat-matrix words youtube-dl yq
+      moreutils msmtp mutt newsboat nextcloud-client nix offlineimap
+      openbsd-netcat p7zip pacman-contrib pass perf pigz pixz poppler pv
+      python-matplotlib qrencode ripgrep rlwrap sshfs strace units unrar unzip
+      vdirsyncer weechat weechat-matrix words youtube-dl yq
     - >- # aurutils
       diffstat expac pacutils parallel wget
     - >- # wine
