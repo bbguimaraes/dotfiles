@@ -44,7 +44,7 @@ pw() {
     local pw
     stop
     pw=$(proton-bridge --cli <<< info | awk '/^Password:/{print$2}')
-    pass insert --force comp/protonmail/tjobim <<< "$pw"
+    pass insert --force comp/protonmail/bridge <<< "$pw"
     start
 }
 
