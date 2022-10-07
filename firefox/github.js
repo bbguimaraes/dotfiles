@@ -18,6 +18,9 @@ let f_n = function() {
       .querySelector(".paginate-container a[aria-label='Next']")
       .href);
 };
+let f_a = function() {
+  window.open(window.location.origin + "/notifications?query=author%3Abbguimaraes");
+};
 let f_r = function() {
   window.open(window.location.origin + "/notifications?query=reason%3Areview-requested");
 };
@@ -28,6 +31,7 @@ window.addEventListener("keydown", e => {
   if(!e.shiftKey || e.ctrlKey)
     return;
   let f = ({
+    /*a*/65: f_a,
     /*n*/78: f_n,
     /*o*/79: f_o,
     /*p*/80: f_p,
