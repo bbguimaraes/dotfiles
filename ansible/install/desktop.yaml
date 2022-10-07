@@ -7,7 +7,9 @@
       colordiff ctags dash dash devtools distcc doxygen emacs encfs gdb go
       graphviz hub ipython libc++ llvm musl mypy opengl-man-pages pocl podman
       premake python-pip python-virtualenv qemu-base qemu-ui-sdl rust tidy tig
-      valgrind vim-ctrlp vim-fugitive vim-gitgutter vim-tagbar
+      valgrind
+    - >- # vim
+      vim-ctrlp vim-fugitive vim-gitgutter vim-tagbar
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
@@ -17,13 +19,17 @@
       simplescreenrecorder ttf-dejavu xclip xdotool
     - >- # audio
       alsa-utils audacity hydrogen mpv musescore pavucontrol pipewire
+    - >- # mail
+      msmtp mutt isync offlineimap
+    - >- # net
+      bind-tools bluez bluez-utils inetutils openbsd-netcat
+    - >- # nextcloud
+      khal newsboat nextcloud-client vdirsyncer
     - >- # tools
-      acpi android-tools bc bind-tools bluez bluez-utils cups cups-pdf discount
-      ffmpeg fish gnuplot inetutils inotify-tools isync jq khal lsof ltrace lynx
-      moreutils msmtp mutt newsboat nextcloud-client nix offlineimap
-      openbsd-netcat p7zip pacman-contrib pass perf pigz pixz poppler pv
-      python-matplotlib qrencode ripgrep rlwrap sshfs strace units unrar unzip
-      vdirsyncer weechat weechat-matrix words youtube-dl yq
+      acpi android-tools bc cups cups-pdf discount ffmpeg fish gnuplot
+      inotify-tools jq lsof ltrace lynx moreutils nix p7zip pacman-contrib pass
+      perf pigz pixz poppler pv python-matplotlib qrencode ripgrep rlwrap sshfs
+      strace units unrar unzip weechat weechat-matrix words youtube-dl yq
     - >- # aurutils
       diffstat expac pacutils parallel wget
     - >- # wine
