@@ -162,9 +162,9 @@ p() {
         && encfs "$src" "$dst"
     cd "$dst"
     if [[ "$#" -ne 0 ]]; then
-        "$dst"/p "$@"
+        "$dst"/p "$@" || true
     else
-        HISTFILE= bash --rcfile "$dst/.bashrc"
+        HISTFILE= bash --rcfile "$dst/.bashrc" || true
     fi
     cd -
     fusermount -u "$dst"
