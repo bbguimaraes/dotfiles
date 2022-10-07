@@ -19,7 +19,7 @@
       alsa-utils audacity hydrogen mpv musescore pavucontrol pipewire
     - >- # tools
       acpi android-tools bc bind-tools bluez bluez-utils cups cups-pdf discount
-      ffmpeg fish gnuplot inetutils inotify-tools jq khal lsof ltrace lynx
+      ffmpeg fish gnuplot inetutils inotify-tools isync jq khal lsof ltrace lynx
       moreutils msmtp mutt newsboat nextcloud-client nix offlineimap
       openbsd-netcat p7zip pacman-contrib pass perf pigz pixz poppler pv
       python-matplotlib qrencode ripgrep rlwrap sshfs strace units unrar unzip

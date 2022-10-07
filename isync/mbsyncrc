@@ -1,0 +1,23 @@
+IMAPAccount bbguimaraes
+Host 127.0.0.1
+Port 1143
+SSLType STARTTLS
+CertificateFile ~/.config/protonmail/bridge/cert.pem
+User bbguimaraes@bbguimaraes.com
+PassCmd "cat"
+
+IMAPStore bbguimaraes-remote
+Account bbguimaraes
+
+MaildirStore bbguimaraes-local
+SubFolders Verbatim
+Path ~/.local/share/mbsync/
+Inbox ~/.local/share/mbsync/INBOX
+
+Channel bbguimaraes
+Far :bbguimaraes-remote:
+Near :bbguimaraes-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
