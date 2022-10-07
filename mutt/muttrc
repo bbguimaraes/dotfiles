@@ -10,6 +10,15 @@ set sleep_time = 0
 set pager_index_lines = 10
 set editor = `echo \$EDITOR`
 
+set mail_check_stats
+set sidebar_visible = yes
+set sidebar_width = 16
+set sidebar_divider_char = ' '
+set sidebar_short_path = yes
+set sidebar_delim_chars = '/'
+macro index,pager K '<sidebar-prev><sidebar-open>'
+macro index,pager J '<sidebar-next><sidebar-open>'
+
 macro index i '<change-folder>=INBOX<enter>'
 
 color hdrdefault red black
