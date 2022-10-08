@@ -6,7 +6,7 @@ bin=$(basename "$0")
 bin=${bin%.*}
 
 test -v BUILD_DIR && set -- -C "$BUILD_DIR" "$@"
-case "$(basename "$0")" in
+case "$bin" in
 make-pdf)
     make "$@"
     pkill -HUP mupdf;;
