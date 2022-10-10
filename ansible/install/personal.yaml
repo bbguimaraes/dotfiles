@@ -18,6 +18,7 @@
       state: directory
       path: '{{ home }}/{{ item }}'
     loop:
+    - .local/share/mbsync
     - .local/share/nummi
   - name: setup dotfile symlinks
     file:
@@ -25,6 +26,9 @@
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
+    - ['isync/mbsyncrc',      '.mbsyncrc']
+    - ['isync/mbsync@.service',
+       '.local/share/systemd/user/mbsync@.service']
     - ['mutt/muttrc_proton', '.mutt/muttrc_proton']
     - ['proton/proton-bridge.service',
        '.local/share/systemd/user/proton-bridge.service']
@@ -45,6 +49,7 @@
       scope: user
       daemon_reload: true
     loop:
+    - mbsync@bbguimaraes
     - proton-bridge
   - import_tasks: aur.yaml
     vars: {"pkg": "lbrynet-bin"}
