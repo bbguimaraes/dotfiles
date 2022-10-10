@@ -29,6 +29,7 @@ color markers red black
 color message brightcyan black
 color prompt white black
 color quoted blue black
+color sidebar_indicator bold default default
 color signature blue black
 color status default default
 color tilde brightmagenta black
