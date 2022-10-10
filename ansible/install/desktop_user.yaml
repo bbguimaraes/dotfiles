@@ -53,7 +53,6 @@
     - .config/tig
     - .config/vdirsyncer
     - .local/bin
-    - .local/share/mbsync
     - .local/share/newsboat
     - .local/share/subs
     - .local/share/systemd/user
@@ -77,9 +76,6 @@
     - ['khal/vdirsyncer.service',
        '.local/share/systemd/user/vdirsyncer.service']
     - ['khal/vdirsyncer.sh',   '.config/vdirsyncer/run.sh']
-    - ['isync/mbsyncrc',      '.mbsyncrc']
-    - ['isync/mbsync@.service',
-       '.local/share/systemd/user/mbsync@.service']
     - ['mutt/msmtprc',         '.msmtprc']
     - ['mutt/muttrc',          '.mutt/muttrc']
     - ['mutt/mailcap',         '.mutt/mailcap']
@@ -100,12 +96,3 @@
     loop:
     - - src/custos/src/bin/release/custos
       - .local/bin/custos
-  - name: enable and start services
-    systemd:
-      enabled: true
-      state: started
-      name: '{{ item }}'
-      scope: user
-      daemon_reload: true
-    loop:
-    - mbsync@bbguimaraes
