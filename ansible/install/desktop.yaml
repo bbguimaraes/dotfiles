@@ -13,8 +13,8 @@
     - >- # xorg
       mesa xorg xorg-xinit
     - >- # graphical
-      blender breeze calibre celluloid chromium dmenu dunst feh firefox gimp
-      i3lock i3status i3-wm imagemagick inkscape kdenlive libreoffice-fresh
+      arandr blender breeze calibre celluloid chromium dmenu dunst feh firefox
+      gimp i3lock i3status i3-wm imagemagick inkscape kdenlive libreoffice-fresh
       mednafen mupdf picom qt5ct redshift rxvt-unicode scrot
       simplescreenrecorder ttf-dejavu xclip xdotool
     - >- # audio
