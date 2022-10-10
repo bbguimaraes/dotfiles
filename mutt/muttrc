@@ -21,15 +21,15 @@ macro index,pager J '<sidebar-next><sidebar-open>'
 
 macro index i '<change-folder>=INBOX<enter>'
 
+color attachment brightmagenta black
+color error brightred black
 color hdrdefault red black
+color index blue black ~F
+color markers red black
+color message brightcyan black
+color prompt white black
 color quoted blue black
 color signature blue black
-color attachment brightmagenta black
-color prompt white black
-color message brightcyan black
-color error brightred black
-color tree white black
-color markers red black
-color tilde brightmagenta black
-color index blue black ~F
 color status default default
+color tilde brightmagenta black
+color tree white black
