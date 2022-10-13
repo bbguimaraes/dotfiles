@@ -2,13 +2,16 @@
 set -euo pipefail
 
 SINGLE=eDP-1
-HDMI=HDMI-2
+HDMI1=HDMI-1
+HDMI2=HDMI-2
 DOCK=DP-2-1
+OFFICE=DP-2-8
 
 main() {
     local cmd=toggle
     [[ "$#" -ne 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
+    list) list "$@";;
     toggle) sleep .1; toggle;;
     *) displays "$cmd" "$@";;
     esac
@@ -20,67 +23,76 @@ Usage: $0 [CMD] ARGS...
 
 Commands:
 
+    list
     toggle
-    home|dock single|mirror|dual|tv|120hz|4k
+    home|dock|office single|mirror|dual|tv|120hz|4k
 EOF
     return 1
 }
 
 displays() {
-    local where=$1 mode=$2
-    local first=$SINGLE second third
+    local where=$1 mode=$2 first=$SINGLE second third
     case "$where" in
-    home|dock)
-        if [[ "$where" == dock ]]; then second=$DOCK
-        elif [[ "$HOSTNAME" == rh* ]]; then second=$HDMI
-        else second=HDMI-1; fi
-        case "$mode" in
-        single)
-            xrandr \
-                --output "$first" --auto --primary \
-                --output "$second" --off;;
-        mirror)
-            xrandr \
-                --output "$first" --auto --primary \
-                --output "$second" --auto \
-                --mode 1920x1080 -r 60 --same-as "$first";;
-        dual)
-            xrandr \
-                --output "$first" --auto \
-                --output "$second" --auto --primary \
-                --mode 1920x1080 -r 60 --above "$first"
-            workspaces "$first" "$second";;
-        tv) xrandr \
-            --output "$first" --off \
-            --output "$second" --auto --primary --mode 1920x1080 -r 60;;
-        120hz) xrandr \
-            --output "$first" --off \
-            --output "$second" --auto --primary --mode 1920x1080 -r 120;;
-        4k) xrandr \
-            --output "$first" --off \
-            --output "$second" --auto --primary --mode 4096x2160;;
-        esac
+    dock) second=$DOCK;;
+    office) second=$OFFICE;;
+    home)
+        case "$HOSTNAME" in
+        rh*) second=$HDMI1;;
+        *) second=$HDMI2;;
+        esac;;
+    dock|home|office) ;;
+    *) usage;;
+    esac
+    case "$mode" in
+    single) displays_single "$first" "$second";;
+    dual) displays_dual "$first" "$second";;
+    mirror)
+        xrandr \
+            --output "$first" --auto --primary \
+            --output "$second" --auto \
+            --mode 1920x1080 -r 60 --same-as "$first";;
+    tv) xrandr \
+        --output "$first" --off \
+        --output "$second" --auto --primary --mode 1920x1080 -r 60;;
+    120hz) xrandr \
+        --output "$first" --off \
+        --output "$second" --auto --primary --mode 1920x1080 -r 120;;
+    4k) xrandr \
+        --output "$first" --off \
+        --output "$second" --auto --primary --mode 4096x2160;;
     esac
 }
 
+displays_single() {
+    xrandr \
+        --output "$1" --auto --primary \
+        --output "$2" --off
+}
+
+displays_dual() {
+    xrandr \
+        --output "$1" --auto \
+        --output "$2" --auto --primary \
+        --mode 1920x1080 -r 60 --above "$1"
+    workspaces "$1" "$2"
+}
+
+list() {
+    local out primary
+    out=$(xrandr --query)
+    primary=$(awk <<< $out '$3 == "primary" { print $1 }')
+    echo "$primary"
+    awk <<< $out -v "p=$primary" '$2 == "connected" && $1 != p { print $1 }'
+}
+
 toggle() {
-    local current display out
-    out=$(xrandr | awk -v "SINGLE=$SINGLE" '
-/^\S/ { section = $1 }
-/\*/ { current  = section }
-section != SINGLE && $2 == "connected" { display = section }
-END { print current, display }')
-    read -r current display <<< "$out"
-    case "$current" in
-    $SINGLE)
-        case "$display" in
-        $DOCK) displays dock dual;;
-        $HDMI) displays home dual;;
-        esac;;
-    $DOCK) displays dock single;;
-    $HDMI) displays home single;;
+    local out test primary secondary cmd arg
+    out=$(list | paste -s)
+    read -r primary secondary <<< $out
+    case "$primary" in
+    $SINGLE) displays_dual "$primary" "$secondary";;
+    *) displays_single "$secondary" "$primary";;
     esac
-    return
 }
 
 workspaces() {
