@@ -12,7 +12,6 @@
     argv:
     - aur
     - sync
-    - --syncdeps
     - --rmdeps
     - --no-confirm
     - --no-view
