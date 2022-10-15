@@ -19,6 +19,11 @@
       path: '{{ home }}/{{ item }}'
     loop:
     - .config/git
+    - .config/bash
+    - .config/tmux
+    - .local/share/bash
+    - .local/share/vim
+    - .local/state
     - .vim/colors
   - name: setup dotfile symlinks
     file:
@@ -30,8 +35,8 @@
     - ['bash/profile', '.bash_profile']
     - ['bash/bashrc',  '.bashrc']
     - ['git/config',   '.config/git/config']
-    - ['bash/inputrc', '.inputrc']
-    - ['tmux.conf',    '.tmux.conf']
+    - ['bash/inputrc', '.config/bash/inputrc']
+    - ['tmux.conf',    '.config/tmux/tmux.conf']
     - ['vim/after',    '.vim/after']
     - ['vim/colors',   '.vim/colors']
     - ['vim/ftplugin', '.vim/ftplugin']

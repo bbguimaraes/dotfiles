@@ -9,8 +9,8 @@
       dest: '{{ home }}/{{ item.1 }}'
     loop:
     - ['{{ home }}/n/archive/impero.txt', '.config/impero/commands.txt']
-    - ['{{ home }}/n/archive/mutt.aliases', '.mutt/aliases']
-    - ['{{ home }}/n/archive/pass', '.password-store']
+    - ['{{ home }}/n/archive/mutt.aliases', '.config/mutt/aliases']
+    - ['{{ home }}/n/archive/pass', '.local/share/password-store']
     - ['{{ home }}/n/archive/vim.spl', '.vim/spell/en.utf-8.add.spl']
     - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
     - ['{{ home }}/src/impero/impero', '.local/bin/impero']
@@ -21,11 +21,11 @@
       src: /etc/ssl/certs/ca-certificates.crt
       dest: '{{ home }}/{{ item }}'
     loop:
-    - .mutt/tls_trust_file
+    - .config/mutt/tls_trust_file
     - .config/offlineimap/tls_trust_file
   - name: check if pass has been initialized
     stat:
-      path: "{{ home }}/.password-store/.gpg-id"
+      path: "{{ home }}/.local/share/password-store/.gpg-id"
     register: rc
   - name: initialize pass
     command:
@@ -69,8 +69,8 @@
     - .config/Nextcloud/nextcloud.cfg
     - .gnupg/private-keys-v1.d/2E2E172E019FB7185972C20A9EC30C06B7645832.key
     - .gnupg/private-keys-v1.d/80B69EFC5B439D3F744F52E3FF80117C439C7BB2.key
+    - .local/share/password-store
     - .local/share/vdirsyncer
-    - .password-store
     - .ssh/id_rsa
     - .ssh/id_rsa.pub
     - n

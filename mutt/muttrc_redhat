@@ -3,7 +3,7 @@ set sendmail = "/usr/bin/msmtp --account bbarcaro@redhat.com"
 set mbox_type = Maildir
 set folder = ~/.local/share/offlineimap/redhat
 set sidebar_new_mail_only = yes
-source ~/.mutt/redhat_mailboxes
+source ~/.config/mutt/redhat_mailboxes
 set spoolfile = +INBOX
 set postponed = +[Gmail]/Drafts
 unset record

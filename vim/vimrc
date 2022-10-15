@@ -10,6 +10,8 @@ set wildmenu wildmode=longest:full,full
 set hlsearch ignorecase incsearch smartcase
 set grepprg=rg\ --vimgrep\ $*
 
+set viminfofile=~/.local/share/vim/viminfo
+
 filetype on
 filetype plugin on
 filetype indent on

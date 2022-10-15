@@ -18,6 +18,7 @@
       state: directory
       path: '{{ home }}/{{ item }}'
     loop:
+    - .config/mbsync
     - .local/share/mbsync
     - .local/share/nummi
   - name: setup dotfile symlinks
@@ -26,10 +27,10 @@
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['isync/mbsyncrc',      '.mbsyncrc']
+    - ['isync/mbsyncrc',      '.config/mbsync/mbsyncrc']
     - ['isync/mbsync@.service',
        '.local/share/systemd/user/mbsync@.service']
-    - ['mutt/muttrc_proton', '.mutt/muttrc_proton']
+    - ['mutt/muttrc_proton', '.config/mutt/muttrc_proton']
     - ['proton/proton-bridge.service',
        '.local/share/systemd/user/proton-bridge.service']
   - name: setup other symlinks
