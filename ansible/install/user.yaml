@@ -75,20 +75,6 @@
     - .ssh/id_rsa.pub
     - n
 - hosts: desktops
-  tags: urxvt
-  vars:
-    home: '{{ ansible_env.HOME }}'
-  tasks:
-  - name: clone urxvt resize-font plugin
-    git:
-      repo: https://github.com/simmel/urxvt-resize-font.git
-      dest: '{{ home }}/.urxvt/ext/urxvt-resize-font'
-  - name: add urxvt resize-font symlink
-    file:
-      state: link
-      src: '{{ home }}/.urxvt/ext/urxvt-resize-font/resize-font'
-      dest: '{{ home }}/.urxvt/ext/resize-font'
-- hosts: desktops
   tags: weechat
   vars:
     conf_dir: '{{ ansible_env.HOME }}/.config/weechat'
@@ -184,6 +170,8 @@
     vars: {"pkg": "renderdoc", "keys": ["AC612C3120C34695"]}
   - import_tasks: aur.yaml
     vars: {"pkg": "stellarium", "keys": ["9380E47C0374E169"]}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "urxvt-resize-font-git"}
   - import_tasks: aur.yaml
     vars: {"pkg": "vim-diffchar"}
   - import_tasks: aur.yaml
