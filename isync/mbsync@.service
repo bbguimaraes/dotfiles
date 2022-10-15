@@ -1,5 +1,5 @@
 [Service]
-ExecStart=/home/bbguimaraes/src/dotfiles/isync/mbsync.sh %i
+ExecStart=/home/bbguimaraes/src/dotfiles/isync/mbsync.sh --config /home/bbguimaraes/.config/mbsync/mbsyncrc %i
 Restart=always
 
 [Install]

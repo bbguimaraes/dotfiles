@@ -9,7 +9,7 @@
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['mutt/muttrc_redhat', '.mutt/muttrc_redhat']
+    - ['mutt/muttrc_redhat', '.config/mutt/muttrc_redhat']
     - ['offlineimap/redhat', '.config/offlineimap/redhat']
   - name: setup other symlinks
     file:

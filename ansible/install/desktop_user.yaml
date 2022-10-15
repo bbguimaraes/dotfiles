@@ -47,17 +47,19 @@
     - .config/i3status
     - .config/impero
     - .config/khal
+    - .config/msmtp
+    - .config/mutt
     - .config/newsboat
     - .config/offlineimap
     - .config/ripgrep
     - .config/tig
     - .config/vdirsyncer
+    - .config/xinit
     - .local/bin
     - .local/share/newsboat
     - .local/share/subs
     - .local/share/systemd/user
     - .local/share/tig
-    - .mutt
     - .vim/colors
     - .vim/spell
   - name: setup dotfile symlinks
@@ -76,17 +78,17 @@
     - ['khal/vdirsyncer.service',
        '.local/share/systemd/user/vdirsyncer.service']
     - ['khal/vdirsyncer.sh',   '.config/vdirsyncer/run.sh']
-    - ['mutt/msmtprc',         '.msmtprc']
-    - ['mutt/muttrc',          '.mutt/muttrc']
-    - ['mutt/mailcap',         '.mutt/mailcap']
+    - ['mutt/msmtprc',         '.config/msmtp/config']
+    - ['mutt/muttrc',          '.config/mutt/muttrc']
+    - ['mutt/mailcap',         '.config/mutt/mailcap']
     - ['newsboat',             '.config/newsboat/config']
     - ['offlineimap/offlineimap@.service',
        '.local/share/systemd/user/offlineimap@.service']
     - ['redshift.conf',        '.config/redshift.conf']
     - ['ripgrep',              '.config/ripgrep/config']
     - ['user-dirs.dirs',       '.config/user-dirs.dirs']
-    - ['xorg/xinitrc',         '.xinitrc']
-    - ['xorg/Xresources',      '.Xresources']
+    - ['xorg/xinitrc',         '.config/xinit/xinitrc']
+    - ['xorg/Xresources',      '.config/xinit/Xresources']
   - name: setup other symlinks
     file:
       state: link

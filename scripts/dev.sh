@@ -31,7 +31,7 @@ main() {
     man) cmd_man "$@";;
     money) exec "$VISUAL" ~/n/archive/money/$(printf '%(%Y/%m)T').txt;;
     mpv) exec mpv "$(xclip -out)";;
-    mutt) exec mutt -e "source ~/.mutt/muttrc_$1";;
+    mutt) exec mutt -e "source ~/.config/mutt/muttrc_$1";;
     nosuspend) nosuspend "$@";;
     office) office "$@";;
     p) p "$@";;

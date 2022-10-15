@@ -2,7 +2,7 @@ set from = "Bruno Barcarol Guimarães <bbguimaraes@bbguimaraes.com>"
 set sendmail = "/usr/bin/msmtp --account bbguimaraes@bbguimaraes.com"
 set mbox_type = Maildir
 set folder = ~/.local/share/mbsync
-source ~/.mutt/proton.mb
+source ~/.config/mutt/proton.mb
 set spoolfile = +INBOX
 set postponed = +Drafts
 unset record
