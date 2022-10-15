@@ -24,7 +24,6 @@ EOF
 clean() {
     rm -rf "$HOME/.ansible/cp/" "$HOME/.ansible/tmp/"
     rm -f "$HOME/.gnuplot_history"
-    rm -f "$HOME/.msmtp.log"
     rm -f "$HOME/.units_history"
 }
 
