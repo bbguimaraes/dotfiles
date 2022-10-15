@@ -28,8 +28,8 @@
     - >- # tools
       acpi android-tools bc cups cups-pdf discount ffmpeg fish gnuplot
       inotify-tools jq lsof ltrace lynx moreutils nix p7zip pacman-contrib pass
-      perf pigz pixz poppler pv python-matplotlib qrencode ripgrep rlwrap sshfs
-      strace units unrar unzip weechat weechat-matrix words youtube-dl yq
+      perf pigz pixz poppler pv python-matplotlib qrencode ranger ripgrep rlwrap
+      sshfs strace units unrar unzip weechat weechat-matrix words youtube-dl yq
     - >- # aurutils
       diffstat expac pacutils parallel wget
     - >- # wine
