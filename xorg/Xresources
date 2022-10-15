@@ -14,7 +14,7 @@ URxvt.urgentOnBell: true
 URxvt.font: xft:DejaVu Sans Mono:pixelsize=20
 URxvt.letterSpace: -1
 URxvt.print-pipe: cat > "$(TMPDIR=$HOME mktemp urxvt.XXXXXX)"
-URxvt.perl-ext-common: resize-font
+URxvt.perl-ext-common: clipboard,resize-font,url-select
 URxvt.resize-font.smaller: C-minus
 URxvt.resize-font.bigger: C-plus
 URxvt.iso14755: false
@@ -22,3 +22,6 @@ URxvt.iso14755_52: false
 
 URxvt.color4: #0000ff
 URxvt.color12: #3333ff
+
+URxvt.url-select.launcher: xdg-open
+URxvt.keysym.M-u: perl:url-select:select_next
