@@ -1,0 +1,73 @@
+- hosts: desktops
+  vars:
+    weechat_conf_dir: '{{ ansible_env.HOME }}/.config/weechat'
+    weechat_data_dir: '{{ ansible_env.HOME }}/.local/share/weechat'
+  tasks:
+  - name: install weechat-edit-git
+    import_tasks: aur.yaml
+    vars: {"pkg": "weechat-edit-git"}
+  - name: create weechat directories
+    file:
+      state: directory
+      path: '{{ weechat_data_dir }}/{{ item }}'
+    with_items:
+    - lua
+    - lua/autoload
+    - python
+    - python/autoload
+  - name: create symlinks
+    file:
+      state: link
+      src: '{{ item.0 }}'
+      dest: '{{ weechat_data_dir }}/{{ item.1 }}'
+    loop:
+    - - /usr/share/weechat/python/edit.py
+      - python/autoload/edit.py
+  - name: create symlinks (matrix)
+    file:
+      state: link
+      src: '{{ item.0 }}'
+      dest: '{{ weechat_data_dir }}/{{ item.1 }}'
+    loop:
+    - - /usr/share/weechat/python/weechat-matrix.py
+      - python/autoload/weechat-matrix.py
+    when: "'personal' in group_names"
+  - name: set weechat variables
+    ini_file:
+      path: '{{ weechat_conf_dir }}/{{ item.file }}'
+      section: '{{ item.section }}'
+      option: '{{ item.opt }}'
+      value: '{{ item.val }}'
+    loop:
+    - opt: beep.conditions
+      val: '"${tg_displayed}"'
+      file: trigger.conf
+      section: trigger
+    - opt: beep.command
+      val: '"/print -beep"'
+      file: trigger.conf
+      section: trigger
+    - opt: beep.hook
+      val: print
+      file: trigger.conf
+      section: trigger
+    - file: weechat.conf
+      section: color
+      opt: separator
+      val: white
+    - file: weechat.conf
+      section: color
+      opt: status_number
+      val: white
+    - file: weechat.conf
+      section: bar
+      opt: status.color_bg
+      val: black
+    - file: weechat.conf
+      section: bar
+      opt: title.color_bg
+      val: black
+    - file: buflist.conf
+      section: format
+      opt: buffer_current
+      val: '${format_number}${indent}${color:*white,}${name}'

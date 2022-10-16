@@ -1,43 +1,38 @@
-- hosts: all
-  vars:
-    home: '{{ ansible_env.HOME }}'
-    src_dir: '{{ home }}/src'
-  tasks:
-  - name: create source directory
-    file:
-      state: directory
-      path: '{{ src_dir }}'
-  - name: clone dotfiles repository
-    git:
-      repo: https://git.bbguimaraes.com/dotfiles.git
-      dest: '{{ src_dir }}/dotfiles'
-      update: no
-  - name: create home directories
-    file:
-      state: directory
-      path: '{{ home }}/{{ item }}'
-    loop:
-    - .config/git
-    - .config/bash
-    - .config/tmux
-    - .local/share/bash
-    - .local/share/vim
-    - .local/state
-    - .vim/colors
-  - name: setup dotfile symlinks
-    file:
-      state: link
-      force: true
-      src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
-      dest: '{{ home }}/{{ item.1 }}'
-    loop:
-    - ['bash/profile', '.bash_profile']
-    - ['bash/bashrc',  '.bashrc']
-    - ['git/config',   '.config/git/config']
-    - ['bash/inputrc', '.config/bash/inputrc']
-    - ['tmux.conf',    '.config/tmux/tmux.conf']
-    - ['vim/after',    '.vim/after']
-    - ['vim/colors',   '.vim/colors']
-    - ['vim/ftplugin', '.vim/ftplugin']
-    - ['vim/plugin',   '.vim/plugin']
-    - ['vim/vimrc',    '.vimrc']
+- name: create source directory
+  file:
+    state: directory
+    path: '{{ src_dir }}'
+- name: clone dotfiles repository
+  git:
+    repo: https://git.bbguimaraes.com/dotfiles.git
+    dest: '{{ src_dir }}/dotfiles'
+    update: no
+- name: create home directories
+  file:
+    state: directory
+    path: '{{ home }}/{{ item }}'
+  loop:
+  - .config/git
+  - .config/bash
+  - .config/tmux
+  - .local/share/bash
+  - .local/share/vim
+  - .local/state
+  - .vim/colors
+- name: setup dotfile symlinks
+  file:
+    state: link
+    force: true
+    src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
+    dest: '{{ home }}/{{ item.1 }}'
+  loop:
+  - ['bash/profile', '.bash_profile']
+  - ['bash/bashrc',  '.bashrc']
+  - ['git/config',   '.config/git/config']
+  - ['bash/inputrc', '.config/bash/inputrc']
+  - ['tmux.conf',    '.config/tmux/tmux.conf']
+  - ['vim/after',    '.vim/after']
+  - ['vim/colors',   '.vim/colors']
+  - ['vim/ftplugin', '.vim/ftplugin']
+  - ['vim/plugin',   '.vim/plugin']
+  - ['vim/vimrc',    '.vimrc']

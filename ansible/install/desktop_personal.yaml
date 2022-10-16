@@ -1,4 +1,4 @@
-- hosts: personal
+- hosts: desktops:&personal
   vars:
     home: '{{ ansible_env.HOME }}'
     src_dir: '{{ home }}/src'

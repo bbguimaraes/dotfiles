@@ -1,14 +1,12 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-HISTFILE=~/.local/share/bash/history
+export HISTFILE=~/.local/share/bash/history
 export HISTTIMEFORMAT='%FT%H:%M:%S '
 export VISUAL=vim
 export EDITOR=vim
 export TERMINAL=urxvt
 export INPUTRC=~/.config/bash/inputrc
 export RLWRAP_HOME=~/.local/share/rlwrap
-export XAUTHORITY=~/.cache/Xauthority
-export XINITRC=~/.config/xinit/xinitrc
 export PATH=$HOME/.local/bin${PATH+:$PATH}
 [[ "$HOSTNAME" == rh* ]] && PATH=$PATH:$HOME/go/bin
 export NIX_SHELL_PRESERVE_PROMPT=1

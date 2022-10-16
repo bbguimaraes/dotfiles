@@ -1,7 +1,4 @@
-- hosts: all
-  vars:
-    swapfile_path: /var/swapfile
-    swapfile_size_kb: 4096
+- hosts: servers
   tasks:
   - name: create swap file
     command:

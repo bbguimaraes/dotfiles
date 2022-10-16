@@ -32,50 +32,22 @@ Execute the installation playbook:
 Basic configuration
 -------------------
 
-When the new system is restarted into the new installation, copy the SSH key
-again, and:
+When the new system is restarted into the new installation:
 
     $ ansible-playbook \
-        --user root --extra-vars sudo_wheel_nopasswd=true \
+        --extra-vars sudo_wheel_nopasswd=true \
         ansible/install/base.yaml
-
-For servers:
-
-    $ ansible-playbook --user root ansible/install/swap.yaml
-
-User base setup:
-
-    $ ansible-playbook ansible/install/base_user.yaml
 
 Desktop configuration
 ---------------------
 
 For desktop systems:
 
-    $ ansible-playbook --user root ansible/install/desktop.yaml
-    $ ansible-playbook --user root ansible/install/backlight.yaml
-    $ ansible-playbook ansible/install/keys.yaml
-    $ ansible-playbook ansible/install/desktop_user.yaml
+    $ ansible-playbook ansible/install/desktop.yaml
 
-Start XOrg, configure Nextcloud, synchronize files, then:
+Enable Kerberos in Firefox, if necessary:
 
-    $ ansible-playbook ansible/install/user.yaml
-    $ ansible-playbook \
-        --extra-vars nixpkgs=https://nixos.org/channels/nix-22.05 \
-        ansible/install/nix.yaml
-    $ ansible-playbook --user root ansible/install/gpg_pam.yaml
-    $ ansible-playbook ansible/install/gpg_pam_user.yaml
-
-For personal systems:
-
-    $ ansible-playbook ansible/install/personal.yaml
-
-For work:
-
-    $ ansible-playbook --user root ansible/install/work.yaml
-    $ ansible-playbook ansible/install/work_user.yaml
-
-Enable Kerberos in Firefox: https://wiki.archlinux.org/title/Kerberos#Firefox.
+https://wiki.archlinux.org/title/Kerberos#Firefox
 
 Conclusion
 ----------

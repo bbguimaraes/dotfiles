@@ -1,4 +1,5 @@
 - hosts: all
+  become: yes
   tasks:
   - name: install base system packages
     package:
@@ -17,8 +18,6 @@
     package:
       state: present
       name: pkgfile
-- hosts: all
-  tasks:
   - name: check required variable
     assert:
       that: sudo_wheel_nopasswd is defined
@@ -87,3 +86,16 @@
   - name: enable ntp service
     command: timedatectl set-ntp yes
     when: rc.stdout == "no"
+- hosts: servers
+  become: yes
+  vars:
+    swapfile_path: /var/swapfile
+    swapfile_size_kb: 4096
+  tasks:
+  - include_tasks: swap.yaml
+- hosts: all
+  vars:
+    home: '{{ ansible_env.HOME }}'
+    src_dir: '{{ home }}/src'
+  tasks:
+  - include_tasks: base_user.yaml
