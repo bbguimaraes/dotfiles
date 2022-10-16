@@ -1,5 +1,4 @@
 - hosts: desktops:&arch
-  tags: base_pkgs
   vars:
     pkgs:
     - >- # dev
@@ -86,7 +85,6 @@
       content: |
         %wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman -Sy
 - hosts: desktops:&arch
-  tags: aurutils
   vars:
     user: bbguimaraes
     aurutils_repo: /var/lib/pacman/aurutils

@@ -34,7 +34,6 @@
       state: restarted
       name: fail2ban
 - hosts: bbguimaraes.com
-  tags: pkgs
   tasks:
   - name: install packages
     package:
