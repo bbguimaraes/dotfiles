@@ -10,7 +10,6 @@
 # - # mv /home/alarm ~bbguimaraes
 # With that done, execute the base.yaml playbook, then this one.
 - hosts: tenochtitlan
-  tags: pkgs
   tasks:
   - name: configure locale
     locale_gen:
@@ -21,7 +20,6 @@
       name: |
         cmake encfs lua rsync
 - hosts: tenochtitlan
-  tags: lvm
   vars:
     pvs:
     - /dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S2ZPJ9ADA08694

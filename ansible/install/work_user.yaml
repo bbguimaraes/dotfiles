@@ -40,7 +40,6 @@
     - rh/scripts/redhat.sh
 - hosts: desktops:&work:&arch
   name: aur pkgs
-  tags: aur
   tasks:
   - import_tasks: aur.yaml
     vars: {"pkg": "gotags"}

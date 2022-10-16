@@ -75,7 +75,6 @@
     - .ssh/id_rsa.pub
     - n
 - hosts: desktops
-  tags: weechat
   vars:
     conf_dir: '{{ ansible_env.HOME }}/.config/weechat'
     data_dir: '{{ ansible_env.HOME }}/.local/share/weechat'
@@ -152,7 +151,6 @@
       val: '${format_number}${indent}${color:*white,}${name}'
 - hosts: desktops:&arch
   name: aur pkgs
-  tags: aur
   tasks:
   - import_tasks: aur.yaml
     vars: {"pkg": "duc", "keys": ["CACDA4B54202FA2F"]}

@@ -1,5 +1,4 @@
 - hosts: all
-  tags: base_sys_pkgs
   tasks:
   - name: install base system packages
     package:
@@ -19,7 +18,6 @@
       state: present
       name: pkgfile
 - hosts: all
-  tags: base
   tasks:
   - name: check required variable
     assert:

@@ -1,5 +1,4 @@
 - hosts: all
-  tags: base
   vars:
     home: '{{ ansible_env.HOME }}'
     src_dir: '{{ home }}/src'
