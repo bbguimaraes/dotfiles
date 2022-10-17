@@ -77,6 +77,7 @@
 - hosts: desktops:&work
   vars:
     home: '{{ ansible_env.HOME }}'
+    src_dir: '{{ ansible_env.HOME }}/src'
   tasks:
   - name: setup dotfile symlinks
     file:

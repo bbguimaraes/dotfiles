@@ -1,29 +1,25 @@
-- name: check target
-  stat:
-    path: "{{ dir }}/{{ target_bin }}"
-  register: rc
-- name: create temporary build directory
-  file:
-    state: directory
-    path: "{{ tmp_dir }}/{{ target }}"
-- name: create configure script
-  command:
-    chdir: "{{ dir }}"
-    argv: ["autoreconf", "-i"]
-    creates: "{{ dir }}/configure"
-- name: execute configure script
-  command:
-    chdir: "{{ tmp_dir }}/{{ target }}"
-    argv: ["{{ dir }}/configure"]
-    creates: "{{ tmp_dir }}/{{ target }}/Makefile"
-- name: execute make
-  make:
-    chdir: "{{ tmp_dir }}/{{ target }}"
-  when: (dir + "/" + target_bin) is not exists
-- name: copy executable to directory
-  copy:
-    remote_src: true
-    src: "{{ tmp_dir }}/{{ target }}/{{ target_bin }}"
-    dest: "{{ dir }}/{{ target_bin }}"
-    mode: preserve
-  when: (dir + "/" + target_bin) is not exists
+- when: (dir + "/" + target_bin) is not exists
+  block:
+  - name: create temporary build directory
+    file:
+      state: directory
+      path: "{{ tmp_dir }}/{{ target }}"
+  - name: create configure script
+    command:
+      chdir: "{{ dir }}"
+      argv: ["autoreconf", "-i"]
+      creates: "{{ dir }}/configure"
+  - name: execute configure script
+    command:
+      chdir: "{{ tmp_dir }}/{{ target }}"
+      argv: ["{{ dir }}/configure"]
+      creates: "{{ tmp_dir }}/{{ target }}/Makefile"
+  - name: execute make
+    make:
+      chdir: "{{ tmp_dir }}/{{ target }}"
+  - name: copy executable to directory
+    copy:
+      remote_src: true
+      src: "{{ tmp_dir }}/{{ target }}/{{ target_bin }}"
+      dest: "{{ dir }}/{{ target_bin }}"
+      mode: preserve

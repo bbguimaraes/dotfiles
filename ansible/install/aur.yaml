@@ -1,7 +1,14 @@
+- name: check keys
+  command:
+    argv: ["gpg2", "--fingerprint", "{{ item }}"]
+  changed_when: false
+  register: rc
+  loop: "{{ keys|default([]) }}"
 - name: import keys
   command:
-    argv: ["gpg2", "--recv-keys", "{{ item }}"]
-  loop: "{{ keys|default([]) }}"
+    argv: ["gpg2", "--recv-keys", "{{ item.item }}"]
+  when: item is failed
+  loop: "{{ rc.results }}"
 - name: check if package already installed
   command: pacman -Qqi {{ pkg }}
   ignore_errors: true
