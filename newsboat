@@ -7,6 +7,8 @@ ocnews-passwordeval "pass show bbguimaraes.com/nextcloud/news"
 auto-reload yes
 reload-threads 8
 reload-time 15
+# lists
+feed-sort-order unreadarticlecount-asc
 # keys
 bind-key j down
 bind-key k up
