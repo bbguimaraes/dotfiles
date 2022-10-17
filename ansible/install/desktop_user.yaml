@@ -31,7 +31,7 @@
     include_tasks: premake.yaml
     vars:
       target: "{{ item }}"
-      target_bin: "{{ item }}"
+      target_bin: "src/bin/release/{{ item }}"
       dir: "{{ src_dir }}/{{ item }}"
     loop:
     - custos
