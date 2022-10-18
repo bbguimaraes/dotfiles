@@ -24,7 +24,11 @@ EOF
 }
 
 console() {
-    exec curl https://wttr.in/brno
+    if tty --quiet; then
+        exec curl https://wttr.in/brno
+    else
+        exec "$TERMINAL" -e bash -c 'd weather; read'
+    fi
 }
 
 web() {
