@@ -78,7 +78,7 @@ completion() {
     2)
         local last=${line[1]:-}
         local opts=(
-            $CMDS
+            "${CMDS[@]}"
             $(cd ~/src/dotfiles/scripts && { ls | sed 's/\.[^.]\+$//'; }))
         compgen -W "${opts[*]}" "$last";;
     *)
