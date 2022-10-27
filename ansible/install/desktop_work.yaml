@@ -11,6 +11,8 @@
     pkgs:
     - >-
       krb5 openvpn
+    - >- # logs
+      aws-cli python-tabulate
   tasks:
   - name: install packages
     package:
@@ -116,6 +118,8 @@
     - rh/scripts/redhat.sh
 - hosts: desktops:&work:&arch
   tasks:
+  - import_tasks: aur.yaml
+    vars: {"pkg": "google-cloud-sdk"}
   - import_tasks: aur.yaml
     vars: {"pkg": "gotags"}
   - import_tasks: aur.yaml
