@@ -151,7 +151,7 @@ rebase_branches() {
     for x; do
         git merge-base --is-ancestor "$base" "$x" && continue
         sleep "$n"; n=1 # for unique timestamps
-        git rebase "$base" "$x"
+        git rebase --rebase-merges "$base" "$x"
     done
 }
 
