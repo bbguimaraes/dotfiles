@@ -17,6 +17,8 @@
   - import_tasks: aur.yaml
     vars: {"pkg": "stellarium", "keys": ["9380E47C0374E169"]}
   - import_tasks: aur.yaml
+    vars: {"pkg": "task-spooler"}
+  - import_tasks: aur.yaml
     vars: {"pkg": "urxvt-resize-font-git"}
   - import_tasks: aur.yaml
     vars: {"pkg": "vim-diffchar"}
