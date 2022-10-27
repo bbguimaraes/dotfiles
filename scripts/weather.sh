@@ -27,7 +27,7 @@ console() {
     if tty --quiet; then
         exec curl https://wttr.in/brno
     else
-        exec "$TERMINAL" -e bash -c 'd weather; read'
+        exec "$TERMINAL" -e bash -c 'd weather; read -n 1'
     fi
 }
 
