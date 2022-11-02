@@ -8,6 +8,7 @@ set fillchars= laststatus=1 noruler showcmd tabpagemax=100
 set hidden key= lazyredraw noequalalways visualbell
 set wildmenu wildmode=longest:full,full
 set hlsearch ignorecase incsearch smartcase
+set splitbelow splitright
 set grepprg=rg\ --vimgrep\ $*
 
 set viminfofile=~/.local/share/vim/viminfo
