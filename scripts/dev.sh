@@ -100,9 +100,13 @@ in_dotfiles() {
 }
 
 blue() {
-    bluetoothctl power on
-    bluetoothctl connect B8:F6:53:C4:6B:53
-    d sink bluez
+    if tty --silent; then
+        bluetoothctl power on
+        bluetoothctl connect B8:F6:53:C4:6B:53
+        d sink bluez
+    else
+        exec urxvt -e d blue
+    fi
 }
 
 every() {
