@@ -4,7 +4,7 @@ Port 1143
 SSLType STARTTLS
 CertificateFile ~/.config/protonmail/bridge/cert.pem
 User bbguimaraes@bbguimaraes.com
-PassCmd "cat"
+PassCmd cat
 
 IMAPStore bbguimaraes-remote
 Account bbguimaraes
