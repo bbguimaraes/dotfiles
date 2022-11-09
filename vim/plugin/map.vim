@@ -30,6 +30,12 @@ noremap <leader>y :w !xclip<cr>
 nnoremap <leader>w :write \| :call system("d do")<cr><c-l>
 
 vnoremap <leader>. :normal .<cr>
+vnoremap <leader>O
+\   :<c-u>call system(
+\       "xargs --max-args 1 firefox --private-window",
+\       SelectedText())<cr>
+vnoremap <leader>o
+\   :<c-u>call system("xargs --max-args 1 firefox", SelectedText())<cr>
 vnoremap <leader>Y
 \   :<c-u>call system("xclip -selection clipboard", SelectedText())<cr>
 vnoremap <leader>y
