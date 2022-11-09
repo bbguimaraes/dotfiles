@@ -1,4 +1,6 @@
 nnoremap <c-w>t <c-w>s<c-w>T
+noremap <leader>Y :w !xclip -selection clipboard<cr>
+noremap <leader>y :w !xclip<cr>
 
 nnoremap <leader>80 :vertical resize 80<cr>
 nnoremap <leader>b :CtrlPBuffer<cr>
@@ -25,8 +27,6 @@ nnoremap <leader>tt :TagbarToggle<cr>
 nnoremap <leader>tu :Dispatch! ctags -R<cr>
 nnoremap <leader>tw :setlocal invwrap<cr>:setlocal wrap?<cr>
 nnoremap <leader>vr :execute "resize " . line("$")<cr>
-noremap <leader>Y :w !xclip -selection clipboard<cr>
-noremap <leader>y :w !xclip<cr>
 nnoremap <leader>w :write \| :call system("d do")<cr><c-l>
 
 vnoremap <leader>. :normal .<cr>
