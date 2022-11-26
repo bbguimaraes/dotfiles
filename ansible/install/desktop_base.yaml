@@ -18,7 +18,7 @@
       arandr blender breeze calibre celluloid chromium dmenu dunst feh firefox
       gimp i3lock i3status i3-wm imagemagick inkscape kdenlive libreoffice-fresh
       mednafen mupdf picom qt5ct redshift rxvt-unicode scrot
-      simplescreenrecorder ttf-dejavu urxvt-perls xclip xdotool
+      simplescreenrecorder ttf-dejavu ttf-junicode urxvt-perls xclip xdotool
     - >- # audio
       alsa-utils audacity hydrogen mpv musescore pavucontrol pipewire
     - >- # mail
