@@ -35,7 +35,9 @@ web() {
     local l u
     l=2-3078610
     u=https://www.yr.no/en/content/$l/meteogram.svg
-    exec xdg-open "$u"
+    curl --silent --show-error "$u" \
+        | convert svg:- png:- \
+        | feh --image-bg black -
 }
 
 main "$@"
