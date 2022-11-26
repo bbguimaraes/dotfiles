@@ -76,8 +76,9 @@ for_ref() {
                 jq --raw-output <<< "$j" '[.items[].html_url]|join(" ")' \
             ); do
                 [[ "$open" ]] && xdg-open "$url"
-                echo " $url"
+                printf '%s ' " $url"
             done
+            echo
         fi
     done
 }
