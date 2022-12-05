@@ -45,7 +45,7 @@ brightness() {
         if [[ "$d" -lt 4 ]]; then p=25
         elif [[ "$d" -lt 14 ]]; then p=50
         elif [[ "$d" -lt 16 ]]; then p=25
-        else p=5; fi
+        else p=10; fi
     fi
     exec awk -v "p=$p" '{printf "%d", $1 * p / 100.0}' < "$MAX" > "$CUR"
 }
