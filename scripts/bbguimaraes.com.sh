@@ -2,6 +2,7 @@
 set -euo pipefail
 
 CMDS=(complete push-img local remote)
+VOL=/mnt/bbguimaraes0-vol
 
 main() {
     [[ "$#" -eq 0 ]] && usage
@@ -70,16 +71,20 @@ remote() {
     local cmd=
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
-    pull) exec ssh bbguimaraes.com 'sudo ~root/bbguimaraes.com.sh pull';;
+    pull) remote_pull "$@";;
     sync-files) remote_sync_files "$@";;
     *) echo >&2 "invalid command: remote $cmd"; return 1;;
     esac
 }
 
+remote_pull() {
+    exec ssh bbguimaraes.com "sudo git -C $VOL/bbguimaraes.com pull"
+}
+
 remote_sync_files() {
     local host=bbguimaraes.com
     local src=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
-    local dst=/mnt/bbguimaraes0-vol/bbguimaraes.com/bbguimaraes.com/
+    local dst=$VOL/bbguimaraes.com/bbguimaraes.com/
     exec rsync \
         --archive --chown 0:0 \
         "$src" "$host:$dst" "$@"
