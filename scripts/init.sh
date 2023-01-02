@@ -67,7 +67,7 @@ work() {
 }
 
 init_temp() {
-    local f=$HOME/.config/i3status/config name
+    local f=$HOME/src/dotfiles/i3/status name
     name=$(ls /sys/devices/platform/coretemp.0/hwmon/ | head -n 1)
     grep --quiet "/$name/" "$f" && return
     sed --in-place "s/hwmon[0-9]\+/$name/" "$f"
