@@ -20,6 +20,7 @@ nnoremap <leader>P :r! xclip -selection clipboard -out<cr>
 nnoremap <leader>p :r! xclip -out<cr>
 nnoremap <silent> <leader>rt :%s/\s\+$//<cr>
 nnoremap <leader>s :source $MYVIMRC<cr>
+nnoremap <leader>th :setlocal invhlsearch<cr>
 nnoremap <leader>tn :setlocal invnumber<cr>:setlocal number?<cr>
 nnoremap <leader>tp :setlocal invpaste<cr>:setlocal paste?<cr>
 nnoremap <leader>ts :call ToggleSyntax()<cr>
