@@ -63,6 +63,8 @@ usage() {
 Usage: $0 CMD
 
 Commands:
+
+$(printf '    %s\n' "${CMDS[@]}")
 EOF
     return 1
 }
