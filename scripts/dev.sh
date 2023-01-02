@@ -41,7 +41,7 @@ main() {
         --fade-in-step 1 --fade-out-step 1 --inactive-opacity 1;;
     ping) exec mpv --no-terminal ~/n/archive/ping.flac;;
     pull) pull "$@";;
-    sshfs) exec sshfs -o ServerAliveInterval=15 -o reconnect "$@";;
+    sshfs) cmd_sshfs "$@";;
     suspend) (d lock); exec systemctl suspend;;
     todo) exec "$VISUAL" \
         -c "source $HOME/src/dotfiles/vim/todo.vim" \
@@ -197,6 +197,16 @@ pull() {
     git branch
     git switch master
     git pull --all --prune "$@"
+}
+
+cmd_sshfs() {
+    local awk_cmd='BEGIN { e = 1 } $1 == m { e = 0 } END { exit e }'
+    local src=${@: -2 : 1} dst=${@: -1}
+    if awk -v "m=$src" "$awk_cmd" /proc/mounts; then
+        return
+    fi
+    [[ -e "$dst" ]] || mkdir --parents "$dst"
+    exec sshfs -o ServerAliveInterval=15 -o reconnect "$@"
 }
 
 cmd_until() {
