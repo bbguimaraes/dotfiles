@@ -43,7 +43,7 @@ watch() {
     [[ -e "$FIFO" ]] || mkfifo "$FIFO"
     cmd printf '\\x1' \> "$FIFO"
     while read -n 1 < "$FIFO"; do
-        "$SHELL" -c "$*" || true
+        "$@" || true
     done
 }
 
