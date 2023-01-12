@@ -80,18 +80,18 @@ int main(int argc, char **argv, char **env) {
 EOF
 )
 
-RS_PROG=$(cat <<'EOF'
-// rustc -o %:r % && ./%:r
-fn main() {
-}
-EOF
-)
-
 GO_PROG=$(cat <<'EOF'
 // go run %
 package main
 
 func main() {
+}
+EOF
+)
+
+RS_PROG=$(cat <<'EOF'
+// rustc -o %:r % && ./%:r
+fn main() {
 }
 EOF
 )
@@ -105,8 +105,8 @@ main() {
     case "$cmd" in
     c) c "$@";;
     c++) cpp "$@";;
-    rs) rs "$@";;
     go) go "$@";;
+    rs) rs "$@";;
     *) usage;;
     esac
     vim \
@@ -123,8 +123,8 @@ Languages/modes:
 
     c includes
     cpp includes|obj
-    rs
     go
+    rs
 EOF
     return 1
 }
@@ -155,14 +155,14 @@ cpp() {
     echo "$prog" > test.cpp
 }
 
-rs() {
-    cmds=(-c 'edit test.rs')
-    echo "$RS_PROG" > test.rs
-}
-
 go() {
     cmds=(-c 'edit test.go')
     echo "$GO_PROG" > test.go
+}
+
+rs() {
+    cmds=(-c 'edit test.rs')
+    echo "$RS_PROG" > test.rs
 }
 
 main "$@"
