@@ -20,7 +20,7 @@
       mednafen mupdf picom qt5ct redshift rxvt-unicode scrot
       simplescreenrecorder ttf-dejavu ttf-junicode urxvt-perls xclip xdotool
     - >- # audio
-      alsa-utils audacity hydrogen mpv musescore pavucontrol pipewire
+      alsa-utils ardour audacity hydrogen mpv musescore pavucontrol pipewire
     - >- # mail
       msmtp mutt isync offlineimap
     - >- # net
