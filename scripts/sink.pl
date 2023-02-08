@@ -44,6 +44,7 @@ sub map_sink_name {
             return "bluez_sink.B8_F6_53_C4_6B_53.a2dp_sink";
         }
     }
+    return $sink;
 }
 
 sub set_profile {
