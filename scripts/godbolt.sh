@@ -89,6 +89,31 @@ func main() {
 EOF
 )
 
+PYTHON_PROG=$(cat <<'EOF'
+# python3 %
+import sys
+
+def main(*args):
+    pass
+
+if __name__ == '__main__':
+    sys.exit(main(*sys.argv[1:]))
+EOF
+)
+
+PYTHON_PLOT_PROG=$(cat <<'EOF'
+# python3 %
+import matplotlib.pyplot as plt
+import numpy as np
+
+N = 1_000_000
+BINS = 1_000
+_, ax = plt.subplots()
+ax.hist(np.random.normal(size=N), bins=BINS)
+plt.show()
+EOF
+)
+
 RS_PROG=$(cat <<'EOF'
 // rustc -o %:r % && ./%:r
 fn main() {
@@ -106,6 +131,7 @@ main() {
     c) c "$@";;
     c++) cpp "$@";;
     go) go "$@";;
+    py) python "$@";;
     rs) rs "$@";;
     *) usage;;
     esac
@@ -124,6 +150,7 @@ Languages/modes:
     c includes
     cpp includes|obj
     go
+    py [plot]
     rs
 EOF
     return 1
@@ -158,6 +185,18 @@ cpp() {
 go() {
     cmds=(-c 'edit test.go')
     echo "$GO_PROG" > test.go
+}
+
+python() {
+    local cmd= prog
+    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    case "$cmd" in
+    '') prog=$PYTHON_PROG;;
+    plot) prog=$PYTHON_PLOT_PROG;;
+    *) usage;;
+    esac
+    cmds=(-c 'edit test.py')
+    echo "$prog" > test.py
 }
 
 rs() {
