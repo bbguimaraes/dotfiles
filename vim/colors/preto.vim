@@ -118,8 +118,8 @@ call s:HL('Visual'		  , s:palette.green , s:palette.gray06, 'none'	   )
 call s:HL('VisualNOS'	  , s:palette.green , s:palette.gray06, 'none'	   )
 
 " SEARCH
-call s:HL('Search'		  , s:palette.black , s:palette.yellow, 'bold'	   )
-call s:HL('IncSearch'	  , s:palette.yellow, s:palette.black , 'bold'	   )
+call s:HL('Search'		  , s:palette.black , s:palette.gray19, 'bold'	   )
+call s:HL('IncSearch'	  , s:palette.gray19, s:palette.black , 'bold'	   )
 
 " SPELLING
 call s:HL('SpellBad'	  , s:palette.white , s:palette.red	  , 'bold'	   )
