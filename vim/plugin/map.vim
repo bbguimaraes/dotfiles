@@ -8,6 +8,7 @@ nnoremap <leader>ct :checktime<cr>
 nnoremap <leader>dd :GitGutterToggle<cr>
 nnoremap <leader>dw :windo setlocal invdiff invscrollbind<cr>:setlocal diff?<cr>
 nnoremap <leader>e :CtrlP<cr>
+nnoremap <leader>g :call GitTab()<cr>
 nnoremap <leader>h :set hlsearch \| let @/ = expand("<cword>")<cr>
 nnoremap <leader>m :w \| Make<cr>
 nnoremap <leader>nc /^\(<<<<<<< \\|=======\\|>>>>>>> \)<cr>
@@ -41,6 +42,15 @@ vnoremap <leader>Y
 \   :<c-u>call system("xclip -selection clipboard", SelectedText())<cr>
 vnoremap <leader>y
 \   :<c-u>call system("xclip", SelectedText())<cr>
+
+function! GitTab()
+    if getbufvar(tabpagebuflist(1)[0], "&filetype") == "fugitive"
+        tabnext 1
+        return
+    endif
+    G
+    execute "normal \<c-w>T:tabmove 0\<cr>"
+endfunction
 
 function! SelectedText()
     let l:a = @a
