@@ -26,6 +26,7 @@ Commands:
     files ARGS...
     push-img NAME
     local [sync-docs]
+    remote git
     remote pull
     remote sync-files ARGS...
 EOF
@@ -71,14 +72,20 @@ remote() {
     local cmd=
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
+    git) remote_git "$@";;
     pull) remote_pull "$@";;
     sync-files) remote_sync_files "$@";;
     *) echo >&2 "invalid command: remote $cmd"; return 1;;
     esac
 }
 
+remote_git() {
+    local cmd=(sudo git -C "$VOL/bbguimaraes.com" "$@")
+    exec ssh bbguimaraes.com $(printf '%q\n' "${cmd[@]}")
+}
+
 remote_pull() {
-    exec ssh bbguimaraes.com "sudo git -C $VOL/bbguimaraes.com pull"
+    remote_git pull
 }
 
 remote_sync_files() {
