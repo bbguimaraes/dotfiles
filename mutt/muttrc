@@ -9,6 +9,7 @@ set delete
 set sleep_time = 0
 set pager_index_lines = 10
 set editor = `echo \$EDITOR`
+set signature = "echo Bruno Barcarol Guimarães|"
 
 set mail_check_stats
 set sidebar_visible = yes
