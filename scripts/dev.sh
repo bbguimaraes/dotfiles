@@ -3,8 +3,8 @@ set -euo pipefail
 
 CMDS=(
     analog beep blue c cx cal complete compose custos date every f fmt hdmi http
-    lock mail man money mutt nosuspend office p paste pause picom ping pull
-    sshfs suspend todo ts until vtr w weechat
+    lock mail man money mutt nosuspend office p passmenu paste pause picom ping
+    pull sshfs suspend todo ts until vtr w weechat
 )
 
 main() {
@@ -34,6 +34,7 @@ main() {
     nosuspend) nosuspend "$@";;
     office) office "$@";;
     p) p "$@";;
+    passmenu) cmd_passmenu "$@";;
     paste) exec curl -F 'f:1=<-' ix.io;;
     pause) pause;;
     picom) exec picom \
@@ -176,6 +177,13 @@ p() {
     fusermount -u "$dst"
     xclip <<< ''
     xclip -sel c <<< ''
+}
+
+cmd_passmenu() {
+    local s
+    s=$(dmenu -p selection: <<< $'primary\nclipboard\n')
+    export PASSWORD_STORE_X_SELECTION=$s
+    exec passmenu
 }
 
 pause() {

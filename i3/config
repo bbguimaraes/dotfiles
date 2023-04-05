@@ -163,7 +163,7 @@ bindsym $mod+Shift+f exec d f
 bindsym $mod+i exec impero
 bindsym $mod+m exec d displays
 bindsym $mod+p exec d pause
-bindsym $mod+Shift+p exec passmenu
+bindsym $mod+Shift+p exec d passmenu
 bindsym $mod+t exec d window vtr
 bindsym $mod+Shift+v exec mpv /dev/video0
 bindsym $mod+minus scratchpad show
