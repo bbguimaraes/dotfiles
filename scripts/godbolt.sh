@@ -9,6 +9,8 @@ endfunction
 EOF
 )
 
+WRITE_POST_CMD='autocmd BufWritePost * :call WritePost()'
+
 C_PROG=$(cat <<'EOF'
 // gcc -std=c11 -S -masm=intel -fno-stack-protector -fno-asynchronous-unwind-tables %
 int main(int argc, char **argv, char **env) {
@@ -135,10 +137,6 @@ main() {
     rs) rs "$@";;
     *) usage;;
     esac
-    vim \
-        -c "$WRITE_POST" \
-        -c 'autocmd BufWritePost * :call WritePost()' \
-        "${cmds[@]}"
 }
 
 usage() {
@@ -157,19 +155,26 @@ EOF
 }
 
 c() {
-    local prog
+    local prog cmds
     case "${1:-}" in
     '') prog=$C_PROG;;
     includes) prog=$C_INCLUDES_PROG;;
     *) echo >&2 "invalid c++ option: $1"; return 1;;
     esac
-    cmds=(-c 'edit test.s' -c 'setlocal autoread' -c 'vsplit test.c')
+    cmds=(
+        -c 'edit test.s'
+        -c 'setlocal autoread'
+        -c 'vsplit test.c'
+        -c "$WRITE_POST"
+        -c "$WRITE_POST_CMD"
+    )
     > test.s
     echo "$prog" > test.c
+    vim "${cmds[@]}"
 }
 
 cpp() {
-    local prog
+    local prog cmds
     case "${1:-}" in
     '') prog=$CXX_PROG;;
     includes) prog=$CXX_INCLUDES_PROG;;
@@ -177,18 +182,31 @@ cpp() {
     obj) prog=$CXX_OBJ_PROG;;
     *) echo >&2 "invalid c++ option: $1"; return 1;;
     esac
-    cmds=(-c 'edit test.s' -c 'setlocal autoread' -c 'vsplit test.cpp')
+    cmds=(
+        -c 'edit test.s'
+        -c 'setlocal autoread'
+        -c 'vsplit test.cpp'
+        -c "$WRITE_POST"
+        -c "$WRITE_POST_CMD"
+    )
     > test.s
     echo "$prog" > test.cpp
+    vim "${cmds[@]}"
 }
 
 go() {
-    cmds=(-c 'edit test.go')
+    local cmds
+    cmds=(
+        -c 'edit test.go'
+        -c "$WRITE_POST"
+        -c "$WRITE_POST_CMD"
+    )
     echo "$GO_PROG" > test.go
+    vim "${cmds[@]}"
 }
 
 python() {
-    local cmd= prog
+    local cmd= prog cmds
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
     '') prog=$PYTHON_PROG;;
@@ -197,11 +215,18 @@ python() {
     esac
     cmds=(-c 'edit test.py')
     echo "$prog" > test.py
+    vim "${cmds[@]}"
 }
 
 rs() {
-    cmds=(-c 'edit test.rs')
+    local cmds
+    cmds=(
+        -c 'edit test.rs'
+        -c "$WRITE_POST"
+        -c "$WRITE_POST_CMD"
+    )
     echo "$RS_PROG" > test.rs
+    vim "${cmds[@]}"
 }
 
 main "$@"
