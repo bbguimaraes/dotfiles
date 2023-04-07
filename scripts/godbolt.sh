@@ -123,6 +123,33 @@ fn main() {
 EOF
 )
 
+TIKZ_PROG=$(cat <<'EOF'
+% xelatex test.tex && convert test.pdf test.png && feh --image-bg white test.png
+\documentclass{article}
+\usepackage[active,tightpage]{preview}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning}
+\setmainfont{DejaVu Sans Mono}
+\begin{document}
+\begin{preview}
+    \begin{tikzpicture}
+        \node {test};
+    \end{tikzpicture}
+\end{preview}
+\end{document}
+EOF
+)
+
+TIKZ_WRITE_POST=$(cat <<'EOF'
+function! WritePost()
+    execute "!" .. getline(1)[2:]
+    if filereadable("output.png") | execute "!xdg-open output.png" | endif
+endfunction
+'
+EOF
+)
+
 main() {
     tmp=$(mktemp -d)
     trap "rm -f '$tmp'/test* '$tmp'/a.out; rmdir $tmp" EXIT
@@ -135,6 +162,7 @@ main() {
     go) go "$@";;
     py) python "$@";;
     rs) rs "$@";;
+    tikz) tikz "$@";;
     *) usage;;
     esac
 }
@@ -150,6 +178,7 @@ Languages/modes:
     go
     py [plot]
     rs
+    tikz
 EOF
     return 1
 }
@@ -203,6 +232,15 @@ go() {
     )
     echo "$GO_PROG" > test.go
     vim "${cmds[@]}"
+}
+
+tikz() {
+    local cmds
+    cmds=(-c "$TIKZ_WRITE_POST" -c "$WRITE_POST_CMD")
+    echo "$TIKZ_PROG" > test.tex
+    nix-shell \
+        ~/n/comp/latex.nix \
+        --command "$(printf '%q ' vim "${cmds[@]}" test.tex "$@")"
 }
 
 python() {
