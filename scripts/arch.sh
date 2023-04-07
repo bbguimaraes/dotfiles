@@ -8,6 +8,7 @@ main() {
     clean) clean "$@";;
     kernel) kernel "$@";;
     img) img "$@";;
+    mirrorlist) mirrorlist "$@";;
     *) usage;;
     esac
 }
@@ -21,6 +22,7 @@ Commands:
     clean
     kernel revert
     img [build|push]
+    mirrorlist
 EOF
     return 1
 }
@@ -85,6 +87,16 @@ img_push() {
         -c "$eval_args" bash \
         podman import - arch "$and" \
         podman tag docker.io/library/arch arch
+}
+
+mirrorlist() {
+    local f=/etc/pacman.d/mirrorlist
+#    sed --in-place \
+    if ! grep --quiet '^## Czechia$' "$f"; then
+        echo >&2 "line not found"
+        exit 1
+    fi
+    sed --in-place '/^## Czechia$/,/^$/s/^#//' "$f"
 }
 
 main "$@"
