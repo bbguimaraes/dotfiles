@@ -86,81 +86,80 @@
       validate: visudo -cf %s
       content: |
         %wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman -Sy
-  - block:
-    - name: create local repository directory
-      file:
-        state: directory
-        path: '{{ aurutils_repo }}'
-        owner: '{{ user }}'
-        group: users
-    - name: unprivileged operations
-      become: yes
-      become_user: '{{ user }}'
-      become_method: su
-      block:
-      - name: check if aurutils gpg key is imported
-        command: gpg2 --list-keys '{{ aurutils_gpg_key }}'
-        register: rc
-        failed_when: false
-        changed_when: false
-      - name: check if already installed
-        command: pacman -Qqi aurutils
-        register: aurutils_installed
-        ignore_errors: true
-        changed_when: false
-      - name: download snapshot
-        get_url:
-          url: https://aur.archlinux.org/cgit/aur.git/snapshot/aurutils.tar.gz
-          dest: /tmp/aurutils.tar.gz
-        when: aurutils_installed is failed
-      - name: extract files
-        unarchive:
-          remote_src: true
-          src: /tmp/aurutils.tar.gz
-          dest: /tmp
-        when: aurutils_installed is failed
-      - name: check if package already built
-        find:
-          paths: /tmp/aurutils
-          file_type: file
-          patterns:
-          - aurutils-*.pkg.tar.zst
-        register: aurutils_built
-      - name: makepkg
-        command:
-          argv:
-          - makepkg
-          - --noconfirm
-          - --syncdeps
-          - --rmdeps
-          chdir: /tmp/aurutils
-        when: aurutils_installed is failed and not aurutils_built.files
-      - name: create local repository
-        command:
-          argv:
-          - repo-add
-          - '{{ aurutils_repo }}/aurutils.db.tar'
-          creates: '{{ aurutils_repo }}/aurutils.db.tar'
-    - name: list package file
+  - name: create local repository directory
+    file:
+      state: directory
+      path: '{{ aurutils_repo }}'
+      owner: '{{ user }}'
+      group: users
+  - name: unprivileged operations
+    become: yes
+    become_user: '{{ user }}'
+    become_method: su
+    block:
+    - name: check if aurutils gpg key is imported
+      command: gpg2 --list-keys '{{ aurutils_gpg_key }}'
+      register: rc
+      failed_when: false
+      changed_when: false
+    - name: check if already installed
+      command: pacman -Qqi aurutils
+      register: aurutils_installed
+      ignore_errors: true
+      changed_when: false
+    - name: download snapshot
+      get_url:
+        url: https://aur.archlinux.org/cgit/aur.git/snapshot/aurutils.tar.gz
+        dest: /tmp/aurutils.tar.gz
+      when: aurutils_installed is failed
+    - name: extract files
+      unarchive:
+        remote_src: true
+        src: /tmp/aurutils.tar.gz
+        dest: /tmp
+      when: aurutils_installed is failed
+    - name: check if package already built
       find:
         paths: /tmp/aurutils
         file_type: file
         patterns:
         - aurutils-*.pkg.tar.zst
       register: aurutils_built
-      when: aurutils_installed is failed
-    - name: install package
-      command: pacman --noconfirm -U '{{ aurutils_built.files[0].path }}'
-      when: aurutils_installed is failed
-    - name: add local repository to pacman.conf
-      blockinfile:
-        state: present
-        path: /etc/pacman.conf
-        marker: '# {mark} ANSIBLE MANAGED BLOCK AURUTILS'
-        block: |
-          [aurutils]
-          SigLevel = Optional TrustAll
-          Server = file://{{ aurutils_repo }}
-    - name: update pacman cache
-      command: pacman -Sy
+    - name: makepkg
+      command:
+        argv:
+        - makepkg
+        - --noconfirm
+        - --syncdeps
+        - --rmdeps
+        chdir: /tmp/aurutils
+      when: aurutils_installed is failed and not aurutils_built.files
+    - name: create local repository
+      command:
+        argv:
+        - repo-add
+        - '{{ aurutils_repo }}/aurutils.db.tar'
+        creates: '{{ aurutils_repo }}/aurutils.db.tar'
+  - name: list package file
+    find:
+      paths: /tmp/aurutils
+      file_type: file
+      patterns:
+      - aurutils-*.pkg.tar.zst
+    register: aurutils_built
+    when: aurutils_installed is failed
+  - name: install package
+    command: pacman --noconfirm -U '{{ aurutils_built.files[0].path }}'
+    when: aurutils_installed is failed
+  - name: add local repository to pacman.conf
+    blockinfile:
+      state: present
+      path: /etc/pacman.conf
+      marker: '# {mark} ANSIBLE MANAGED BLOCK AURUTILS'
+      block: |
+        [aurutils]
+        SigLevel = Optional TrustAll
+        Server = file://{{ aurutils_repo }}
+  - name: update pacman cache
+    command: pacman -Sy
   - include_tasks: backlight.yaml
