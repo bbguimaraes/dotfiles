@@ -35,10 +35,10 @@ function! TabLabel(n, sel, short)
     let nw = tabpagewinnr(a:n, '$')
     let b = buflist[winnr - 1]
     let name = bufname(b)
-    if len(name)
-        let name = fnamemodify(name, ':~:.')
-    else
+    if len(name) == 0
         let name = '[No Name]'
+    elseif name[0] == "/"
+        let name = fnamemodify(name, ':~:.')
     endif
     if a:short && !a:sel
         let name = fnamemodify(name, ':t')
