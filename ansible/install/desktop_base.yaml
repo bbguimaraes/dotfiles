@@ -71,6 +71,23 @@
     loop:
     - bluetooth
     - cups
+  - name: create systemd configuration directory for rtkit-daemon
+    file:
+      path: /etc/systemd/system/rtkit-daemon.service.d/
+      state: directory
+      mode: 755
+  - name: silence rtkit-daemon
+    copy:
+      dest: /etc/systemd/system/rtkit-daemon.service.d/log.conf
+      owner: root
+      group: root
+      mode: 0644
+      content: |
+        [Service]
+        LogLevelMax=notice
+    notify:
+    - daemon_reload
+    - rtkit_daemon_restart
   - name: disable perf paranoid mode for Vulkan
     sysctl:
       name: dev.i915.perf_stream_paranoid
@@ -163,3 +180,11 @@
   - name: update pacman cache
     command: pacman -Sy
   - include_tasks: backlight.yaml
+  handlers:
+  - name: daemon_reload
+    systemd:
+      daemon_reload: true
+  - name: rtkit_daemon_restart
+    ansible.builtin.service:
+      name: rtkit-daemon
+      state: restarted
