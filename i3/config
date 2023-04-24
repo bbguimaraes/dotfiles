@@ -161,7 +161,7 @@ bindsym $mod+b border toggle
 bindsym $mod+c exec d do
 bindsym $mod+Shift+f exec d f
 bindsym $mod+i exec impero
-bindsym $mod+m exec d displays
+bindsym $mod+m exec d displays toggle
 bindsym $mod+p exec d pause
 bindsym $mod+Shift+p exec d passmenu
 bindsym $mod+t exec d window vtr
