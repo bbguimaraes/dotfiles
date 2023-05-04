@@ -103,6 +103,15 @@
       validate: visudo -cf %s
       content: |
         %wheel ALL=(ALL) NOPASSWD: /usr/bin/pacman -Sy
+  - name: enable unprivileged wireless network configuration
+    copy:
+      dest: /etc/sudoers.d/wifi_menu
+      owner: root
+      group: root
+      mode: 0440
+      validate: visudo -cf %s
+      content: |
+        %wheel ALL=(ALL) NOPASSWD: /usr/bin/wifi-menu
   - name: create local repository directory
     file:
       state: directory
