@@ -4,7 +4,7 @@ set -euo pipefail
 CMDS=(
     analog beep blue c cx cal complete compose custos date every f fmt hdmi http
     lock mail man money mutt nosuspend office p passmenu paste pause picom ping
-    pull sshfs suspend todo ts until vtr w weechat
+    sshfs suspend todo ts until vtr w weechat
 )
 
 main() {
@@ -41,7 +41,7 @@ main() {
         --backend glx --vsync --no-fading-openclose \
         --fade-in-step 1 --fade-out-step 1 --inactive-opacity 1;;
     ping) exec mpv --no-terminal ~/n/archive/ping.flac;;
-    pull) pull "$@";;
+    pull) d git pull && d git rebase branches;;
     sshfs) cmd_sshfs "$@";;
     suspend) (d lock); exec systemctl suspend;;
     todo) exec "$VISUAL" \
@@ -199,12 +199,6 @@ pause() {
         org.mpris.MediaPlayer2.io.github.celluloid_player.Celluloid.instance-1 \
         /org/mpris/MediaPlayer2 \
         org.mpris.MediaPlayer2.Player.PlayPause
-}
-
-pull() {
-    git branch
-    git switch master
-    git pull --all --prune "$@"
 }
 
 cmd_sshfs() {
