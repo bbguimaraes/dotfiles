@@ -12,6 +12,7 @@ main() {
     backport) backport "$@";;
     diff) cmd_diff "$@";;
     bbguimaraes) bbguimaraes "$@";;
+    pull) pull "$@";;
     rebase) rebase "$@";;
     *) usage;;
     esac
@@ -29,6 +30,7 @@ Commands:
     backport REV
     diff log [DIFF_ARGS...] REV0 REV1
     bbguimaraes exec CMD...
+    pull
     rebase branches [BRANCHES...]
 EOF
     return 1
@@ -135,6 +137,12 @@ diff_log() {
         <(git log --format=%s "${args[$n - 1]}" --)
 }
 
+pull() {
+    git branch
+    git switch master
+    git pull --all --prune "$@"
+}
+
 rebase() {
     local cmd
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
@@ -145,14 +153,15 @@ rebase() {
 }
 
 rebase_branches() {
-    local base x n=0
-    base=$(git rev-parse HEAD)
+    local base rev x n=0
+    base=$(git rev-parse --abbrev-ref HEAD)
     [[ "$#" -eq 0 ]] && set -- $(git branch --no-merged)
     for x; do
         git merge-base --is-ancestor "$base" "$x" && continue
         sleep "$n"; n=1 # for unique timestamps
         git rebase --rebase-merges "$base" "$x"
     done
+    git switch "$base"
 }
 
 main "$@"
