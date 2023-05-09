@@ -13,6 +13,8 @@
       krb5 openvpn
     - >- # logs
       aws-cli python-tabulate
+    - >- # slack
+      python-websocket-client
   tasks:
   - name: install packages
     package:
