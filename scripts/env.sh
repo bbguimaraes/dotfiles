@@ -27,7 +27,7 @@ main() {
     case "$HOSTNAME" in
     rh*)
         tmux select-layout -t "$target" tiled
-        tmux new-window -t "$SESSION:1" d weechat
+        tmux new-window -t "$SESSION:1" weechat
         tmux split-window -t "$SESSION:1.0" -l 1000 rh irssi
         tmux select-layout -t "$target" even-vertical;;
     *)

@@ -4,7 +4,7 @@ set -euo pipefail
 CMDS=(
     analog beep blue c cx cal complete compose custos date every f fmt hdmi http
     lock mail man money mutt nosuspend office p passmenu paste pause picom ping
-    sshfs suspend todo ts until vtr w weechat
+    sshfs suspend todo ts until vtr w
 )
 
 main() {
@@ -51,7 +51,6 @@ main() {
     until) cmd_until "$@";;
     vtr) exec d window vtr;;
     w) exec d 'do' watch "$@";;
-    weechat) weechat "$@";;
     *)
         local f
         f=$(in_dotfiles "$cmd") || (echo "$f"; usage)
@@ -214,12 +213,6 @@ cmd_sshfs() {
 cmd_until() {
     local t=$1; shift
     until "$@"; do sleep "$t"; done
-}
-
-weechat() {
-    [[ "$HOSTNAME" == rh* ]] \
-        && source ~/.local/share/weechat/python/env/bin/activate
-    exec weechat "$@"
 }
 
 main "$@"
