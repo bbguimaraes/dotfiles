@@ -166,6 +166,7 @@ bindsym $mod+p exec d pause
 bindsym $mod+Shift+p exec d passmenu
 bindsym $mod+t exec d window vtr
 bindsym $mod+Shift+s exec d sink menu
-bindsym $mod+Shift+v exec mpv /dev/video0
+bindsym $mod+Shift+v exec i3-sensible-terminal -e alsamixer
+bindsym $mod+Shift+w exec mpv /dev/video0
 bindsym $mod+minus scratchpad show
 bindsym $mod+Shift+minus move scratchpad
