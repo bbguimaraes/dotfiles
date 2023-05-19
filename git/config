@@ -1,5 +1,8 @@
 [core]
     editor = vim
+[init]
+    # Just shut up, will you?
+    defaultBranch = master
 [user]
     name = Bruno Barcarol Guimarães
 [push]
