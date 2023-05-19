@@ -45,8 +45,6 @@ cmd_all() {
     rh*) work;;
     *) pass show test > /dev/null;;
     esac
-    command d cal
-    [[ "$HOSTNAME" == rh* ]] && command d mail
     init_temp
     keyboard
     services
@@ -58,12 +56,9 @@ work() {
         until ip link show tun0 > /dev/null; do sleep 0.5; done
     fi
     if ! klist > /dev/null; then
-        tmux split-window sh -c 'kinit bbarcaro'
-        tmux set-window-option synchronize-panes
-        DISPLAY= pass show test > /dev/null
-    else
-        pass show test > /dev/null
+        kinit bbarcaro
     fi
+    pass show test > /dev/null
 }
 
 init_temp() {
