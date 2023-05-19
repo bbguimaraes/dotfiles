@@ -10,6 +10,7 @@ nnoremap <leader>dw :windo setlocal invdiff invscrollbind<cr>:setlocal diff?<cr>
 nnoremap <leader>e :CtrlP<cr>
 nnoremap <leader>g :call GitTab()<cr>
 nnoremap <leader>h :set hlsearch \| let @/ = expand("<cword>")<cr>
+nnoremap <leader>jp VipJ0
 nnoremap <leader>m :w \| Make<cr>
 nnoremap <leader>nc /^\(<<<<<<< \\|=======\\|>>>>>>> \)<cr>
 nnoremap <silent> <leader>o
