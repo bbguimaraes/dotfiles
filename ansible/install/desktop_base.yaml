@@ -21,6 +21,7 @@
       simplescreenrecorder ttf-dejavu ttf-junicode urxvt-perls xclip xdotool
     - >- # audio
       alsa-utils ardour audacity hydrogen mpv musescore pavucontrol pipewire
+      pulsemixer
     - >- # mail
       msmtp mutt isync offlineimap
     - >- # net
