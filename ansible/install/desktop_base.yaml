@@ -7,9 +7,9 @@
     - >- # dev
       ansible arm-none-eabi-gcc base-devel busybox ccache cjson clang cloc cmake
       colordiff ctags dash dash devtools distcc doxygen emacs encfs gdb go
-      graphviz hub ipython libc++ llvm musl mypy opengl-man-pages pocl podman
-      premake python-pip python-virtualenv qemu-base qemu-ui-sdl rust tidy tig
-      valgrind
+      graphviz hub ipython libc++ llvm meson musl mypy opengl-man-pages pocl
+      podman premake python-pip python-virtualenv qemu-base qemu-ui-sdl rust
+      tidy tig valgrind
     - >- # vim
       vim-ctrlp vim-fugitive vim-gitgutter vim-tagbar
     - >- # xorg
