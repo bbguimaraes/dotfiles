@@ -108,14 +108,14 @@
       src: '{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['{{ home }}/n/archive/impero.txt', '.config/impero/commands.txt']
-    - ['{{ home }}/n/archive/mutt.aliases', '.config/mutt/aliases']
-    - ['{{ home }}/n/archive/pass', '.local/share/password-store']
-    - ['{{ home }}/n/archive/vim/en.utf-8.add', '.vim/spell/en.utf-8.add']
-    - ['{{ home }}/n/archive/vim/la.utf-8.add', '.vim/spell/la.utf-8.add']
-    - ['{{ home }}/n/archive/vim/en.utf-8.add.spl',
+    - ['{{ home }}/n/archivum/impero.txt', '.config/impero/commands.txt']
+    - ['{{ home }}/n/archivum/mutt.aliases', '.config/mutt/aliases']
+    - ['{{ home }}/n/archivum/pass', '.local/share/password-store']
+    - ['{{ home }}/n/archivum/vim/en.utf-8.add', '.vim/spell/en.utf-8.add']
+    - ['{{ home }}/n/archivum/vim/la.utf-8.add', '.vim/spell/la.utf-8.add']
+    - ['{{ home }}/n/archivum/vim/en.utf-8.add.spl',
        '.vim/spell/en.utf-8.add.spl']
-    - ['{{ home }}/n/archive/vim/la.utf-8.add.spl',
+    - ['{{ home }}/n/archivum/vim/la.utf-8.add.spl',
        '.vim/spell/la.utf-8.add.spl']
     - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
     - ['{{ home }}/src/impero/impero', '.local/bin/impero']

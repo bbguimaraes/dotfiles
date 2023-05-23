@@ -3,8 +3,8 @@ set -euo pipefail
 
 CMDS=(
     analog beep blue c cx cal complete compose custos date every f fmt hdmi http
-    lock mail man money mutt nosuspend office p passmenu paste pause picom ping
-    sshfs suspend todo ts until vtr w
+    lock mail man mutt nosuspend office p passmenu paste pause pecunia picom
+    ping sshfs suspend todo ts until vtr w
 )
 
 main() {
@@ -29,7 +29,6 @@ main() {
     lock) exec i3lock --color 000000;;
     mail) exec pkill -USR1 --uid "$USER" offlineimap;;
     man) cmd_man "$@";;
-    money) exec "$VISUAL" ~/n/archive/money/$(printf '%(%Y/%m)T').txt;;
     mutt) exec mutt -e "source ~/.config/mutt/muttrc_$1";;
     nosuspend) nosuspend "$@";;
     office) office "$@";;
@@ -37,6 +36,7 @@ main() {
     passmenu) cmd_passmenu "$@";;
     paste) exec curl -F 'f:1=<-' ix.io;;
     pause) pause;;
+    pecunia) exec "$VISUAL" ~/n/archivum/pecunia/$(printf '%(%Y/%m)T').txt;;
     picom) exec picom \
         --backend glx --vsync --no-fading-openclose \
         --fade-in-step 1 --fade-out-step 1 --inactive-opacity 1;;
