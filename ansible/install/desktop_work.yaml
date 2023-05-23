@@ -98,7 +98,7 @@
       dest: '{{ home }}/{{ item.1 }}'
     loop:
     - ['src/dotfiles/scripts/dev.sh', '.local/bin/d']
-    - ['n/archive/work/redhat', 'rh']
+    - ['n/archivum/work/redhat', 'rh']
     - ['rh/scripts/gotestsum.sh', '.local/bin/gotestsum']
     - ['rh/scripts/redhat.sh', '.local/bin/rh']
   - name: enable and start services
