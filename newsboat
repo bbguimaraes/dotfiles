@@ -3,6 +3,8 @@ urls-source "ocnews"
 ocnews-url "https://nextcloud.bbguimaraes.com"
 ocnews-login "bbguimaraes"
 ocnews-passwordeval "pass show bbguimaraes.com/nextcloud/news"
+# browser
+browser "d web lynx %u"
 # reload
 auto-reload yes
 reload-threads 8
@@ -14,7 +16,7 @@ bind-key j down
 bind-key k up
 bind-key ^D pagedown
 bind-key ^U pageup
-macro o set browser "xdg-open %u"; open-in-browser; set browser "lynx %u"
+macro o set browser "xdg-open %u"; open-in-browser; set browser "d web lynx %u"
 # colors
 color listnormal_unread default default bold
 color listfocus default default reverse
