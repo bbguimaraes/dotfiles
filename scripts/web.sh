@@ -3,10 +3,11 @@ set -euo pipefail
 
 main() {
     [[ "$#" -eq 0 ]] && usage
-    [[ "$#" -eq 1 ]] && { browser "$@"; return; }
+    [[ "$#" -eq 1 ]] && { terminal d web lynx "$@"; return; }
     local cmd=$1; shift
     case "$cmd" in
     ddg) ddg "$@";;
+    lynx) lynx "$@";;
     priv) exec firefox --private-window "$@";;
     vim) cmd_vim "$@";;
     wt) wt "$@";;
@@ -22,9 +23,19 @@ Commands:
 
     URL
     ddg|wt QUERY...
+    lynx [ARGS...]
     vim URL
 EOF
     return 1
+}
+
+lynx() {
+    command lynx \
+        --display-charset utf-8 \
+        --collapse-br-tags \
+        --accept-all-cookies \
+        --cookie-file /dev/null \
+        "$@"
 }
 
 terminal() {
@@ -33,23 +44,20 @@ terminal() {
     "${cmd[@]}"
 }
 
-browser() {
-    terminal lynx -accept_all_cookies -cookie_file /dev/null "$@"
-}
-
 ddg() {
     local IFS=+
-    browser "https://html.duckduckgo.com/html?q=$*"
+    lynx "https://html.duckduckgo.com/html?q=$*"
 }
 
 cmd_vim() {
-    local html=$(lynx -display_charset=utf-8 -collapse_br_tags -dump "$1")
+    local html
+    html=$(lynx --dump "$1")
     terminal bash -c 'vim - <<< $1' bash "$html"
 }
 
 wt() {
     local IFS=+
-    browser "https://en.wiktionary.com/wiki/$*"
+    lynx "https://en.wiktionary.com/wiki/$*"
 }
 
 main "$@"
