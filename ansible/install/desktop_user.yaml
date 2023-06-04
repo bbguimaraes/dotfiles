@@ -35,6 +35,11 @@
       dir: "{{ src_dir }}/{{ item }}"
     loop:
     - custos
+  - name: build programs (cargo)
+    command:
+      chdir: "{{ home }}/src/codex/timer"
+      cmd: cargo build --release
+      creates: "{{ home }}/src/codex/timer/target/release/timer"
   - name: create home directories
     file:
       state: directory
@@ -98,6 +103,10 @@
     loop:
     - - src/custos/src/bin/release/custos
       - .local/bin/custos
+    - - src/impero/impero
+      - .local/bin/impero
+    - - src/subs/subs
+      - .local/bin/subs
   - name: verify files have been synchronized
     fail:
       msg: Synchronize Nextcloud files before continuing
@@ -118,8 +127,6 @@
     - ['{{ home }}/n/archivum/vim/la.utf-8.add.spl',
        '.vim/spell/la.utf-8.add.spl']
     - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
-    - ['{{ home }}/src/impero/impero', '.local/bin/impero']
-    - ['{{ home }}/src/subs/subs', '.local/bin/subs']
   - name: setup CA symlinks
     file:
       state: link
