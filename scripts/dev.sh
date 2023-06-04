@@ -27,7 +27,7 @@ main() {
     hdmi) exec d sink hdmi-stereo;;
     http) exec python -m http.server "$@";;
     lock) exec i3lock --color 000000;;
-    mail) exec pkill -USR1 --uid "$USER" offlineimap;;
+    mail) mail "$@";;
     man) cmd_man "$@";;
     mutt) exec mutt -e "source ~/.config/mutt/muttrc_$1";;
     nosuspend) nosuspend "$@";;
@@ -137,6 +137,12 @@ cmd_fmt() {
             | fmt "$@" \
             | sed -e 's/$/ \\/' -e '$s/ \\$//';;
     esac
+}
+
+mail() {
+    local p
+    pkill -USR1 --uid "$USER" offlineimap && return
+    p=$(pgrep --uid "$USER" mbsync.sh) && pkill -HUP --parent "$p" sleep
 }
 
 cmd_man() {

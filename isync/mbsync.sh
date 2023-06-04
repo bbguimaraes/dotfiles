@@ -5,6 +5,6 @@ p=$(pass show comp/protonmail/bridge)
 cmd=(mbsync "$@")
 max=3 n=$max
 while { "${cmd[@]}" <<< "$p" && n=$max; } || [[ "$((--n))" -ne 0 ]]; do
-    sleep 5m
+    sleep 5m || [[ "$?" -eq 130 ]]
 done
 exit 1
