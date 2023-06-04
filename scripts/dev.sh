@@ -4,7 +4,7 @@ set -euo pipefail
 CMDS=(
     analog beep blue c cx cal complete compose custos date every f fmt hdmi http
     lock mail man mutt nosuspend office p passmenu paste pause pecunia picom
-    ping sshfs suspend todo ts until vtr w
+    ping sshfs suspend todo ts until vtr w wallpaper
 )
 
 main() {
@@ -51,6 +51,7 @@ main() {
     until) cmd_until "$@";;
     vtr) exec d window vtr;;
     w) exec d 'do' watch "$@";;
+    wallpaper) wallpaper "$@";;
     *)
         local f
         f=$(in_dotfiles "$cmd") || (echo "$f"; usage)
@@ -213,6 +214,11 @@ cmd_sshfs() {
 cmd_until() {
     local t=$1; shift
     until "$@"; do sleep "$t"; done
+}
+
+wallpaper() {
+    [[ "$#" -eq 0 ]] && set -- ~/n/archivum/img/bg
+    feh --no-fehbg --bg-center "$@"
 }
 
 main "$@"
