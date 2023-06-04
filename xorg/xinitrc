@@ -21,5 +21,5 @@ fi
 d init keyboard
 xset dpms 3600 3600 3600
 xset s 3600
-feh --bg-center ~/n/archivum/img/bg --no-fehbg
+d wallpaper
 exec i3
