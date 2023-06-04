@@ -319,7 +319,13 @@ def configure(dir: str, name: str, check: Check, args: List[str], ccache=True):
 def setup_env(tmp: str) -> Dict:
     lsan = os.path.join(tmp, "leak_suppressions.txt")
     with open(lsan, "w") as f:
-        f.write("leak:_dri.so\n")
+        f.write("""\
+leak:_dri.so
+leak:libpulsecommon-
+leak:libpulse.so
+leak:libvorbis.so
+leak:libdbus-
+""")
     ret = dict(ENV)
     ret["LSAN_OPTIONS"] = "suppressions=" + lsan
     return ret
