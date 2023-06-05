@@ -9,15 +9,17 @@
       - git
       - man-pages
       - openssh
-      - rxvt-unicode-terminfo
       - sudo
       - tmux
       - vi
       - vim
-  - name: install base system packages
+  - name: install base system packages (arch)
     package:
       state: present
-      name: pkgfile
+      name:
+      - pkgfile
+      - rxvt-unicode-terminfo
+    when: ansible_os_family == 'Archlinux'
   - name: check required variable
     assert:
       that: sudo_wheel_nopasswd is defined
@@ -65,6 +67,7 @@
     command:
       argv: ['pkgfile', '--update']
       creates: /var/cache/pkgfile/core.files
+    when: ansible_os_family == 'Archlinux'
   - name: disable root SSH password login
     lineinfile:
       dest: /etc/ssh/sshd_config

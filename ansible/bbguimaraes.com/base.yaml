@@ -12,6 +12,10 @@
       --home /home/bbguimaraes
       --move-home
     when: ret.rc == 0
+  - name: enable epel
+    package:
+      state: present
+      name: epel-release
   - name: install fail2ban
     package:
       state: present
