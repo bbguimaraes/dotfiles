@@ -6,6 +6,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import time
 import typing
 import urllib.error
@@ -17,9 +18,10 @@ REGION = 'fra1'
 VOLUME_NAME_FMT = '{}-vol'
 VOLUME_DEV_FMT = '/dev/disk/by-id/scsi-0DO_Volume_{}'
 VOLUME_SIZE_GB = 50
-DROPLET_SIZE = 's-2vcpu-4gb'
-DROPLET_IMAGE = 'centos-8-x64'
+DROPLET_SIZE = 's-1vcpu-2gb'
+DROPLET_IMAGE = 'centos-stream-9-x64'
 DROPLET_SSH_KEY = 23710396
+DROPLET_VPC = 'f701a17c-dc84-11e8-8b13-3cfdfea9f160'
 
 CmdRetType = typing.Optional[int]
 CmdFnType = typing.Callable[[argparse.Namespace], CmdRetType]
@@ -126,6 +128,7 @@ class DigitalOcean(object):
             'size': DROPLET_SIZE,
             'image': DROPLET_IMAGE,
             'ssh_keys': [DROPLET_SSH_KEY],
+            'vpc_uuid': DROPLET_VPC,
             'backups': False,
         })
         if not resp:
@@ -225,7 +228,7 @@ class Ansible(object):
         if params:
             for x in params.items():
                 cmd.append('-e')
-                cmd.append('='.join(x))
+                cmd.append('='.join(map(str, x)))
         self._verbose('Executing Ansible playbook:', cmd)
         if self._dry_run:
             return
@@ -263,11 +266,10 @@ def cmd_new(args: argparse.Namespace) -> CmdRetType:
     )['ip_address']
     with Ansible(args, address) as ansible:
         ansible.playbook('bbguimaraes.com/base.yaml', root=True)
-        ansible.playbook('base/base.yaml', root=True, params={
+        ansible.playbook('install/base.yaml', root=True, params={
             'sudo_wheel_nopasswd': 'true',
+            'user': os.getenv('USER'),
         })
-        ansible.playbook('swap.yaml', become=True)
-        ansible.playbook('base/base_user.yaml')
         ansible.playbook('bbguimaraes.com/volume.yaml', become=True, params={
             'volume_format_disk': 'true',
             'volume_dev': VOLUME_DEV_FMT.format(vol),
