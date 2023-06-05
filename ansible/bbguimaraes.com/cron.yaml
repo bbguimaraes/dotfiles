@@ -1,4 +1,4 @@
-- hosts: bbguimaraes.com
+- hosts: bbguimaraes_com
   tasks:
   - name: add Nextcloud cron job
     cron:
