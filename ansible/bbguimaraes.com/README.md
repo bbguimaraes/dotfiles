@@ -11,3 +11,7 @@ To create a new server:
     $ ./bbguimaraes.com.py \
         --verbose \
         new --digital-ocean-token do.txt bbguimaraes1
+
+After services are set up:
+
+    $ ansible-playbook cron.yaml
