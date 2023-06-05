@@ -43,6 +43,7 @@ def parse_args(argv: typing.List[str]) -> argparse.Namespace:
     token_arg(droplets_parser)
     new_parser = sub.add_parser('new')
     new_parser.set_defaults(cmd=cmd_new)
+    new_parser.add_argument('--dry-run', action='store_true')
     new_parser.add_argument('name', type=str)
     token_arg(new_parser)
     return parser.parse_args(argv)
@@ -57,6 +58,7 @@ def read_only_file_arg(filename: str) -> str:
 class DigitalOcean(object):
     def __init__(self, args: argparse.Namespace):
         self._verbose = args.verbose
+        self._dry_run = getattr(args, 'dry_run', False)
         self.token = args.digital_ocean_token.rstrip()
         self._verbose('Using DigitalOcean token:', self.token)
 
@@ -103,6 +105,8 @@ class DigitalOcean(object):
 
     def create_volume(self, name: str) -> typing.Optional[str]:
         self._verbose('Creating volume', name)
+        if self._dry_run:
+            return None
         resp = self._post_json('volumes', j={
             'name': name,
             'region': REGION,
@@ -114,6 +118,8 @@ class DigitalOcean(object):
 
     def create_droplet(self, name: str) -> typing.Optional[dict]:
         self._verbose('Creating droplet', name)
+        if self._dry_run:
+            return None
         resp = self._post_json('droplets', j={
             'name': name,
             'region': REGION,
@@ -144,6 +150,8 @@ class DigitalOcean(object):
         self, vol_id: str, vol: str, droplet_id: int
     ) -> typing.Optional[str]:
         self._verbose('Attaching volume', vol, 'to droplet', droplet_id)
+        if self._dry_run:
+            return 'action_id'
         resp = self._post_json(f'volumes/{vol_id}/actions', j={
             'type': 'attach',
             'volume_name': vol,
@@ -156,6 +164,8 @@ class DigitalOcean(object):
 
     def wait_for_action(self, id: str):
         self._verbose('Waiting for action', repr(id))
+        if self._dry_run:
+            return True
         i = 10
         url = f'actions/{id}'
         while True:
@@ -174,6 +184,7 @@ class DigitalOcean(object):
 class Ansible(object):
     def __init__(self, args: argparse.Namespace):
         self._verbose = args.verbose
+        self._dry_run = args.dry_run
 
     def playbook(
         self, playbook: str, host: str,
@@ -196,6 +207,8 @@ class Ansible(object):
                 cmd.append('-e')
                 cmd.append('='.join(x))
         self._verbose('Executing Ansible playbook:', cmd)
+        if self._dry_run:
+            return
         subprocess.check_call(cmd)
 
 def cmd_droplets(args: argparse.Namespace) -> CmdRetType:
