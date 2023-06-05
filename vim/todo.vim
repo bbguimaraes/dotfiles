@@ -43,6 +43,6 @@ function! TodoIncDec(d)
     return v:true
 endfunction
 
-set tabstop=2 smartindent foldmethod=indent nowrap
+set tabstop=2 smartindent foldmethod=indent foldlevel=9 nowrap
 nnoremap <c-a> :call TodoInc()<cr>
 nnoremap <c-x> :call TodoDec()<cr>
