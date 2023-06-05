@@ -90,7 +90,7 @@
   become: yes
   vars:
     swapfile_path: /var/swapfile
-    swapfile_size_kb: 4096
+    swapfile_size_mb: 4096
   tasks:
   - include_tasks: swap.yaml
 - hosts: all
