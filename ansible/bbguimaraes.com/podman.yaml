@@ -1,4 +1,4 @@
-- hosts: bbguimaraes.com
+- hosts: bbguimaraes_com
   vars:
     pkgs:
     - podman
