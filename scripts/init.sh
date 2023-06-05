@@ -55,9 +55,7 @@ work() {
         sudo /usr/local/bin/openvpn.sh redhat_brq.conf
         until ip link show tun0 > /dev/null; do sleep 0.5; done
     fi
-    if ! klist > /dev/null; then
-        kinit bbarcaro
-    fi
+    ~/rh/scripts/kinit.py bbarcaro
     pass show test > /dev/null
 }
 
