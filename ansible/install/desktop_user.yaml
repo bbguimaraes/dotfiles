@@ -107,6 +107,8 @@
       - .local/bin/impero
     - - src/subs/subs
       - .local/bin/subs
+    - - src/codex/timer/target/release/timer
+      - .local/bin/timer
   - name: verify files have been synchronized
     fail:
       msg: Synchronize Nextcloud files before continuing
