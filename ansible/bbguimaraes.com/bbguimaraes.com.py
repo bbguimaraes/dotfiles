@@ -182,12 +182,30 @@ class DigitalOcean(object):
             time.sleep(i)
 
 class Ansible(object):
-    def __init__(self, args: argparse.Namespace):
+    def __init__(self, args: argparse.Namespace, host):
         self._verbose = args.verbose
         self._dry_run = args.dry_run
+        self._host = host
+
+    def __enter__(self):
+        self._inventory = tempfile.NamedTemporaryFile()
+        self._inventory.write(f'''\
+{self._host}
+
+[servers]
+{self._host}
+
+[bbguimaraes_com]
+{self._host}
+'''.encode('utf-8'))
+        self._inventory.flush()
+        return self
+
+    def __exit__(self, *_):
+        self._inventory.close()
 
     def playbook(
-        self, playbook: str, host: str,
+        self, playbook: str,
         args: typing.Sequence[str]=(),
         params: typing.Optional[typing.Dict[str, str]]=None,
         root: bool=False,
@@ -195,7 +213,9 @@ class Ansible(object):
     ):
         cmd = [
             'ansible-playbook', os.path.join(ANSIBLE_DIR, playbook),
-            '--inventory', f'{host},', *args,
+            '--inventory', self._inventory.name,
+            '--limit', self._host,
+            *args,
         ]
         if root:
             cmd.append('-u')
@@ -241,23 +261,20 @@ def cmd_new(args: argparse.Namespace) -> CmdRetType:
         x for x in droplet['networks']['v4']
         if x['type'] == 'public'
     )['ip_address']
-    ansible = Ansible(args)
-    ansible.playbook('bbguimaraes.com/base.yaml', address, root=True)
-    ansible.playbook('base/base.yaml', address, root=True, params={
-        'sudo_wheel_nopasswd': 'true',
-    })
-    ansible.playbook('swap.yaml', address, become=True)
-    ansible.playbook('base/base_user.yaml', address)
-    ansible.playbook(
-        'bbguimaraes.com/volume.yaml', address,
-        become=True,
-        params={
+    with Ansible(args, address) as ansible:
+        ansible.playbook('bbguimaraes.com/base.yaml', root=True)
+        ansible.playbook('base/base.yaml', root=True, params={
+            'sudo_wheel_nopasswd': 'true',
+        })
+        ansible.playbook('swap.yaml', become=True)
+        ansible.playbook('base/base_user.yaml')
+        ansible.playbook('bbguimaraes.com/volume.yaml', become=True, params={
             'volume_format_disk': 'true',
             'volume_dev': VOLUME_DEV_FMT.format(vol),
             'volume_dir': f'/mnt/{vol}',
         })
-    ansible.playbook('bbguimaraes.com/podman.yaml', address, become=True)
-    return None
+        ansible.playbook('bbguimaraes.com/podman.yaml', become=True)
+        return None
 
 def new_create_volume(
     args: argparse.Namespace, do: DigitalOcean, name: str
