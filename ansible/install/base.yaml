@@ -97,8 +97,9 @@
   tasks:
   - include_tasks: swap.yaml
 - hosts: all
+  become_user: '{{ user|default(ansible_user_id) }}'
   vars:
-    home: '{{ ansible_env.HOME }}'
+    home: '/home/{{ user|default(ansible_user_id) }}'
     src_dir: '{{ home }}/src'
   tasks:
   - include_tasks: base_user.yaml
