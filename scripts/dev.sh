@@ -142,7 +142,7 @@ cmd_fmt() {
 mail() {
     local p
     pkill -USR1 --uid "$USER" offlineimap && return
-    p=$(pgrep --uid "$USER" mbsync.sh) && pkill -HUP --parent "$p" sleep
+    p=$(pgrep --uid "$USER" mbsync.sh) && pkill -INT --parent "$p" sleep
 }
 
 cmd_man() {
