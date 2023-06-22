@@ -3,7 +3,7 @@ set -euo pipefail
 
 ADDR=192.168.0.4
 PORT=2121
-ARGS=(--user anonymous:)
+REQ_ARGS=(--user anonymous:)
 ROOT=/storage/emulated/0
 
 main() {
@@ -13,7 +13,7 @@ main() {
     push) push "$@";;
     pull) pull "$@";;
     send) send "$@";;
-    ls) _ls "$@";;
+    ls) cmd_ls "$@";;
     *) usage;;
     esac
 }
@@ -56,7 +56,7 @@ push() {
     local x
     for x; do
         echo "$x"
-        curl "${ARGS[@]}" --upload-file "$x" "ftp://$ADDR:$PORT/$ROOT/"
+        curl "${REQ_ARGS[@]}" --upload-file "$x" "ftp://$ADDR:$PORT/$ROOT/"
     done
 }
 
@@ -71,17 +71,29 @@ pull() {
     done
     for x; do
         echo "$x"
-        curl --ignore-content-length "${ARGS[@]}" "ftp://$ADDR:$PORT/$ROOT/$x" -o "$(basename "$x")"
+        pull_file "$(url_for_file "$x")" -o "$(basename "$x")"
     done
 }
 
-_ls() {
+pull_file() {
+    request --ignore-content-length "${REQ_ARGS[@]}" "$@"
+}
+
+cmd_ls() {
     [[ "$#" -eq 0 ]] && set -- ''
     local x
     for x; do
         [[ "$x" ]] && echo "$x"
-        curl "${ARGS[@]}" "ftp://$ADDR:$PORT/$ROOT/$x"
+        request "${REQ_ARGS[@]}" "$(url_for_file "$x")"
     done
+}
+
+url_for_file() {
+    echo "ftp://$ADDR:$PORT/$ROOT/$1"
+}
+
+request() {
+    curl --silent --show-error "$@"
 }
 
 main "$@"
