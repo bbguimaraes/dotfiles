@@ -10,6 +10,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    camera) camera "$@";;
     push) push "$@";;
     pull) pull "$@";;
     send) send "$@";;
@@ -24,12 +25,31 @@ Usage: $0 CMD ARGS...
 
 Commands:
 
+    camera pull
     push FILES...
     pull FILES...
     ls PATHS...
     send audio FILES...
 EOF
     return 1
+}
+
+camera() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    pull) camera_pull "$@";;
+    *) usage;;
+    esac
+}
+
+camera_pull() {
+    local d=DCIM/Camera x
+    request --list-only "$(url_for_file "$d/")" \
+        | while IFS=$'\n' read x; do
+            echo "$x"
+            pull_file "$(url_for_file "$d/$x")" -o "$x"
+        done
 }
 
 send() {
