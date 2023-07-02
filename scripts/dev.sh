@@ -3,8 +3,8 @@ set -euo pipefail
 
 CMDS=(
     analog beep blue c cx cal complete compose custos date every fmt hdmi http
-    lock mail man mutt nosuspend office p passmenu paste pause pecunia picom
-    ping sshfs suspend todo ts until vtr w wallpaper
+    liber lock mail man mutt nosuspend office p passmenu paste pause pecunia
+    picom ping sshfs suspend todo ts until vtr w wallpaper
 )
 
 main() {
@@ -25,6 +25,7 @@ main() {
     fmt) cmd_fmt "$@";;
     hdmi) exec d sink hdmi-stereo;;
     http) exec python -m http.server "$@";;
+    liber) liber "$@";;
     lock) exec i3lock --color 000000;;
     mail) mail "$@";;
     man) cmd_man "$@";;
@@ -136,6 +137,18 @@ cmd_fmt() {
             | fmt "$@" \
             | sed -e 's/$/ \\/' -e '$s/ \\$//';;
     esac
+}
+
+liber() {
+    local f
+    f=$(find \
+        ~/n/archivum/libri/ \
+        ~/src/codex/ \
+        ~/src/ephemeris/ \
+        ~/src/summa \
+        -type f \( -name '*.pdf' -o -name '*.epub' \) \
+        | dmenu -l 8)
+    exec mupdf "$d/$f"
 }
 
 mail() {
