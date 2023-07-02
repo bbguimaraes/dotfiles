@@ -6,12 +6,6 @@ main() {
     local cmd=$1; shift
     case "$cmd" in
     booklet) booklet "$@";;
-    codex) exec mupdf ~/src/codex/tex/codex.pdf;;
-    ephemeris) exec mupdf ~/src/ephemeris/ephemeris.pdf;;
-    historia) exec mupdf ~/src/summa/historiae/historiae.pdf;;
-    lingua) exec mupdf ~/src/summa/linguae/linguae.pdf;;
-    missale) exec mupdf ~/src/libri/missale/missale.pdf;;
-    sanitas) exec mupdf ~/src/summa/sanitatis/sanitatis.pdf;;
     split) split "$@";;
     *) usage;;
     esac
@@ -23,7 +17,6 @@ Usage: pdf cmd
 
 Commands:
 
-    codex|ephemeris|historiae|linguae|missale|sanitatis
     booklet INPUT N_PAGES
     split images [ARGS...]
 EOF
