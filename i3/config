@@ -159,7 +159,7 @@ default_border normal 0
 hide_edge_borders both
 bindsym $mod+b border toggle
 bindsym $mod+c exec d do
-bindsym $mod+Shift+f exec d f
+bindsym $mod+Shift+f exec d cx firefox
 bindsym $mod+i exec impero
 bindsym $mod+m exec d displays toggle
 bindsym $mod+p exec d pause
