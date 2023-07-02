@@ -2,7 +2,7 @@
 set -euo pipefail
 
 CMDS=(
-    analog beep blue c cx cal complete compose custos date every f fmt hdmi http
+    analog beep blue c cx cal complete compose custos date every fmt hdmi http
     lock mail man mutt nosuspend office p passmenu paste pause pecunia picom
     ping sshfs suspend todo ts until vtr w wallpaper
 )
@@ -22,7 +22,6 @@ main() {
     cx) xclip -out | xargs "$@";;
     date) exec date --utc +%Y-%m-%dT%H:%M:%SZ "$@";;
     every) every "$@";;
-    f) xclip -out | exec xargs firefox;;
     fmt) cmd_fmt "$@";;
     hdmi) exec d sink hdmi-stereo;;
     http) exec python -m http.server "$@";;
