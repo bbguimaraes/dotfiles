@@ -105,7 +105,7 @@ blue() {
     if tty --silent; then
         bluetoothctl power on
         until bluetoothctl connect B8:F6:53:C4:6B:53; do :; done
-        d sink bluez
+        d sink set bluez
     else
         exec urxvt -e d blue
     fi
