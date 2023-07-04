@@ -78,10 +78,9 @@
       enabled: true
       state: started
       name: sshd
-  - name: set timezone to utc
+  - name: set timezone
     timezone:
-      name: UTC
-      hwclock: UTC
+      name: CET
   - name: check if the ntp service is enabled
     command: timedatectl show --property NTP --value
     register: rc
