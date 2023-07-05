@@ -141,14 +141,15 @@ cmd_fmt() {
 
 liber() {
     local f
-    f=$(find \
-        ~/n/archivum/libri/ \
-        ~/src/codex/ \
-        ~/src/ephemeris/ \
-        ~/src/summa \
+    f=$(cd && find \
+        n/archivum/libri/ \
+        n/tmp/libri/ \
+        src/codex/ \
+        src/ephemeris/ \
+        src/summa \
         -type f \( -name '*.pdf' -o -name '*.epub' \) \
         | dmenu -l 8)
-    exec mupdf "$d/$f"
+    exec mupdf "$f"
 }
 
 mail() {
