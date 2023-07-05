@@ -105,6 +105,10 @@
       - .config/redshift.conf
     - - ripgrep
       - .config/ripgrep/config
+    - - systemd/weather.service
+      - .local/share/systemd/user/weather.service
+    - - systemd/weather.timer
+      - .local/share/systemd/user/weather.timer
     - - user-dirs.dirs
       - .config/user-dirs.dirs
     - - xorg/xinitrc
@@ -191,6 +195,8 @@
       daemon_reload: true
     loop:
     - redshift
+    - weather
+    - weather.timer
     - vdirsyncer
   - name: ensure files have been created/imported
     stat: 'path={{ home }}/{{ item }}'
