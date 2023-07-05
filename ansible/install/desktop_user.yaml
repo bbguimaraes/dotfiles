@@ -73,27 +73,44 @@
       src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['ccache.conf',          '.config/ccache/ccache.conf']
-    - ['gdb/init',             '.config/gdb/gdbinit']
-    - ['git/tigrc',            '.config/tig/config']
-    - ['i3/config',            '.config/i3/config']
-    - ['i3/status',            '.config/i3status/config']
-    - ['khal/khal.conf',       '.config/khal/config']
-    - ['khal/vdirsyncer.conf', '.config/vdirsyncer/config']
-    - ['khal/vdirsyncer.service',
-       '.local/share/systemd/user/vdirsyncer.service']
-    - ['khal/vdirsyncer.sh',   '.config/vdirsyncer/run.sh']
-    - ['mutt/msmtprc',         '.config/msmtp/config']
-    - ['mutt/muttrc',          '.config/mutt/muttrc']
-    - ['mutt/mailcap',         '.config/mutt/mailcap']
-    - ['newsboat',             '.config/newsboat/config']
-    - ['offlineimap/offlineimap@.service',
-       '.local/share/systemd/user/offlineimap@.service']
-    - ['redshift.conf',        '.config/redshift.conf']
-    - ['ripgrep',              '.config/ripgrep/config']
-    - ['user-dirs.dirs',       '.config/user-dirs.dirs']
-    - ['xorg/xinitrc',         '.xinitrc']
-    - ['xorg/Xresources',      '.config/xinit/Xresources']
+    - - ccache.conf
+      - .config/ccache/ccache.conf
+    - - gdb/init
+      - .config/gdb/gdbinit
+    - - git/tigrc
+      - .config/tig/config
+    - - i3/config
+      - .config/i3/config
+    - - i3/status
+      - .config/i3status/config
+    - - khal/khal.conf
+      - .config/khal/config
+    - - khal/vdirsyncer.conf
+      - .config/vdirsyncer/config
+    - - khal/vdirsyncer.service
+      - .local/share/systemd/user/vdirsyncer.service
+    - - khal/vdirsyncer.sh
+      - .config/vdirsyncer/run.sh
+    - - mutt/msmtprc
+      - .config/msmtp/config
+    - - mutt/muttrc
+      - .config/mutt/muttrc
+    - - mutt/mailcap
+      - .config/mutt/mailcap
+    - - newsboat
+      - .config/newsboat/config
+    - - offlineimap/offlineimap@.service
+      - .local/share/systemd/user/offlineimap@.service
+    - - redshift.conf
+      - .config/redshift.conf
+    - - ripgrep
+      - .config/ripgrep/config
+    - - user-dirs.dirs
+      - .config/user-dirs.dirs
+    - - xorg/xinitrc
+      - .xinitrc
+    - - xorg/Xresources
+      - .config/xinit/Xresources
   - name: setup other symlinks
     file:
       state: link
