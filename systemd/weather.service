@@ -1,0 +1,5 @@
+[Service]
+ExecStart=/home/bbguimaraes/src/dotfiles/scripts/weather.sh sync
+
+[Install]
+WantedBy=default.target
