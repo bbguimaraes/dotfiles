@@ -3,8 +3,8 @@ set -euo pipefail
 
 CMDS=(
     analog beep blue c cx cal complete compose custos date every fmt hdmi http
-    liber lock mail man mutt nosuspend office p passmenu paste pause pecunia
-    picom ping sshfs suspend todo ts until vtr w wallpaper
+    keyboard liber lock mail man mutt nosuspend office p passmenu paste pause
+    pecunia picom ping sshfs suspend todo ts until vtr w wallpaper
 )
 
 main() {
@@ -25,6 +25,7 @@ main() {
     fmt) cmd_fmt "$@";;
     hdmi) exec d sink hdmi-stereo;;
     http) exec python -m http.server "$@";;
+    keyboard) keyboard "$@";;
     liber) liber "$@";;
     lock) exec i3lock --color 000000;;
     mail) mail "$@";;
@@ -137,6 +138,12 @@ cmd_fmt() {
             | fmt "$@" \
             | sed -e 's/$/ \\/' -e '$s/ \\$//';;
     esac
+}
+
+keyboard() {
+    local l
+    l=$(dmenu -l 2 <<< $'-layout us\n-layout gr -variant polytonic\n')
+    exec setxkbmap $l
 }
 
 liber() {
