@@ -200,7 +200,7 @@
       path: "{{ root_mount }}/etc/locale.gen"
   - name: create locale.conf
     copy:
-      dest: "{{ root_mount }}//etc/locale.conf"
+      dest: "{{ root_mount }}/etc/locale.conf"
       content: LANG=en_US.UTF-8
   - name: enable mkinitcpio hooks
     lineinfile:
