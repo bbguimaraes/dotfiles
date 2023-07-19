@@ -65,6 +65,10 @@
   - name: install base packages
     package:
       name: '{{ (pkgs|join(" ")).split(" ") }}'
+  - name: enable locale
+    locale_gen:
+      state: present
+      name: pt_BR.UTF-8
   - name: enable/start services
     service:
       enabled: true
