@@ -73,6 +73,11 @@
     loop:
     - bluetooth
     - cups
+  - name: use both USB schemes
+    lineinfile:
+      path: /etc/modprobe.d/options
+      create: true
+      line: options usbcore use_both_schemes=y
   - name: create systemd configuration directory for rtkit-daemon
     file:
       path: /etc/systemd/system/rtkit-daemon.service.d/
