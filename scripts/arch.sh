@@ -73,7 +73,7 @@ img_build() {
     fi
     sudo bash -s "$dir" <<'EOF'
 mkdir "$1/"
-pacstrap -cd "$1/" base
+pacstrap -c "$1/" base
 size=$(du -sb "$1/" | cut -f 1)
 tar -C "$1" -c . | pv --size "$size" | pixz > "$1.tar.xz"
 EOF
