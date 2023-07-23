@@ -2,7 +2,7 @@
 set -euo pipefail
 
 CMDS=(complete push-img local remote)
-VOL=/mnt/bbguimaraes0-vol
+VOL=/mnt/bbguimaraes1-vol
 
 main() {
     [[ "$#" -eq 0 ]] && usage
