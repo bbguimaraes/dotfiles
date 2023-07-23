@@ -25,7 +25,7 @@
     - >- # mail
       msmtp mutt isync offlineimap
     - >- # net
-      bind-tools bluez bluez-utils inetutils openbsd-netcat
+      bind-tools bluez bluez-utils inetutils openbsd-netcat transmission-cli
     - >- # nextcloud
       khal newsboat nextcloud-client vdirsyncer
     - >- # tools
