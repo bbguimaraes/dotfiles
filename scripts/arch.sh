@@ -71,22 +71,30 @@ img_build() {
         echo >&2 "$dir exists, not overwriting"
         return 1
     fi
-    sudo bash -s "$dir" <<'EOF'
+    local cmd=(
+        bash -s "$dir" <<'EOF'
 mkdir "$1/"
 pacstrap -c "$1/" base
 size=$(du -sb "$1/" | cut -f 1)
 tar -C "$1" -c . | pv --size "$size" | pixz > "$1.tar.xz"
 EOF
+    )
+    [[ "$UID" -eq 0 ]] || cmd+=(sudo)
+    "${cmd[@]}"
 }
 
 img_push() {
     local dir=${TMPDIR:-/tmp}/arch
     local eval_args=$(printf %q 'eval "$@"')
     local and=$(printf %q '&&')
-    pv "$dir.tar.xz" | ssh bbguimaraes.com -- sudo bash \
-        -c "$eval_args" bash \
-        podman import - arch "$and" \
-        podman tag docker.io/library/arch arch
+    local cmd=(
+        ssh bbguimaraes.com -- sudo bash \
+            -c "$eval_args" bash \
+            podman import - arch "$and" \
+            podman tag arch docker.io/library/arch
+    )
+    [[ "$UID" -eq 0 ]] && cmd=(runuser -u bbguimaraes -- "${cmd[@]}")
+    pv "$dir.tar.xz" | "${cmd[@]}"
 }
 
 mirrorlist() {
