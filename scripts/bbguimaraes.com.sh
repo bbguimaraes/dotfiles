@@ -27,7 +27,7 @@ Commands:
     push-img NAME
     local [sync-docs]
     remote git
-    remote pull
+    remote pull [force]
     remote sync-files ARGS...
 EOF
     return 1
@@ -85,7 +85,29 @@ remote_git() {
 }
 
 remote_pull() {
-    remote_git pull
+    [[ "$#" -eq 0 ]] && { remote_git pull; return; }
+    local cmd=$1; shift
+    case "$cmd" in
+    force) remote_pull_force "$@";;
+    *) usage;;
+    esac
+}
+
+remote_pull_force() {
+    [[ "$#" -eq 0 ]] || usage
+    ssh bbguimaraes.com bash -c $(printf '%q\n' "$(cat <<EOF
+set -euo pipefail
+cd "$VOL/bbguimaraes.com"
+s=\$(sudo git status --short --untracked=no)
+if [[ "\$s" ]]; then
+    echo >&2 "\$s"
+    echo >&2 'refusing to overwrite local changes'
+    exit 1
+fi
+sudo git fetch --all
+sudo git reset --hard origin/master
+EOF
+)")
 }
 
 remote_sync_files() {
