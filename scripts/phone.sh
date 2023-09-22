@@ -44,12 +44,15 @@ camera() {
 }
 
 camera_pull() {
-    local d=DCIM/Camera x
-    request --list-only "$(url_for_file "$d/")" \
-        | while IFS=$'\n' read x; do
-            echo "$x"
-            pull_file "$(url_for_file "$d/$x")" -o "$x"
-        done
+    local d=DCIM/Camera l x
+    if [[ "$#" -eq 0 ]]; then
+        l=$(request --list-only "$(url_for_file "$d/")")
+        IFS=$'\n' set $l
+    fi
+    for x; do
+        echo "$x"
+        pull_file "$(url_for_file "$d/$x")" -o "$x"
+    done
 }
 
 send() {
