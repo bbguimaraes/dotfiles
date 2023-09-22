@@ -57,6 +57,7 @@
     - .config/newsboat
     - .config/offlineimap
     - .config/ripgrep
+    - .config/subs
     - .config/tig
     - .config/vdirsyncer
     - .config/xinit
@@ -140,6 +141,7 @@
       src: '{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
+    - ['{{ home }}/n/archivum/comp/subs.lua', '.config/subs/init.lua']
     - ['{{ home }}/n/archivum/impero.txt', '.config/impero/commands.txt']
     - ['{{ home }}/n/archivum/mutt.aliases', '.config/mutt/aliases']
     - ['{{ home }}/n/archivum/pass', '.local/share/password-store']
