@@ -23,6 +23,9 @@ EOF
 
 clean_files() {
     local j
+    j=$(lbrynet status)
+    [[ "$j" == "Could not connect to daemon. Are you sure it's running?" ]] \
+        && { echo "$j" >&2; return 1; }
     while :; do
         j=$(lbrynet file list)
         [[ "$(jq <<< "$j" '.total_items')" -eq 0 ]] && break
