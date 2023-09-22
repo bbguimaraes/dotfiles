@@ -25,6 +25,7 @@ Usage: $0 CMD ARGS...
 
 Commands:
 
+    camera ls PATHS...
     camera pull
     push FILES...
     pull FILES...
@@ -38,9 +39,18 @@ camera() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    ls) camera_ls "$@";;
     pull) camera_pull "$@";;
     *) usage;;
     esac
+}
+
+camera_ls() {
+    [[ "$#" -eq 0 ]] && set ''
+    local x
+    for x; do
+        cmd_ls "DCIM/Camera/$x"
+    done
 }
 
 camera_pull() {
