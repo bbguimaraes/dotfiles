@@ -96,7 +96,7 @@ pull() {
 }
 
 pull_file() {
-    request --ignore-content-length "${REQ_ARGS[@]}" "$@"
+    curl "${REQ_ARGS[@]}" "$@"
 }
 
 cmd_ls() {
