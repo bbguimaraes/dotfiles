@@ -28,7 +28,8 @@ Commands:
     local [sync-docs]
     remote git
     remote pull [force]
-    remote sync-files ARGS...
+    remote compare-files
+    remote sync-files [ARGS...]
 EOF
     return 1
 }
@@ -72,6 +73,7 @@ remote() {
     local cmd=
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
     case "$cmd" in
+    compare-files) remote_compare_files "$@";;
     git) remote_git "$@";;
     pull) remote_pull "$@";;
     sync-files) remote_sync_files "$@";;
@@ -110,14 +112,18 @@ EOF
 )")
 }
 
+remote_compare_files() {
+    remote_sync_files --verbose --dry-run
+}
+
 remote_sync_files() {
+    [[ "$#" -eq 0 ]] && set -- --progress --rsync-path 'sudo rsync'
     local host=bbguimaraes.com
     local src=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
     local dst=$VOL/bbguimaraes.com/bbguimaraes.com/
     exec rsync \
         --archive --chown 0:0 \
         "$src" "$host:$dst" "$@"
-#        --rsync-path 'sudo rsync' \
 }
 
 main "$@"
