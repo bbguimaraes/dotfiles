@@ -153,6 +153,7 @@ liber() {
         n/tmp/libri/ \
         src/codex/ \
         src/ephemeris/ \
+        src/libri/ \
         src/summa \
         -type f \( -name '*.pdf' -o -name '*.epub' \) \
         | dmenu -l 8)
