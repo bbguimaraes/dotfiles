@@ -38,6 +38,14 @@ sub css {
         max-width: 60ch;
         margin-left: auto;
         margin-right: auto;
+        background-color: black;
+        color: white;
+    }
+    body, a {
+        color: #a0a0a0;
+    }
+    a:visited {
+        color: #606060;
     }
     pre {
         overflow: auto;
