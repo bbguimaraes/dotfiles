@@ -208,7 +208,7 @@ p() {
 
 cmd_passmenu() {
     local s
-    s=$(dmenu -p selection: <<< $'primary\nclipboard\n')
+    s=$(dmenu -p selection: <<< $'primary\nclipboard')
     export PASSWORD_STORE_X_SELECTION=$s
     exec passmenu
 }
