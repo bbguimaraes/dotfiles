@@ -61,18 +61,18 @@ sub hugo {
     local $/;
     my $s = <STDIN>;
     $s =~ s/^---$ (.|\n)*? ^---$ \n\n//gmx;
-    $s =~ s,
-        ^\{\{<\s+highlight\s+.*?>\}\}$
+    $s =~ s/
+        ^(\ *)\{\{<\s+highlight\s+.*?>\}\}$
         \n*
         ((?:.|\n)*?)
         \n*
-        ^\{\{<\s+/\s*highlight\s+.*?>\}\}$
-    ,
-        format_code($1)
-    ,egmx;
+        ^\ *\{\{<\s+\/\s*highlight\s+.*?>\}\}$
+    /
+        format_code($1, $2)
+    /egmx;
     $s =~ s/^\{\{<\s+alert\s+.*?color="warning".*?>\}\}/<b>\nWarning: /gm;
     $s =~ s/^\{\{<\s+alert\s+.*?>\}\}/<b>\nNote: /gm;
-    $s =~ s,^\{\{<\s+/\s+alert\s+.*>\}\},</b>,gm;
+    $s =~ s,^\{\{<\s+/\s*alert\s+.*>\}\},</b>,gm;
     $s =~ s/\{\{<\s+(?:rel)?ref "([^"]+?)"\s+>\}\}/$1/gm;
     print $s;
     close $md or die "failed to close `markdown` pipe: $!";
@@ -80,9 +80,9 @@ sub hugo {
 }
 
 sub format_code {
-    $_ = shift;
-    s/^/    /mg;
-    $_
+    my ($pre, $text) = @_;
+    $text =~ s/^/$pre    /mg;
+    $text
 }
 
 exit main @ARGV
