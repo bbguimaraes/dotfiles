@@ -72,12 +72,13 @@ img_build() {
         return 1
     fi
     local cmd=(
-        bash -s "$dir" <<'EOF'
+        bash -s "$dir" "$(cat <<'EOF'
 mkdir "$1/"
 pacstrap -c "$1/" base
 size=$(du -sb "$1/" | cut -f 1)
 tar -C "$1" -c . | pv --size "$size" | pixz > "$1.tar.xz"
 EOF
+)"
     )
     [[ "$UID" -eq 0 ]] || cmd+=(sudo)
     "${cmd[@]}"
