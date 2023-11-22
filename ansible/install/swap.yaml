@@ -4,6 +4,10 @@
       dd if=/dev/zero of={{ swapfile_path }}
       bs=1024k count={{ swapfile_size_mb }}
     creates: '{{ swapfile_path }}'
+- name: set file permissions
+  file:
+    path: "{{ swapfile_path }}"
+    mode: 0600
 - name: format swap file
   filesystem:
     dev: '{{ swapfile_path }}'
@@ -17,7 +21,7 @@
   changed_when: false
   register: rc
 - name: enable swap
-  command: swapon /var/swapfile
+  command: swapon {{ swapfile_path }}
   when: swapfile_path not in rc.stdout_lines
 - name: add swap entry on swap file
   lineinfile:
