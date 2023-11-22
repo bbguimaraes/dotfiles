@@ -71,17 +71,14 @@ img_build() {
         echo >&2 "$dir exists, not overwriting"
         return 1
     fi
-    local cmd=(
-        bash -s "$dir" "$(cat <<'EOF'
+    local cmd=(bash -s "$dir")
+    [[ "$UID" -eq 0 ]] || cmd=(sudo "${cmd[@]}")
+    "${cmd[@]}" <<'EOF'
 mkdir "$1/"
 pacstrap -c "$1/" base
 size=$(du -sb "$1/" | cut -f 1)
 tar -C "$1" -c . | pv --size "$size" | pixz > "$1.tar.xz"
 EOF
-)"
-    )
-    [[ "$UID" -eq 0 ]] || cmd+=(sudo)
-    "${cmd[@]}"
 }
 
 img_push() {
