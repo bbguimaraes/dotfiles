@@ -5,6 +5,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    bridge) bridge "$@";;
     token) token "$@";;
     pw) pw "$@";;
     *) usage;;
@@ -17,13 +18,28 @@ Usage: $0 CMD
 
 Commands:
 
+    bridge start|stop
     token
 EOF
     return 1
 }
 
+bridge() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    start) start;;
+    stop) stop;;
+    *) usage;;
+    esac
+}
+
 stop() {
+    local name=proton-bridge
     systemctl --user stop proton-bridge.service
+    pkill --full "$name" || ! pgrep --full "$name"
+    pkill "$name" || ! pgrep "$name"
+    rm --force .cache/protonmail/bridge-v3/bridge-v3.lock
 }
 
 start() {
