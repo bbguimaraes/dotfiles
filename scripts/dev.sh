@@ -27,7 +27,7 @@ main() {
     http) exec python -m http.server "$@";;
     keyboard) keyboard "$@";;
     liber) liber "$@";;
-    lock) exec i3lock --color 000000;;
+    lock) exec i3lock --color 000000 --image /tmp/bg.png;;
     mail) mail "$@";;
     man) cmd_man "$@";;
     mutt) exec mutt -e "source ~/.config/mutt/muttrc_${1-proton}";;
@@ -245,6 +245,10 @@ cmd_until() {
 
 wallpaper() {
     [[ "$#" -eq 0 ]] && set -- ~/n/archivum/img/bg
+    convert \
+        -gravity center -background black \
+        -resize '1920x1080>' -extent 1920x1080 \
+        "$1" /tmp/bg.png
     feh --no-fehbg --bg-center "$@"
 }
 
