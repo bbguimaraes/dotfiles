@@ -30,7 +30,7 @@ main() {
     lock) exec i3lock --color 000000;;
     mail) mail "$@";;
     man) cmd_man "$@";;
-    mutt) exec mutt -e "source ~/.config/mutt/muttrc_$1";;
+    mutt) exec mutt -e "source ~/.config/mutt/muttrc_${1-proton}";;
     nosuspend) nosuspend "$@";;
     office) office "$@";;
     p) p "$@";;
