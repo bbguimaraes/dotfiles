@@ -47,7 +47,7 @@ push_img() {
     local name=$1
     sudo podman save "$name" \
         | pixz \
-        | ssh bbguimaraes.com 'xzcat | sudo docker load'
+        | ssh bbguimaraes.com 'xzcat | sudo podman load'
 }
 
 _local() {
