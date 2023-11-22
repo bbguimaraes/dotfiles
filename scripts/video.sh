@@ -5,7 +5,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
-    audio) youtube-dl \
+    audio) yt-dlp \
         --extract-audio --audio-format vorbis \
         -o '%(title)s.%(ext)s' "$@";;
     conv) conv "$@";;
@@ -70,7 +70,7 @@ playlist() {
 }
 
 playlist_json() {
-    youtube-dl --dump-single-json "$@"
+    yt-dlp --dump-single-json "$@"
 }
 
 playlist_urls() {
@@ -85,7 +85,7 @@ playlist_urls() {
 playlist_txt() {
     local name=$1 url=$2; shift 2
     if ! [[ -f "$name.json" ]]; then
-        youtube-dl --dump-json --ignore-errors "$url" "$@" \
+        ~/src/yt-dlp/yt-dlp.sh --dump-json --ignore-errors "$url" "$@" \
             > "$name.json"
     fi
     if ! [[ -f "$name.txt" ]]; then
