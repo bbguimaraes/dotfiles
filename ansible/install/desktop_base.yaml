@@ -16,12 +16,12 @@
       mesa xorg xorg-xinit
     - >- # graphical
       arandr blender breeze calibre celluloid chromium dmenu dunst feh firefox
-      gimp i3lock i3status i3-wm imagemagick inkscape kdenlive libreoffice-fresh
-      mednafen mupdf picom qt5ct redshift rxvt-unicode scrot
+      geeqie gimp i3lock i3status i3-wm imagemagick inkscape kdenlive
+      libreoffice-fresh mednafen mupdf picom qt5ct redshift rxvt-unicode scrot
       simplescreenrecorder ttf-dejavu ttf-junicode urxvt-perls xclip xdotool
     - >- # audio
-      alsa-utils ardour audacity hydrogen mpv musescore pavucontrol pipewire
-      pulsemixer
+      alsa-utils ardour audacity guitarix hydrogen mpv musescore pavucontrol
+      pipewire pulsemixer
     - >- # mail
       msmtp mutt isync offlineimap
     - >- # net
@@ -33,7 +33,7 @@
       inotify-tools jq lsof ltrace lynx moreutils nix p7zip pacman-contrib pass
       perf pigz pixz poppler pv python-matplotlib qrencode ranger ripgrep rlwrap
       skopeo sshfs strace tesseract tesseract-data-eng units unrar unzip weechat
-      weechat-matrix words youtube-dl yq
+      weechat-matrix words yt-dlp yq
     - >- # aurutils
       diffstat expac pacutils parallel wget
     - >- # wine
@@ -123,6 +123,7 @@
       validate: visudo -cf %s
       content: |
         %wheel ALL=(ALL) NOPASSWD: /usr/bin/wifi-menu
+        %wheel ALL=(ALL) NOPASSWD: /usr/bin/netctl switch-to *
   - name: create local repository directory
     file:
       state: directory
