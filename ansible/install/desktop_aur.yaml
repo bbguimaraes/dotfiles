@@ -11,6 +11,8 @@
   - import_tasks: aur.yaml
     vars: {"pkg": "opencl-1.2-man-doc"}
   - import_tasks: aur.yaml
+    vars: {"pkg": "otf-gfs"}
+  - import_tasks: aur.yaml
     vars: {"pkg": "pam-gnupg"}
   - import_tasks: aur.yaml
     vars: {"pkg": "renderdoc", "keys": ["AC612C3120C34695"]}

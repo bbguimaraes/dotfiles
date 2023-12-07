@@ -160,6 +160,7 @@
         - os-prober
         - python
         - vim
+        - wireless-regdb
         - wpa_supplicant
   - name: create initramfs key file
     command:
