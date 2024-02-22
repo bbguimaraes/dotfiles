@@ -44,10 +44,11 @@ cmd_complete() {
 }
 
 push_img() {
-    local name=$1
-    sudo podman save "$name" \
-        | pixz \
-        | ssh bbguimaraes.com 'xzcat | sudo podman load'
+    local cmd=(podman save "$1")
+    [[ "$UID" -eq 0 ]] || cmd=(sudo "${cmd[@]}")
+    "${cmd[@]}" \
+        | pv --cursor | pixz | pv --cursor \
+        | ssh bbguimaraes@bbguimaraes.com 'xzcat | sudo podman load'
 }
 
 _local() {
