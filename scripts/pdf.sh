@@ -13,12 +13,13 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: pdf cmd
+Usage: pdf CMD [ARGS...]
 
 Commands:
 
     booklet INPUT N_PAGES
     split images [ARGS...]
+    split pages INPUT FIRST LAST
 EOF
     return 1
 }
@@ -28,12 +29,24 @@ split() {
     local cmd=$1; shift
     case "$cmd" in
     images) split_images "$@";;
+    pages) split_pages "$@";;
     *) usage;;
     esac
 }
 
 split_images() {
     exec convert -verbose -density 150 -quality 100 -sharpen 0x1.0 "$@"
+}
+
+split_pages() {
+    [[ "$#" -eq 3 ]] || usage
+    local f=$1 first=$2 last=$3 base ext
+    base=${f%.*}
+    ext=${f##*.}
+    gs \
+        -sDEVICE=pdfwrite -dSAFER \
+        "-dFirstPage=$first" "-dLastPage=$last" \
+        -o "${base}_%d.$ext" "$f"
 }
 
 booklet() {
