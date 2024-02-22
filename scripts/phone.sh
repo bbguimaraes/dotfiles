@@ -5,13 +5,14 @@ ADDR=192.168.0.4
 PORT=2121
 REQ_ARGS=(--user anonymous:)
 ROOT=/storage/emulated/0
+CAMERA=DCIM/Camera
 
 main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
     camera) camera "$@";;
-    push) push "$@";;
+    push) push "ftp://$ADDR:$PORT/$ROOT/" "$@";;
     pull) pull "$@";;
     send) send "$@";;
     ls) cmd_ls "$@";;
@@ -25,11 +26,9 @@ Usage: $0 CMD ARGS...
 
 Commands:
 
-    camera ls PATHS...
-    camera pull
-    push FILES...
-    pull FILES...
-    ls PATHS...
+    [camera] ls PATH...
+    [camera] push PATH...
+    [camera] pull PATH...
     send audio FILES...
 EOF
     return 1
@@ -41,6 +40,7 @@ camera() {
     case "$cmd" in
     ls) camera_ls "$@";;
     pull) camera_pull "$@";;
+    push) camera_push "$@";;
     *) usage;;
     esac
 }
@@ -54,7 +54,7 @@ camera_ls() {
 }
 
 camera_pull() {
-    local d=DCIM/Camera l x
+    local d=$CAMERA l x
     if [[ "$#" -eq 0 ]]; then
         l=$(request --list-only "$(url_for_file "$d/")")
         IFS=$'\n' set $l
@@ -63,6 +63,10 @@ camera_pull() {
         echo "$x"
         pull_file "$(url_for_file "$d/$x")" -o "$x"
     done
+}
+
+camera_push() {
+    push "ftp://$ADDR:$PORT/$ROOT/$CAMERA" "$@"
 }
 
 send() {
@@ -86,10 +90,10 @@ send_audio() {
 }
 
 push() {
-    local x
-    for x; do
-        echo "$x"
-        curl "${REQ_ARGS[@]}" --upload-file "$x" "ftp://$ADDR:$PORT/$ROOT/"
+    local dst=$1 x; shift
+    for src; do
+        echo "$src"
+        curl "${REQ_ARGS[@]}" --upload-file "$src" "$dst"
     done
 }
 
