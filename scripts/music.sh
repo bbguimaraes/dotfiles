@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-DIR=$HOME/music
+DIR=$HOME/musica
 
 main() {
     [[ "$#" -eq 0 ]] && usage
