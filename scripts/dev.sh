@@ -141,7 +141,7 @@ cmd_fmt() {
 
 keyboard() {
     local l
-    l=$(dmenu -l 2 <<< $'-layout us\n-layout gr -variant polytonic\n')
+    l=$(dmenu -l 3 <<< $'-layout us\n-layout gr -variant polytonic\n-layout ru')
     exec setxkbmap $l
 }
 
