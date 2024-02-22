@@ -193,7 +193,7 @@
   - name: create local time symlink
     file:
       state: link
-      src: /usr/share/zoneinfo/UTC
+      src: /usr/share/zoneinfo/Europe/Rome
       path: "{{ root_mount }}/etc/localtime"
   - name: enable locale
     lineinfile:
