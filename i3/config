@@ -170,3 +170,5 @@ bindsym $mod+Shift+w exec mpv /dev/video0
 bindsym $mod+minus scratchpad show
 bindsym $mod+equal exec d keyboard
 bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+Tab focus next
+bindsym $mod+Shift+Tab focus prev
