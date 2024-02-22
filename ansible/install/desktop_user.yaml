@@ -45,6 +45,7 @@
       state: directory
       path: '{{ home }}/{{ item }}'
     loop:
+    - .config/bbguimaraes.com
     - .config/ccache
     - .config/gdb
     - .config/git
@@ -141,16 +142,16 @@
       src: '{{ item.0 }}'
       dest: '{{ home }}/{{ item.1 }}'
     loop:
-    - ['{{ home }}/n/archivum/comp/subs.lua', '.config/subs/init.lua']
-    - ['{{ home }}/n/archivum/impero.txt', '.config/impero/commands.txt']
-    - ['{{ home }}/n/archivum/mutt.aliases', '.config/mutt/aliases']
+    - ['{{ home }}/n/comp/bbguimaraes.com.lua',
+       '.config/bbguimaraes.com/conf.lua']
+    - ['{{ home }}/n/comp/subs.lua', '.config/subs/init.lua']
+    - ['{{ home }}/n/comp/impero.txt', '.config/impero/commands.txt']
+    - ['{{ home }}/n/comp/mutt.aliases', '.config/mutt/aliases']
     - ['{{ home }}/n/archivum/pass', '.local/share/password-store']
-    - ['{{ home }}/n/archivum/vim/en.utf-8.add', '.vim/spell/en.utf-8.add']
-    - ['{{ home }}/n/archivum/vim/la.utf-8.add', '.vim/spell/la.utf-8.add']
-    - ['{{ home }}/n/archivum/vim/en.utf-8.add.spl',
-       '.vim/spell/en.utf-8.add.spl']
-    - ['{{ home }}/n/archivum/vim/la.utf-8.add.spl',
-       '.vim/spell/la.utf-8.add.spl']
+    - ['{{ home }}/n/comp/vim/en.utf-8.add', '.vim/spell/en.utf-8.add']
+    - ['{{ home }}/n/comp/vim/la.utf-8.add', '.vim/spell/la.utf-8.add']
+    - ['{{ home }}/n/comp/vim/en.utf-8.add.spl', '.vim/spell/en.utf-8.add.spl']
+    - ['{{ home }}/n/comp/vim/la.utf-8.add.spl', '.vim/spell/la.utf-8.add.spl']
     - ['{{ home }}/n/subs.sqlite', '.local/share/subs/db']
   - name: setup CA symlinks
     file:
