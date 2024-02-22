@@ -113,7 +113,7 @@ pull() {
 }
 
 pull_file() {
-    curl "${REQ_ARGS[@]}" "$@"
+    curl "${REQ_ARGS[@]}" --continue-at - "$@"
 }
 
 cmd_ls() {
