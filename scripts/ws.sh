@@ -44,7 +44,7 @@ cmd_ws() {
     tmux select-layout main-vertical
     cd "$dir"
     sleep 1
-    exec vim
+    exec vim -c 'call GitTab()'
 }
 
 main "$@"
