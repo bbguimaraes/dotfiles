@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-YR_NO_URL=https://www.yr.no/en/content/2-3167308/meteogram.svg
+YR_NO_URL=https://www.yr.no/en/content/2-3165524/meteogram.svg
 YR_NO_PATH=/tmp/meteogram.svg
 
 main() {
@@ -30,7 +30,7 @@ EOF
 
 console() {
     if tty --quiet; then
-        exec curl https://wttr.in/brno
+        exec curl https://wttr.in/torino
     else
         exec "$TERMINAL" -e bash -c 'd weather; read -n 1'
     fi
