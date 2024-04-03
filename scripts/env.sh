@@ -8,18 +8,19 @@ main() {
     if tmux has-session -t "$SESSION" &> /dev/null; then
         attach
     fi
-    local target=$SESSION:0
+    local target=$SESSION
     tmux new-session -s "$SESSION" -d
     tmux rename-window -t "$target" ''
-    tmux respawn-pane -t "$target" -k top -o %CPU
-    tmux split-window -t "$target.0" -l 1000 journalctl -f
-    tmux split-window -t "$target.1" -l 1000 ikhal
-    tmux split-window -t "$target.2" -l 1000 d todo
-    tmux split-window -t "$target.3" -l 1000 d mutt
-    tmux split-window -t "$target.4" -l 1000 newsboat
-    tmux split-window -t "$target.5" -l 1000 d custos
-    tmux split-window -t "$target.6" -l 1000 weechat
-    tmux select-layout -t "$target" tiled
+    tmux respawn-pane -t "$target:0" -k d todo
+    tmux split-window -t "$target:0.0" -l 1000 top -o %CPU
+    tmux split-window -t "$target:0.1" -l 1000 journalctl -f
+    tmux split-window -t "$target:0.2" -l 1000 d custos
+    tmux select-layout -t "$target:0" main-vertical
+    tmux new-window -t "$target:1" weechat
+    tmux split-window -t "$target:1.0" -l 1000 d mutt
+    tmux split-window -t "$target:1.1" -l 1000 newsboat
+    tmux split-window -t "$target:1.2" -l 1000 ikhal
+    tmux select-layout -t "$target:1" main-horizontal
     attach
 }
 
