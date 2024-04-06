@@ -4,7 +4,7 @@ set -euo pipefail
 CMDS=(
     analog beep blue c cx cal complete compose custos every fmt hdmi http
     keyboard liber lock mail man mutt nosuspend office p passmenu paste pause
-    pecunia picom ping sshfs suspend todo ts until vtr w wallpaper
+    pecunia picom ping sshfs suspend ts until vtr w
 )
 
 main() {
@@ -44,14 +44,11 @@ main() {
     pull) d git pull && d git rebase branches;;
     sshfs) cmd_sshfs "$@";;
     suspend) (d lock); exec systemctl suspend;;
-    todo) exec "$VISUAL" \
-        -c "source $HOME/src/dotfiles/vim/todo.vim" \
-        ~/n/todo.txt;;
     ts) exec ts '%Y-%m-%dT%H:%M:%S';;
     until) cmd_until "$@";;
     vtr) exec d window vtr;;
     w) exec d 'do' watch "$@";;
-    wallpaper) wallpaper "$@";;
+    wifi) exec urxvt -e sudo wifi-menu;;
     *)
         local f
         f=$(in_dotfiles "$cmd") || (echo "$f"; usage)
@@ -240,15 +237,6 @@ cmd_sshfs() {
 cmd_until() {
     local t=$1; shift
     until "$@"; do sleep "$t"; done
-}
-
-wallpaper() {
-    [[ "$#" -eq 0 ]] && set -- ~/n/archivum/img/bg
-    convert \
-        -gravity center -background black \
-        -resize '1920x1080>' -extent 1920x1080 \
-        "$1" /tmp/bg.png
-    feh --no-fehbg --bg-center "$@"
 }
 
 main "$@"
