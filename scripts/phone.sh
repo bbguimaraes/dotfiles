@@ -11,6 +11,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    addr) set_addr "$@";;
     camera) camera "$@";;
     push) push "ftp://$ADDR:$PORT/$ROOT/" "$@";;
     pull) pull "$@";;
@@ -26,12 +27,19 @@ Usage: $0 CMD ARGS...
 
 Commands:
 
+    addr IP_ADDR
     [camera] ls PATH...
     [camera] push PATH...
     [camera] pull PATH...
     send audio FILES...
 EOF
     return 1
+}
+
+set_addr() {
+    [[ "$#" -ne 1 ]] && usage
+    local addr=$1
+    sed --in-place 's/^\(ADDR=\).*$/\1'"$addr"'/' "$BASH_SOURCE"
 }
 
 camera() {
