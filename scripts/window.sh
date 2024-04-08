@@ -18,16 +18,17 @@ Usage: $0 CMD ARGS...
 
 Commands:
 
-    vtr
-    window tr|tl|halve|htr|qtr|quarter...
+    vtr [-s]
+    window [-s] tr|tl|halve|htr|qtr|quarter...
 EOF
     return 1
 }
 
 vtr() {
+    [[ "$#" -gt 1 ]] && usage
     local w ww wh sw sh
     IFS=x read -r sw sh < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
-    w=$(xdotool getwindowfocus)
+    w=$(select_window "$@")
     i3-msg --quiet 'floating enable; border none'
     read -r ww wh < <(
         xdotool getwindowgeometry --shell "$w" \
@@ -42,9 +43,10 @@ vtr() {
 
 window() {
     local w ww wh sw sh cmd=
+    w=$(select_window "$@")
     IFS=x read -r sw sh < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
     read -r w _ _ ww wh _ < <( \
-        xdotool selectwindow windowfocus getwindowgeometry --shell \
+        xdotool windowfocus "$w" getwindowgeometry --shell "$w" \
             | sed 's/^.*=//' \
             | paste -s)
     for x; do
@@ -69,6 +71,14 @@ window() {
         esac
     done
     xdotool - <<< "$cmd"
+}
+
+select_window() {
+    if [[ "$#" -gt 0 && "$1" == -s ]]; then
+        xdotool selectwindow
+    else
+        xdotool getwindowfocus
+    fi
 }
 
 main "$@"
