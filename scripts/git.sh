@@ -10,8 +10,9 @@ main() {
     complete) cmd_complete "$@";;
     authors) authors "$@";;
     backport) backport "$@";;
-    diff) cmd_diff "$@";;
     bbguimaraes) bbguimaraes "$@";;
+    diff) cmd_diff "$@";;
+    graph) graph "$@";;
     pull) pull "$@";;
     rebase) rebase "$@";;
     *) usage;;
@@ -29,6 +30,7 @@ Commands:
     authors weekday ARGS...
     backport REV
     diff log [DIFF_ARGS...] REV0 REV1
+    graph
     bbguimaraes exec CMD...
     pull
     rebase branches [BRANCHES...]
@@ -135,6 +137,10 @@ diff_log() {
         "${args[@]:0:$n - 2}" \
         <(git log --format=%s "${args[$n - 2]}" --) \
         <(git log --format=%s "${args[$n - 1]}" --)
+}
+
+graph() {
+    git log --oneline --graph "$@"
 }
 
 pull() {
