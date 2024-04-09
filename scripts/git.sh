@@ -31,6 +31,7 @@ Commands:
     backport REV
     diff log [DIFF_ARGS...] REV0 REV1
     graph
+    graph branch-diff B0 B1
     bbguimaraes exec CMD...
     pull
     rebase branches [BRANCHES...]
@@ -140,7 +141,20 @@ diff_log() {
 }
 
 graph() {
+    if [[ "$#" -gt 0 ]]; then
+        local cmd=$1; shift
+        case "$cmd" in
+        branch-diff) graph_branch_diff "$@"; return;;
+        esac
+    fi
     git log --oneline --graph "$@"
+}
+
+graph_branch_diff() {
+    [[ "$#" -eq 2 ]] || usage
+    local b0=$1 b1=$2 m
+    m=$(git merge-base "$b0" "$b1")
+    exec git log --oneline --graph "$b0" "$b1" ^"$m"^
 }
 
 pull() {
