@@ -7,6 +7,8 @@
   - import_tasks: aur.yaml
     vars: {"pkg": "kjv-apocrypha"}
   - import_tasks: aur.yaml
+    vars: {"pkg": "libcgroup", "keys": ["47A68FCE37C7D7024FD65E11356CE62C2B524099"]}
+  - import_tasks: aur.yaml
     vars: {"pkg": "mit-scheme", "keys": ["C9E40BAAFD0CB132"]}
   - import_tasks: aur.yaml
     vars: {"pkg": "opencl-1.2-man-doc"}
