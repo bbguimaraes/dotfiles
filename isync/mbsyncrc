@@ -17,7 +17,7 @@ Inbox ~/.local/share/mbsync/INBOX
 Channel bbguimaraes
 Far :bbguimaraes-remote:
 Near :bbguimaraes-local:
-Patterns *
+Patterns * "!All Mail"
 Create Both
 Expunge Both
 SyncState *
