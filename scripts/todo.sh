@@ -40,14 +40,25 @@ log() {
 
 week() {
     [[ "$#" -gt 1 ]] && usage
-    local i offset today day
-    offset=${1-0}
-    today=$(date +%d --date "+${offset} days")
-    day=$(<"$DIR/dies.txt")
+    local date="+${1-0} days" today
+    today=$(date +%d --date "$date")
+    week_day "$today"
+    week_week "$date"
+}
+
+week_day() {
+    local today=$1 day=$(<"$DIR/dies.txt") i
     for i in {0..6}; do
         echo "- $((today + i)) ${DIES[i]}"
         sed 's/^/  /' <<< "$day"
     done
+}
+
+week_week() {
+    local week
+    week=$(date +%W --date "$1")
+    echo "- h${week}"
+    sed 's/^/  /' "$DIR/hebdomadas.txt"
 }
 
 main "$@"
