@@ -56,7 +56,7 @@ cmd_vim() {
 
 wikt() {
     local IFS=+
-    lynx "https://en.wiktionary.com/wiki/$*"
+    lynx "https://en.wiktionary.org/wiki/$*"
 }
 
 main "$@"
