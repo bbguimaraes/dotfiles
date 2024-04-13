@@ -41,7 +41,7 @@ log() {
 week() {
     [[ "$#" -gt 1 ]] && usage
     local date="+${1-0} days" today
-    today=$(date +%d --date "$date")
+    today=$(date +%e --date "$date")
     week_day "$today"
     week_week "$date"
 }
@@ -49,7 +49,7 @@ week() {
 week_day() {
     local today=$1 day=$(<"$DIR/dies.txt") i
     for i in {0..6}; do
-        echo "- $((today + i)) ${DIES[i]}"
+        printf -- '- %02d %s\n' "$((today + i))" "${DIES[i]}"
         sed 's/^/  /' <<< "$day"
     done
 }
