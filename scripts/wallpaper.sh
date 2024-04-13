@@ -35,7 +35,8 @@ change() {
     [[ "$#" -eq 1 ]] || usage
     local f=$1
     f=$(readlink --canonicalize "$f")
-    ln --symbolic --force "$f" "$LINK"
+    [[ -e "$LINK" ]] && rm "$LINK"
+    ln --symbolic "$f" "$LINK"
     cmd_set
 }
 
