@@ -7,4 +7,5 @@ set style enabled off
 set print asm-demangle on
 set print pretty on
 set python print-stack full
-source ~/src/gdb_lua/gdb_lua.py
+python sys.path.append("/home/bbguimaraes/src/gdb_lua")
+python import gdb_lua
