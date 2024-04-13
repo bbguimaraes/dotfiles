@@ -8,6 +8,7 @@ main() {
     date) cmd_date "$@";;
     rename) cmd_rename "$@";;
     resize) cmd_resize "$@";;
+    screenshot) cmd_screenshot;;
     *) usage
     esac
 }
@@ -21,6 +22,7 @@ Commands:
     date FILE...
     rename [-v|--verbose|-n|--dry-run] FILE...
     resize X Y FILE
+    screenshot
 EOF
     return 1
 }
@@ -69,6 +71,11 @@ cmd_resize() {
         -resize "$size" \
         -extent "$size" \
         "$f" -
+}
+
+cmd_screenshot() {
+    scrot --file - \
+        | xclip -in -selection clipboard -target image/png
 }
 
 main "$@"
