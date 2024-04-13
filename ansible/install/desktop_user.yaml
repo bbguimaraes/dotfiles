@@ -37,9 +37,12 @@
     - custos
   - name: build programs (cargo)
     command:
-      chdir: "{{ home }}/src/codex/timer"
+      chdir: "{{ home }}/src/{{ item.0 }}"
       cmd: cargo build --release
-      creates: "{{ home }}/src/codex/timer/target/release/timer"
+      creates: "{{ home }}/src/{{ item.0 }}/target/release/{{ item.1 }}"
+    loop:
+    - - codex/timer
+      - timer
   - name: create home directories
     file:
       state: directory
