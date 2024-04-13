@@ -10,7 +10,7 @@ main() {
     lynx) lynx "$@";;
     priv) exec firefox --private-window "$@";;
     vim) cmd_vim "$@";;
-    wt) wt "$@";;
+    wikt) wikt "$@";;
     *) usage;;
     esac
 }
@@ -22,7 +22,7 @@ Usage: $0 CMD [ARG...]
 Commands:
 
     URL
-    ddg|wt QUERY...
+    ddg|wikt QUERY...
     lynx [ARG...]
     vim URL
 EOF
@@ -55,7 +55,7 @@ cmd_vim() {
     terminal bash -c 'vim - <<< $1' bash "$html"
 }
 
-wt() {
+wikt() {
     local IFS=+
     lynx "https://en.wiktionary.com/wiki/$*"
 }
