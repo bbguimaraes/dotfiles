@@ -7,6 +7,7 @@ main() {
     case "$cmd" in
     date) cmd_date "$@";;
     rename) cmd_rename "$@";;
+    resize) cmd_resize "$@";;
     *) usage
     esac
 }
@@ -19,6 +20,7 @@ Commands:
 
     date FILE...
     rename [-v|--verbose|-n|--dry-run] FILE...
+    resize X Y FILE
 EOF
     return 1
 }
@@ -55,6 +57,18 @@ cmd_rename() {
         [[ "$verbose" ]] && echo "$x" "$dst"
         [[ "$dry_run" ]] || mv --interactive "$x" "$dst"
     done
+}
+
+cmd_resize() {
+    [[ "$#" -eq 3 ]] || usage
+    local x=$1 y=$2 f=$3
+    local size=${x}x${y}
+    convert \
+        -background black \
+        -gravity center \
+        -resize "$size" \
+        -extent "$size" \
+        "$f" -
 }
 
 main "$@"
