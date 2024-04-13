@@ -43,20 +43,20 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: $0 [CMD ARGS...]
+Usage: $0 [CMD ARG...]
 
 Commands:
 
     archive
     archived
-    audio FILES...
+    audio FILE...
     complete
     dailywire
     download
     enqueue
-    play ARGS...
+    play ARG...
     unwatched
-    update ARGS...
+    update ARG...
     watched
 EOF
     return 1

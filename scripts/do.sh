@@ -18,13 +18,13 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: $0 [CMD ARGS...]
+Usage: $0 [CMD ARG...]
 
 Commands:
 
     shell
-    cmd ARGS...
-    watch ARGS...
+    cmd ARG...
+    watch ARG...
 EOF
     return 1
 }

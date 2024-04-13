@@ -12,7 +12,7 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: $0 CMD ARGS...
+Usage: $0 CMD ARG...
 
 Commands:
 

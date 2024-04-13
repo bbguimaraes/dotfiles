@@ -13,7 +13,7 @@ def main(*args):
 
 def usage():
     print(f"""\
-Usage: {sys.argv[0]} CMD ARGS...
+Usage: {sys.argv[0]} CMD ARG...
 
 Commands:
 
