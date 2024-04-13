@@ -108,13 +108,6 @@ push() {
 pull() {
     local x
     for x; do
-        x=$(basename "$x")
-        if [[ -e "$x" ]]; then
-            echo >&2 "file exists, not overwriting: $x"
-            return 1
-        fi
-    done
-    for x; do
         echo "$x"
         pull_file "$(url_for_file "$x")" -o "$(basename "$x")"
     done
