@@ -45,7 +45,7 @@ terminal() {
 
 ddg() {
     local IFS=+
-    browser "https://html.duckduckgo.com/html?q=$*"
+    lynx "https://html.duckduckgo.com/html?q=$*"
 }
 
 cmd_vim() {
@@ -56,7 +56,7 @@ cmd_vim() {
 
 wikt() {
     local IFS=+
-    browser "https://en.wiktionary.com/wiki/$*"
+    lynx "https://en.wiktionary.com/wiki/$*"
 }
 
 main "$@"
