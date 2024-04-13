@@ -43,6 +43,8 @@
     loop:
     - - codex/timer
       - timer
+    - - nummi
+      - nummi
   - name: create home directories
     file:
       state: directory
@@ -131,6 +133,8 @@
       - .local/bin/custos
     - - src/impero/impero
       - .local/bin/impero
+    - - src/nummi/target/release/nummi
+      - .local/bin/nummi
     - - src/subs/subs
       - .local/bin/subs
     - - src/codex/timer/target/release/timer
