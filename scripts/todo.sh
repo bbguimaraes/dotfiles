@@ -3,6 +3,7 @@ set -euo pipefail
 
 DIR=~/n/archivum/todo
 DIES=(lunae martis mercurii iovis veneris saturnis solis)
+MENSES=(ian feb mar apr mai iun iul aug sep oct nov dec)
 
 main() {
     [[ "$#" -eq 0 ]] && { todo; return; }
@@ -44,6 +45,7 @@ week() {
     today=$(date +%e --date "$date")
     week_day "$today"
     week_week "$date"
+    week_month "$date" "$today"
 }
 
 week_day() {
@@ -59,6 +61,15 @@ week_week() {
     week=$(date +%W --date "$1")
     echo "- h${week}"
     sed 's/^/  /' "$DIR/hebdomadas.txt"
+}
+
+week_month() {
+    local date=$1 today=$2 month
+    if [[ "$today" -lt 8 ]]; then
+        month=$(date +%m --date "$date")
+        echo "- ${MENSES[$((month - 1))]}"
+        sed 's/^/  /' "$DIR/mensis.txt"
+    fi
 }
 
 main "$@"
