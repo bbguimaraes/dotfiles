@@ -7,6 +7,7 @@ main() {
     local cmd=$1; shift
     case "$cmd" in
     ddg) ddg "$@";;
+    dmenu) cmd_dmenu "$@";;
     lynx) lynx "$@";;
     priv) exec firefox --private-window "$@";;
     vim) cmd_vim "$@";;
@@ -46,6 +47,17 @@ terminal() {
 ddg() {
     local IFS=+
     lynx "https://html.duckduckgo.com/html?q=$*"
+}
+
+cmd_dmenu() {
+    [[ "$#" -ne 1 ]] && usage
+    local cmd=$1 term
+    case "$cmd" in
+    ddg|wikt) ;;
+    *) usage;;
+    esac
+    term=$(dmenu -p 'term:' <<< '')
+    terminal d web "$cmd" "$term"
 }
 
 cmd_vim() {
