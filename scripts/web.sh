@@ -33,8 +33,7 @@ lynx() {
     command lynx \
         --display-charset utf-8 \
         --collapse-br-tags \
-        --accept-all-cookies \
-        --cookie-file /dev/null \
+        --cookies \
         "$@"
 }
 
