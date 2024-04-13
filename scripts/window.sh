@@ -5,7 +5,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
-    tr|tl|halve|qtr|quarter) window "$cmd" "$@";;
+    tr|tl|double|halve|qtr|quarter) window "$cmd" "$@";;
     vtr) vtr "$@";;
     window) window "$@";;
     *) usage;;
@@ -19,7 +19,7 @@ Usage: $0 CMD ARG...
 Commands:
 
     vtr [-s]
-    window [-s] tr|tl|halve|htr|qtr|quarter...
+    window [-s] tr|tl|double|halve|htr|qtr|quarter...
 EOF
     return 1
 }
@@ -53,6 +53,9 @@ window() {
         case "$x" in
         tr) cmd=$(printf '%s\n%s' "$cmd" "windowmove $w $((sw - ww)) 0");;
         tl) cmd=$(printf '%s\n%s' "$cmd" "windowmove $w 0 0");;
+        double)
+            ww=$((ww * 2)); wh=$((wh * 2))
+            cmd=$(printf '%s\n%s' "$cmd" "windowsize $w $ww $wh") ;;
         halve)
             ww=$((ww / 2)); wh=$((wh / 2))
             cmd=$(printf '%s\n%s' "$cmd" "windowsize $w $ww $wh") ;;
