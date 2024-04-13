@@ -17,13 +17,13 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: $0 CMD [ARGS...]
+Usage: $0 CMD [ARG...]
 
 Commands:
 
     URL
     ddg|wt QUERY...
-    lynx [ARGS...]
+    lynx [ARG...]
     vim URL
 EOF
     return 1

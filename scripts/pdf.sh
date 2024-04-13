@@ -13,12 +13,12 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: pdf CMD [ARGS...]
+Usage: pdf CMD [ARG...]
 
 Commands:
 
     booklet INPUT N_PAGES
-    split images [ARGS...]
+    split images [ARG...]
     split pages INPUT FIRST LAST
 EOF
     return 1

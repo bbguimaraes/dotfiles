@@ -18,18 +18,18 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: $0 CMD ARGS...
+Usage: $0 CMD ARG...
 
 Commands:
 
     complete
-    files ARGS...
+    files ARG...
     push-img NAME
     local [sync-docs]
     remote git
     remote pull [force]
     remote compare-files
-    remote sync-files [ARGS...]
+    remote sync-files [ARG...]
 EOF
     return 1
 }

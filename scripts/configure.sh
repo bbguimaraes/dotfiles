@@ -13,11 +13,11 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: $0 CMD ARGS...
+Usage: $0 CMD ARG...
 
 Commands:
 
-    dir DIR CONFIGURE_ARGS...
+    dir DIR CONFIGURE_ARG...
     clean
 EOF
     return 1

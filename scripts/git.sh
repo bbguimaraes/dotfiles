@@ -21,20 +21,20 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: $0 CMD ARGS...
+Usage: $0 CMD ARG...
 
 Commands:
 
     complete
-    authors file ARGS...
-    authors weekday ARGS...
+    authors file ARG...
+    authors weekday ARG...
     backport REV
-    diff log [DIFF_ARGS...] REV0 REV1
+    diff log [DIFF_ARG...] REV0 REV1
     graph
     graph branch-diff B0 B1
     bbguimaraes exec CMD...
     pull
-    rebase branches [BRANCHES...]
+    rebase branches [BRANCH...]
 EOF
     return 1
 }

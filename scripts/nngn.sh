@@ -17,12 +17,12 @@ main() {
 
 usage() {
     cat >&2 <<EOF
-Usage: $0 CMD ARGS...
+Usage: $0 CMD ARG...
 
 Commands:
 
-    check DIR CHECKS [-- CONFIGURE_ARGS...]
-    configure DIR CHECKS [-- CONFIGURE_ARGS...]
+    check DIR CHECK [-- CONFIGURE_ARG...]
+    configure DIR CHECK [-- CONFIGURE_ARG...]
     launcher
     plot time
 EOF
