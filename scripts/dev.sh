@@ -18,7 +18,7 @@ main() {
     cal) exec systemctl --user restart vdirsyncer;;
     completion) completion "$@";;
     compose) exec less /usr/share/X11/locale/en_US.UTF-8/Compose;;
-    custos) exec custos --clear --modules load,thermal,date;;
+    custos) exec custos --clear --modules load,battery,thermal,date;;
     cx) xclip -out | xargs "$@";;
     every) every "$@";;
     fmt) cmd_fmt "$@";;
