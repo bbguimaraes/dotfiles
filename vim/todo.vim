@@ -1,4 +1,7 @@
-let g:todo_inc_pattern = "^\\d\\d:\\d\\d$"
+let g:todo_time_pattern = "\\d\\d:\\d\\d"
+let g:todo_inc_pattern = "^" . g:todo_time_pattern . "$"
+let g:todo_hour_pattern = "^  - " . g:todo_time_pattern . " "
+let g:todo_day_pattern = "^- \\d\\d "
 let g:todo_inc = 30
 
 function! TodoInc(d = v:null, col = v:null, line = v:null)
@@ -26,6 +29,26 @@ function! TodoInc(d = v:null, col = v:null, line = v:null)
         call TodoIncMinute(l:h, l:m, l:d)
         call TodoIncFinish(l:digit)
     endif
+endfunction
+
+function! TodoIncAll(...)
+    let l:d = get(a:, 1, 1) * 60 / g:todo_inc
+    let l:line = line(".")
+    let l:col = col(".")
+    let l:i = l:line
+    while v:true
+        let l:text = getline(l:i)
+        if match(l:text, g:todo_day_pattern) != -1
+            break
+        endif
+        if match(l:text, g:todo_hour_pattern) != -1
+            call setpos(".", [0, l:i, stridx(l:text, ":") + 1])
+            let l:cur = TodoGetTime()
+            call TodoIncMinute(l:cur[0], l:cur[1], l:d)
+        endif
+        let l:i += 1
+    endwhile
+    call setpos(".", [0, l:line, l:col])
 endfunction
 
 function TodoGetTime()
@@ -69,6 +92,7 @@ function! TodoIncFinish(col)
 endfunction
 
 command -nargs=? TodoInc call TodoInc(<f-args>)
+command -nargs=? TodoIncAll call TodoIncAll(<f-args>)<cr>
 
 nnoremap <c-a> :TodoInc<cr>
 nnoremap <c-x> :TodoInc -1<cr>
