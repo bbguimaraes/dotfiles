@@ -66,16 +66,23 @@ function! TodoIncHour(h, d, m)
 endfunction
 
 function! TodoIncMinute(h, m, d)
-    let l:m = a:m + a:d * g:todo_inc
-    let l:d = l:m / 60.0
-    let l:d = float2nr(l:d < 0 ? l:d - 1 : l:d)
-    let l:h = (a:h + l:d) % 24
-    let l:m = float2nr(l:m - l:d * 60)
+    let l:d = a:d * g:todo_inc
+    let l:m = a:m + l:d
+    let l:h = float2nr(floor(a:h + l:m / 60.0))
+    let l:m %= 60
     call TodoSetTime(l:h, l:m)
 endfunction
 
 function! TodoSetTime(h, m)
-    execute ":normal! ciW" . printf("%02d:%02d", a:h, a:m)
+    let l:h = a:h % 24
+    while l:h < 0
+        let l:h += 24
+    endwhile
+    let l:m = a:m % 60
+    while l:m < 0
+        let l:m += 60
+    endwhile
+    execute ":normal! ciW" . printf("%02d:%02d", l:h, l:m)
 endfunction
 
 function! TodoIncDefault(d)
