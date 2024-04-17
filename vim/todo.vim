@@ -87,9 +87,9 @@ endfunction
 
 function! TodoIncDefault(d)
     if a:d < 0
-        execute "normal! \<c-x>"
+        execute printf("normal! %d\<c-x>", -a:d)
     elseif 0 < a:d
-        execute "normal! \<c-a>"
+        execute printf("normal! %d\<c-a>", a:d)
     endif
 endfunction
 
@@ -98,10 +98,10 @@ function! TodoIncFinish(col)
     normal e
 endfunction
 
-command -nargs=? TodoInc call TodoInc(<f-args>)
+command -nargs=* TodoInc call TodoInc(<f-args>)
 command -nargs=? TodoIncAll call TodoIncAll(<f-args>)<cr>
 
-nnoremap <c-a> :TodoInc<cr>
-nnoremap <c-x> :TodoInc -1<cr>
+nnoremap <c-a> :<c-u>execute printf("TodoInc %d",  v:count1)<cr>
+nnoremap <c-x> :<c-u>execute printf("TodoInc %d", -v:count1)<cr>
 
 set tabstop=2 smartindent foldmethod=indent foldlevel=9 nowrap
