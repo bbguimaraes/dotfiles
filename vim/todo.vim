@@ -98,10 +98,12 @@ function! TodoIncFinish(col)
     normal e
 endfunction
 
-command -nargs=* TodoInc call TodoInc(<f-args>)
+command -nargs=* -range TodoInc <line1>,<line2>call TodoInc(<f-args>)
 command -nargs=? TodoIncAll call TodoIncAll(<f-args>)<cr>
 
-nnoremap <c-a> :<c-u>execute printf("TodoInc %d",  v:count1)<cr>
-nnoremap <c-x> :<c-u>execute printf("TodoInc %d", -v:count1)<cr>
+nnoremap <c-a> :<c-u>execute printf("TodoInc %d %d",  v:count1, col("."))<cr>
+nnoremap <c-x> :<c-u>execute printf("TodoInc %d %d", -v:count1, col("."))<cr>
+vnoremap <c-a> :<c-u>execute printf("'<,'>TodoInc %d",  v:count1)<cr>
+vnoremap <c-x> :<c-u>execute printf("'<,'>TodoInc %d", -v:count1)<cr>
 
 set tabstop=2 smartindent foldmethod=indent foldlevel=9 nowrap
