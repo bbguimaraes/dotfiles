@@ -169,8 +169,8 @@ cmd_man() {
 }
 
 nosuspend() {
-    [[ "$#" -ne 0 ]] || set -- cat
-    exec systemd-inhibit --what handle-lid-switch "$@"
+    [[ "$#" -ne 0 ]] || set -- bash -c 'read -p nosuspend...'
+    terminal systemd-inhibit --what handle-lid-switch "$@"
 }
 
 office() {
