@@ -4,7 +4,7 @@ set -euo pipefail
 CMDS=(
     analog beep blue c cx cal complete compose custos every fmt hdmi http
     keyboard liber lock mail man mutt nosuspend office p passmenu paste pause
-    pecunia picom ping sshfs suspend ts until vtr w
+    pecunia picom ping sshfs suspend terminal ts until vtr w
 )
 
 main() {
@@ -44,6 +44,7 @@ main() {
     pull) d git pull && d git rebase branches;;
     sshfs) cmd_sshfs "$@";;
     suspend) (d lock); exec systemctl suspend;;
+    terminal) terminal "$@";;
     ts) exec ts '%Y-%m-%dT%H:%M:%S';;
     until) cmd_until "$@";;
     vtr) exec d window vtr;;
@@ -232,6 +233,12 @@ cmd_sshfs() {
     fi
     [[ -e "$dst" ]] || mkdir --parents "$dst"
     exec sshfs -o ServerAliveInterval=15 -o reconnect "$@"
+}
+
+terminal() {
+    local cmd=("$@")
+    tty --quiet || cmd=("$TERMINAL" -e "${cmd[@]}")
+    exec "${cmd[@]}"
 }
 
 cmd_until() {

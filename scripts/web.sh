@@ -3,7 +3,7 @@ set -euo pipefail
 
 main() {
     [[ "$#" -eq 0 ]] && usage
-    [[ "$#" -eq 1 ]] && { terminal d web lynx "$@"; return; }
+    [[ "$#" -eq 1 ]] && { d terminal d web lynx "$@"; return; }
     local cmd=$1; shift
     case "$cmd" in
     ddg) ddg "$@";;
@@ -38,12 +38,6 @@ lynx() {
         "$@"
 }
 
-terminal() {
-    local cmd=("$@")
-    tty --quiet || cmd=("$TERMINAL" -e "${cmd[@]}")
-    "${cmd[@]}"
-}
-
 ddg() {
     local IFS=+
     lynx "https://html.duckduckgo.com/html?q=$*"
@@ -57,13 +51,13 @@ cmd_dmenu() {
     *) usage;;
     esac
     term=$(dmenu -p 'term:' <<< '')
-    terminal d web "$cmd" "$term"
+    d terminal d web "$cmd" "$term"
 }
 
 cmd_vim() {
     local html
     html=$(lynx --dump "$1")
-    terminal bash -c 'vim - <<< $1' bash "$html"
+    d terminal bash -c 'vim - <<< $1' bash "$html"
 }
 
 wikt() {
