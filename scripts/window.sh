@@ -33,7 +33,7 @@ vtr() {
     read -r ww wh < <(
         xdotool getwindowgeometry --shell "$w" \
             | awk -F = 'NR==4||NR==5{printf("%s ",$2)}END{print"\n"}')
-    while [[ $ww -gt $((sw / 3)) || $wh -gt $((sh / 3)) ]]; do
+    while [[ $ww -gt $((sw / 2)) || $wh -gt $((sh / 2)) ]]; do
         ww=$((ww / 2)); wh=$((wh / 2))
     done
     xdotool \
