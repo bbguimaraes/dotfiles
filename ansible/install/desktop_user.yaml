@@ -52,6 +52,7 @@
     loop:
     - .config/bbguimaraes.com
     - .config/ccache
+    - .config/custos
     - .config/gdb
     - .config/git
     - .config/i3
@@ -151,6 +152,7 @@
     loop:
     - ['{{ home }}/n/comp/bbguimaraes.com.lua',
        '.config/bbguimaraes.com/conf.lua']
+    - ['{{ home }}/n/comp/custos.lua', '.config/custos/init.lua']
     - ['{{ home }}/n/comp/subs.lua', '.config/subs/init.lua']
     - ['{{ home }}/n/comp/impero.txt', '.config/impero/commands.txt']
     - ['{{ home }}/n/comp/mutt.aliases', '.config/mutt/aliases']
