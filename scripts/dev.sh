@@ -2,9 +2,9 @@
 set -euo pipefail
 
 CMDS=(
-    analog beep blue c cx cal complete compose custos every fmt hdmi http
-    keyboard liber lock mail man mutt nosuspend office p passmenu paste pause
-    pecunia picom ping sshfs suspend terminal ts until vtr w
+    analog beep blue c cx cal complete compose every fmt hdmi http keyboard
+    liber lock mail man mutt nosuspend office p passmenu paste pause pecunia
+    picom ping sshfs suspend terminal ts until vtr w
 )
 
 main() {
@@ -18,7 +18,6 @@ main() {
     cal) exec systemctl --user restart vdirsyncer;;
     completion) completion "$@";;
     compose) exec less /usr/share/X11/locale/en_US.UTF-8/Compose;;
-    custos) exec custos --clear --modules load,battery,thermal,date;;
     cx) xclip -out | xargs "$@";;
     every) every "$@";;
     fmt) cmd_fmt "$@";;
