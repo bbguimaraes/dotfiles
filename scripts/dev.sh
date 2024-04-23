@@ -26,7 +26,7 @@ main() {
     http) exec python -m http.server "$@";;
     keyboard) keyboard "$@";;
     liber) liber "$@";;
-    lock) exec i3lock --color 000000 --image /tmp/bg.png;;
+    lock) exec i3lock --nofork --color 000000 --image /tmp/bg.png;;
     mail) mail "$@";;
     man) cmd_man "$@";;
     mutt) exec mutt -e "source ~/.config/mutt/muttrc_${1-proton}";;
@@ -43,7 +43,7 @@ main() {
     ping) exec mpv --no-terminal ~/n/archive/ping.flac;;
     pull) d git pull && d git rebase branches;;
     sshfs) cmd_sshfs "$@";;
-    suspend) (d lock); exec systemctl suspend;;
+    suspend) (d lock) & exec systemctl suspend;;
     terminal) terminal "$@";;
     ts) exec ts '%Y-%m-%dT%H:%M:%S';;
     until) cmd_until "$@";;
