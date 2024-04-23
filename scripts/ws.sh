@@ -33,9 +33,11 @@ cmd_complete() {
 }
 
 cmd_ws() {
-    local dir=$1
-    [[ -e "$dir" ]] || dir=$DEFAULT_DIR/$dir
+    local dir=$1 name
+    [[ ! -e "$dir" && -e "$DEFAULT_DIR/$dir" ]] && dir=$DEFAULT_DIR/$dir
     name=${1##*/}
+    local cmd=(vim)
+    [[ -e "$dir/.git" ]] && cmd=("${cmd[@]}" -c 'call GitTab()')
     eval "$(d cd "$dir")"
     tmux rename-window "$name"
     tmux split-window -c "$dir" "$(printf '%s;' \
@@ -44,7 +46,7 @@ cmd_ws() {
     tmux select-layout main-vertical
     cd "$dir"
     sleep 1
-    exec vim -c 'call GitTab()'
+    exec "${cmd[@]}"
 }
 
 main "$@"
