@@ -158,6 +158,12 @@ bar {
 default_border normal 0
 hide_edge_borders both
 
+# class                  border  backgr. text    indicator child_border
+client.focused           #3a3a3a #303030 #ffffff #ffffff   #3a3a3a
+client.focused_inactive  #585858 #3a3a3a #ffffff #ffffff   #585858
+client.focused_tab_title #767676 #585858 #ffffff #ffffff   #767676
+client.unfocused         #949494 #767676 #ffffff #ffffff   #ffffff
+
 bindsym $mod+Shift+h move left 4
 bindsym $mod+Shift+j move down 4
 bindsym $mod+Shift+k move up 4
