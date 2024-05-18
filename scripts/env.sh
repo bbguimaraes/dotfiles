@@ -22,6 +22,8 @@ main() {
     tmux split-window -t "$target:1.1" -l 1000 newsboat
     tmux split-window -t "$target:1.2" -l 1000 ikhal
     tmux select-layout -t "$target:1" main-horizontal
+    tmux new-window -t "$target:2" subs tui
+    tmux rename-window -t "$target:2" 'v'
     attach
 }
 
