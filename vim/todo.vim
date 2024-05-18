@@ -19,7 +19,7 @@ function! TodoInc(d = v:null, col = v:null, line = v:null)
     if l:cur is v:null
         return TodoIncDefault(l:d)
     endif
-    let l:colon = stridx(l:text, ":", l:col - 1)
+    let l:colon = stridx(l:text, ":", l:col - 3 - 1)
     let l:h = l:cur[0]
     let l:m = l:cur[1]
     if l:col - 1 < l:colon
