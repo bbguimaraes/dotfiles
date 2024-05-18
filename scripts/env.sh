@@ -17,6 +17,7 @@ main() {
     tmux split-window -t "$target:0.2" -l 1000 custos --clear
     tmux select-layout -t "$target:0" main-vertical
     tmux new-window -t "$target:1" weechat
+    tmux rename-window -t "$target:1" ''
     tmux split-window -t "$target:1.0" -l 1000 d mutt
     tmux split-window -t "$target:1.1" -l 1000 newsboat
     tmux split-window -t "$target:1.2" -l 1000 ikhal
