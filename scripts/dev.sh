@@ -4,7 +4,7 @@ set -euo pipefail
 CMDS=(
     analog beep blue c cx cal complete compose every fmt hdmi http keyboard
     liber lock mail man mutt nosuspend office p passmenu paste pause pecunia
-    picom ping sshfs suspend terminal ts until vtr w
+    picom ping radio sshfs suspend terminal ts until vtr w
 )
 
 main() {
@@ -41,6 +41,7 @@ main() {
         --fade-in-step 1 --fade-out-step 1 --inactive-opacity 1;;
     ping) exec mpv --no-terminal ~/n/archive/ping.flac;;
     pull) d git pull && d git rebase branches;;
+    radio) radio "$@";;
     sshfs) cmd_sshfs "$@";;
     suspend) (d lock) & exec systemctl suspend;;
     terminal) terminal "$@";;
@@ -222,6 +223,15 @@ pause() {
         org.mpris.MediaPlayer2.io.github.celluloid_player.Celluloid.instance-1 \
         /org/mpris/MediaPlayer2 \
         org.mpris.MediaPlayer2.Player.PlayPause
+}
+
+radio() {
+    [[ "$#" -ne 1 ]] && usage
+    local url
+    case "$1" in
+    italia) url=https://radioitaliasmi.akamaized.net/hls/live/2093120/RISMI/stream01/streamPlaylist.m3u8;
+    esac
+    mpv --force-window "$url"
 }
 
 cmd_sshfs() {
