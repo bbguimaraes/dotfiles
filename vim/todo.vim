@@ -161,3 +161,5 @@ nnoremap <leader>g :TodoGraph<cr>
 
 setlocal tabstop=2 smartindent
 setlocal foldmethod=indent foldlevel=9 nowrap
+setlocal updatetime=300000 " milliseconds (5 min)
+autocmd CursorHold <buffer> update
