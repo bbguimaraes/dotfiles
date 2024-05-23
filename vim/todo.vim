@@ -20,8 +20,7 @@ function! TodoInc(d = v:null, col = v:null, line = v:null)
         return TodoIncDefault(l:d)
     endif
     let l:colon = stridx(l:text, ":", l:col - 3 - 1)
-    let l:h = l:cur[0]
-    let l:m = l:cur[1]
+    let [l:h, l:m] = l:cur
     if l:col - 1 < l:colon
         call TodoIncHour(l:h, l:d, l:m)
         call TodoIncFinish(l:digit)
@@ -105,4 +104,5 @@ nnoremap <c-x> :<c-u>execute printf("TodoInc %d %d", -v:count1, col("."))<cr>
 vnoremap <c-a> :<c-u>execute printf("'<,'>TodoInc %d",  v:count1)<cr>
 vnoremap <c-x> :<c-u>execute printf("'<,'>TodoInc %d", -v:count1)<cr>
 
-set tabstop=2 smartindent foldmethod=indent foldlevel=9 nowrap
+setlocal tabstop=2 smartindent
+setlocal foldmethod=indent foldlevel=9 nowrap
