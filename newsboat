@@ -11,7 +11,9 @@ auto-reload yes
 reload-threads 8
 reload-time 30
 # lists
-feed-sort-order unreadarticlecount-asc
+feed-sort-order unreadarticlecount
+article-sort-order date
+show-read-feeds no
 # keys
 bind-key j down
 bind-key k up
