@@ -6,6 +6,7 @@ ocnews-passwordeval "pass show bbguimaraes.com/nextcloud/news"
 # browser
 browser "d web lynx %u"
 # reload
+suppress-first-reload yes
 auto-reload yes
 reload-threads 8
 reload-time 30
