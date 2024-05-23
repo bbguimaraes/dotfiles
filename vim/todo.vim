@@ -2,6 +2,8 @@ let g:todo_time_pattern = "\\d\\d:\\d\\d"
 let g:todo_inc_pattern = "^" . g:todo_time_pattern . "$"
 let g:todo_hour_pattern = "^  - " . g:todo_time_pattern . " "
 let g:todo_day_pattern = "^- \\d\\d "
+let g:todo_line_pattern =
+\   "\\v^  - (" .. g:todo_time_pattern .. ") \\[(\\d*½?)\\]%( (.+))?"
 let g:todo_inc = 30
 
 function! TodoInc(d = v:null, col = v:null, line = v:null)
@@ -96,13 +98,66 @@ function! TodoIncFinish(col)
     normal e
 endfunction
 
+function! TodoGraph(line)
+    let l:b = TodoDayBegin(a:line)
+    let l:e = TodoDayEnd(a:line)
+    if l:b == v:null || l:e == v:null
+        return v:null
+    end
+    let l:data = []
+    call add(l:data, "$d <<EOD")
+    while l:b != l:e
+        let l:text = getline(l:b)
+        let l:m = matchlist(l:text, g:todo_line_pattern)
+        if !empty(l:m)
+            let [_, l:time, l:dur, l:text; _] = l:m
+            let [l:h, l:m] = TodoGetTime(l:time)
+            if l:dur[-2:] == "½"
+                let l:dur = l:dur[:-3] + 0.5
+            endif
+            let l:start = l:h * 60 + l:m
+            call add(l:data, printf(
+\               '%d %d "%s" "%s"',
+\               l:start, l:start + float2nr(l:dur * 60), l:time, l:text))
+        endif
+        let l:b += 1
+    endwhile
+    call add(l:data, "EOD")
+    return systemlist(
+\     "gnuplot - ~/src/dotfiles/vim/todo.gnuplot",
+\     join(l:data, "\n"))
+endfunction
+
+function! TodoDayBegin(line)
+    let l:i = a:line
+    while match(getline(l:i), g:todo_day_pattern) == -1
+        if l:i == 1
+            return v:null
+        endif
+        let l:i -= 1
+    endwhile
+    return l:i
+endfunction
+
+function! TodoDayEnd(line)
+    let l:i = a:line
+    let l:max_line = line("$")
+    let l:i += 1
+    while l:i <= l:max_line && match(getline(l:i), g:todo_day_pattern) == -1
+        let l:i += 1
+    endwhile
+    return l:i
+endfunction
+
 command -nargs=* -range TodoInc <line1>,<line2>call TodoInc(<f-args>)
 command -nargs=? TodoIncAll call TodoIncAll(<f-args>)<cr>
+command TodoGraph echo system("feh -", TodoGraph(line(".")))
 
 nnoremap <c-a> :<c-u>execute printf("TodoInc %d %d",  v:count1, col("."))<cr>
 nnoremap <c-x> :<c-u>execute printf("TodoInc %d %d", -v:count1, col("."))<cr>
 vnoremap <c-a> :<c-u>execute printf("'<,'>TodoInc %d",  v:count1)<cr>
 vnoremap <c-x> :<c-u>execute printf("'<,'>TodoInc %d", -v:count1)<cr>
+nnoremap <leader>g :TodoGraph<cr>
 
 setlocal tabstop=2 smartindent
 setlocal foldmethod=indent foldlevel=9 nowrap
