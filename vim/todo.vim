@@ -15,7 +15,7 @@ function! TodoInc(d = v:null, col = v:null, line = v:null)
     endif
     let l:col = l:digit + 1
     call setpos(".", [0, l:line, l:col])
-    let l:cur = TodoGetTime()
+    let l:cur = TodoGetTime(expand("<cWORD>"))
     if l:cur is v:null
         return TodoIncDefault(l:d)
     endif
@@ -43,7 +43,7 @@ function! TodoIncAll(...)
         endif
         if match(l:text, g:todo_hour_pattern) != -1
             call setpos(".", [0, l:i, stridx(l:text, ":") + 1])
-            let l:cur = TodoGetTime()
+            let l:cur = TodoGetTime(expand("<cWORD>"))
             call TodoIncMinute(l:cur[0], l:cur[1], l:d)
         endif
         let l:i += 1
@@ -51,13 +51,12 @@ function! TodoIncAll(...)
     call setpos(".", [0, l:line, l:col])
 endfunction
 
-function TodoGetTime()
-    let l:text = expand("<cWORD>")
-    if match(l:text, g:todo_inc_pattern) == -1
+function TodoGetTime(text)
+    if match(a:text, g:todo_inc_pattern) == -1
         return v:null
     endif
-    let l:h = str2nr(l:text[0:1])
-    let l:m = str2nr(l:text[3:4])
+    let l:h = str2nr(a:text[0:1])
+    let l:m = str2nr(a:text[3:4])
     return [l:h, l:m]
 endfunction
 
