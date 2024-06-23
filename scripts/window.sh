@@ -29,7 +29,7 @@ vtr() {
     local w ww wh sw sh
     IFS=x read -r sw sh < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
     w=$(select_window "$@")
-    i3-msg --quiet 'floating enable; sticky enable; border none'
+    i3-msg --quiet 'floating enable; sticky enable; border pixel'
     read -r ww wh < <(
         xdotool getwindowgeometry --shell "$w" \
             | awk -F = 'NR==4||NR==5{printf("%s ",$2)}END{print"\n"}')
