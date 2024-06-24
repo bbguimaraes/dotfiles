@@ -69,7 +69,7 @@ camera_pull() {
     fi
     for x; do
         echo "$x"
-        pull_file "$(url_for_file "$d/$x")" -o "$x"
+        pull_file "$(url_for_file "$d/$x")"
     done
 }
 
@@ -109,12 +109,16 @@ pull() {
     local x
     for x; do
         echo "$x"
-        pull_file "$(url_for_file "$x")" -o "$(basename "$x")"
+        pull_file "$(url_for_file "$x")"
     done
 }
 
 pull_file() {
-    curl "${REQ_ARGS[@]}" --continue-at - "$@"
+    local f=$1
+    local b=${f##*/}
+    # TODO short responses
+#    curl "${REQ_ARGS[@]}" --continue-at - "$f" -o "$b"
+    wget "$@"
 }
 
 cmd_ls() {
