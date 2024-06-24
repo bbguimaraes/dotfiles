@@ -16,6 +16,7 @@ export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/config
 alias cal='cal --monday'
 alias gdb='gdb --quiet'
 alias musescore='musescore --gui-scaling 1'
+alias x='xdg-open'
 
 [[ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]] \
     && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
