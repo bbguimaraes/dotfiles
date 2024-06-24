@@ -29,6 +29,26 @@ int main(int argc, char **argv, char **env) {
 EOF
 )
 
+C_LUA_PROG=$(cat <<'EOF'
+// gcc -std=c11 -S -masm=intel -fno-stack-protector -fno-asynchronous-unwind-tables % -llua
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+
+#include <lauxlib.h>
+#include <lua.h>
+#include <lualib.h>
+
+int main(int argc, char **argv, char **env) {
+    lua_State *const L = luaL_newstate();
+    if(!L)
+        return fputs("failed to create Lua state", stderr), 1;
+    luaL_openlibs(L);
+    lua_close(L);
+}
+EOF
+)
+
 CXX_PROG=$(cat <<'EOF'
 // g++ -std=c++20 -S -masm=intel -fno-stack-protector -fno-exceptions -fno-rtti -fno-asynchronous-unwind-tables %
 int main(int argc, char **argv, char **env) {
@@ -188,6 +208,7 @@ c() {
     case "${1:-}" in
     '') prog=$C_PROG;;
     includes) prog=$C_INCLUDES_PROG;;
+    lua) prog=$C_LUA_PROG;;
     *) echo >&2 "invalid c++ option: $1"; return 1;;
     esac
     cmds=(
