@@ -1,4 +1,5 @@
 runtime ftplugin/man.vim
+packadd comment
 let g:ctrlp_working_path_mode = ''
 let g:ctrlp_custom_ignore = {"dir": "docs"}
 let g:ctrlp_extensions = ['buffertag', 'tag']
