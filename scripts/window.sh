@@ -38,7 +38,7 @@ vtr() {
     done
     xdotool \
         windowsize "$w" "$ww" "$wh" \
-        windowmove "$w" "$((sw - ww))" 0
+        windowmove "$w" "$((sw - ww - 17))" 35
 }
 
 window() {
