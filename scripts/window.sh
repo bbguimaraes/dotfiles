@@ -1,6 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
+BORDER=1
+PAD=16
+
 main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
@@ -24,6 +27,15 @@ EOF
     return 1
 }
 
+right() {
+    local sw=$1 ww=$2
+    echo "$((sw - ww - PAD - BORDER))"
+}
+
+top() {
+    echo "$((2 * PAD + 3 * BORDER))"
+}
+
 vtr() {
     [[ "$#" -gt 1 ]] && usage
     local w ww wh sw sh
@@ -38,7 +50,7 @@ vtr() {
     done
     xdotool \
         windowsize "$w" "$ww" "$wh" \
-        windowmove "$w" "$((sw - ww - 17))" 35
+        windowmove "$w" "$(right "$sw" "$ww")" "$(top)"
 }
 
 window() {
