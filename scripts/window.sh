@@ -8,7 +8,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
-    tr|tl|double|halve|qtr|quarter) window "$cmd" "$@";;
+    bl|br|tl|tr|double|halve|qtr|quarter) window "$cmd" "$@";;
     vtr) vtr "$@";;
     window) window "$@";;
     *) usage;;
@@ -34,6 +34,11 @@ right() {
 
 top() {
     echo "$((2 * PAD + 3 * BORDER))"
+}
+
+bottom() {
+    local sh=$1 wh=$2
+    echo "$((sh - wh - 19 - PAD))"
 }
 
 vtr() {
@@ -63,8 +68,24 @@ window() {
             | paste -s)
     for x; do
         case "$x" in
-        tr) cmd=$(printf '%s\n%s' "$cmd" "windowmove $w $((sw - ww)) 0");;
-        tl) cmd=$(printf '%s\n%s' "$cmd" "windowmove $w 0 0");;
+        bl) cmd=$(printf '%s\nwindowmove %d %d %d' \
+            "$cmd" "$w" \
+            "$PAD" \
+            "$(bottom "$sh" "$wh")" \
+        );;
+        br) cmd=$(printf '%s\nwindowmove %d %d %d' \
+            "$cmd" "$w" \
+            "$(right "$sw" "$ww")" \
+            "$(bottom "$sh" "$wh")" \
+        );;
+        tr) cmd=$(printf '%s\nwindowmove %d %d %d' \
+            "$cmd" "$w" \
+            "$(right "$sw" "$ww")" \
+            "$(top)" \
+        );;
+        tl) cmd=$(printf '%s\nwindowmove %d %d %d' \
+            "$cmd" "$w" "$PAD" "$(top)" \
+        );;
         double)
             ww=$((ww * 2)); wh=$((wh * 2))
             cmd=$(printf '%s\n%s' "$cmd" "windowsize $w $ww $wh") ;;
