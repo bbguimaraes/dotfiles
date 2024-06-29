@@ -18,6 +18,7 @@ set sidebar_width = 16
 set sidebar_divider_char = ' '
 set sidebar_short_path = yes
 set sidebar_delim_chars = '/'
+macro index,pager \\b '<sidebar-toggle-visible>'
 macro index,pager K '<sidebar-prev><sidebar-open>'
 macro index,pager J '<sidebar-next><sidebar-open>'
 
