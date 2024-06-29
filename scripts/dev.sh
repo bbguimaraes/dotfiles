@@ -28,7 +28,7 @@ main() {
     lock) exec i3lock --nofork --color 000000 --image /tmp/bg.png;;
     mail) mail "$@";;
     man) cmd_man "$@";;
-    mutt) exec mutt -e "source ~/.config/mutt/muttrc_${1-proton}";;
+    mutt) cmd_mutt "$@";;
     nosuspend) nosuspend "$@";;
     office) office "$@";;
     p) p "$@";;
@@ -165,6 +165,15 @@ mail() {
 cmd_man() {
     [[ "$#" -eq 0 ]] && exec vim ~/n/comp/man.txt
     exec firefox https://manned.org/browse/search?q="$*"
+}
+
+cmd_mutt() {
+    local arg=${1-proton}
+    if [[ "$arg" == manual ]]; then
+        exec vim -R /usr/share/doc/mutt/manual.txt
+    else
+        exec mutt -e "source ~/.config/mutt/muttrc_$arg"
+    fi
 }
 
 nosuspend() {
