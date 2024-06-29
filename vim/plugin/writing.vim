@@ -9,6 +9,7 @@ function! WritingMode()
         execute "vertical resize " . ((l:w - 80 + l:round_up) / 2 - l:sep)
         execute "normal \<c-w>\<c-w>"
     endfor
+    setlocal spell
     setlocal statusline=%<%f%m%=%{WritingModeCounts()}
 endfunction
 
