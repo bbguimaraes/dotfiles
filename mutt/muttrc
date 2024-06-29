@@ -4,6 +4,7 @@ source $alias_file
 set header_cache = ~/.cache/mutt
 set mailcap_path = ~/.config/mutt/mailcap
 auto_view text/html
+set markers = no
 set sort = threads
 set delete
 set sleep_time = 0
