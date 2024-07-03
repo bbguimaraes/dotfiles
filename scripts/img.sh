@@ -5,6 +5,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    correct) cmd_correct "$@";;
     date) cmd_date "$@";;
     rename) cmd_rename "$@";;
     resize) cmd_resize "$@";;
@@ -19,12 +20,19 @@ Usage: $0 CMD ARG...
 
 Commands:
 
+    correct FILE
     date FILE...
     rename [-v|--verbose|-n|--dry-run] FILE...
     resize X Y FILE
     screenshot
 EOF
     return 1
+}
+
+cmd_correct() {
+    [[ "$#" -ne 1 ]] && usage
+    local f=$1 contrast=7.5% saturation=120
+    magick "$f" -level "$contrast" -modulate "100,$saturation,100" -
 }
 
 cmd_date() {
