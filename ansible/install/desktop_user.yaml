@@ -134,6 +134,8 @@
       - .local/bin/custos
     - - src/impero/impero
       - .local/bin/impero
+    - - src/machinatrix/machinatrix
+      - .local/bin/machinatrix
     - - src/nummi/target/release/nummi
       - .local/bin/nummi
     - - src/subs/subs
