@@ -13,6 +13,7 @@ nnoremap <leader>h :set hlsearch \| let @/ = expand("<cword>")<cr>
 nnoremap <leader>jp VipJ0
 nnoremap <leader>m :w \| Make<cr>
 nnoremap <leader>mw :call WritingMode()<cr>
+nnoremap <leader>ms :call SpellLangShowMenu()<cr>
 nnoremap <leader>nc /^\(<<<<<<< \\|=======\\|>>>>>>> \)<cr>
 nnoremap <silent> <leader>o
 \   :silent call system("xdg-open " . shellescape(expand("<cWORD>")))<cr>
