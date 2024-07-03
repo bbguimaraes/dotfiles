@@ -3,7 +3,8 @@
 export HISTFILE=~/.local/share/bash/history
 export HISTTIMEFORMAT='%FT%H:%M:%S '
 export VISUAL=vim
-export EDITOR=vim
+export EDITOR=$VISUAL
+export AUR_PAGER=$VISUAL
 export TERMINAL=urxvt
 export INPUTRC=~/.config/bash/inputrc
 export RLWRAP_HOME=~/.local/share/rlwrap
