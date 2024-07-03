@@ -174,6 +174,7 @@ bindsym $mod+Shift+f exec d cx firefox
 bindsym $mod+i exec impero
 bindsym $mod+m exec d displays toggle
 bindsym $mod+p exec d pause
+bindsym $mod+q exec d window corner
 bindsym $mod+Shift+p exec d passmenu
 bindsym $mod+t exec d window vtr
 bindsym $mod+Shift+v exec i3-sensible-terminal -e pulsemixer
