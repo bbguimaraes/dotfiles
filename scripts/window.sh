@@ -8,6 +8,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    corner) corner "$@";;
     bl|br|tl|tr|double|halve|qtr|quarter) window "$cmd" "$@";;
     vtr) vtr "$@";;
     window) window "$@";;
@@ -107,6 +108,31 @@ window() {
         esac
     done
     xdotool - <<< "$cmd"
+}
+
+corner() {
+    local w sw sh x y ww wh l r b t
+    IFS=x read -r sw sh < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
+    w=$(select_window "$@")
+    read -r w l t ww wh _ < <( \
+        xdotool windowfocus "$w" getwindowgeometry --shell "$w" \
+            | sed 's/^.*=//' \
+            | paste -s)
+    r=$((sw - l - ww))
+    b=$((sh - t - wh))
+    if [[ "$l" -lt "$r" ]]; then
+        if [[ "$t" -lt "$b" ]]; then
+            d window tr
+        else
+            d window tl
+        fi
+    else
+        if [[ "$t" -lt "$b" ]]; then
+            d window br
+        else
+            d window bl
+        fi
+    fi
 }
 
 select_window() {
