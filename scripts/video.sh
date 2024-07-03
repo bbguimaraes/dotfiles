@@ -102,7 +102,7 @@ poster() {
     local t=$1 input=$2 output=$3; shift 3
     ffmpeg \
         -threads "$(nproc)" -i "$input" \
-        -cpu-used 0 -ss "$t" -vframes 1 "$output" "$@"
+        -cpu-used 0 -ss "$t" -vframes 1 "$@" "$output"
 }
 
 subtitles() {
