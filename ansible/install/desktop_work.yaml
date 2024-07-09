@@ -126,3 +126,25 @@
     vars: {"pkg": "gotags"}
   - import_tasks: aur.yaml
     vars: {"pkg": "golangci-lint"}
+- hosts: desktops:&work_dds
+  vars:
+    home: '{{ ansible_env.HOME }}'
+    src_dir: '{{ ansible_env.HOME }}/src'
+  tasks:
+  - name: setup dotfile symlinks
+    file:
+      state: link
+      src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
+      dest: '{{ home }}/{{ item.1 }}'
+    loop:
+    - ['mutt/muttrc_dds', '.config/mutt/muttrc_dds']
+    - ['offlineimap/dds', '.config/offlineimap/dds']
+  - name: enable and start services
+    systemd:
+      enabled: true
+      state: started
+      name: '{{ item }}'
+      scope: user
+      daemon_reload: true
+    loop:
+    - offlineimap@dds

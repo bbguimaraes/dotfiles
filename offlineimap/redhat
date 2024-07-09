@@ -4,7 +4,7 @@ socktimeout = 60
 
 [mbnames]
 enabled = yes
-filename = ~/.mutt/redhat_mailboxes
+filename = ~/.config/mutt/redhat_mailboxes
 header = 'mailboxes '
 peritem = '+%(foldername)s'
 sep = ' '
