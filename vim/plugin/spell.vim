@@ -1,5 +1,5 @@
 let g:spell_lang_choices = [
-\   "", "en", "it", "la", "polytonic", "en,it,la,polytonic",
+\   "", "en", "it", "la", "pt", "polytonic", "en,it,la,polytonic",
 \]
 
 function! SpellLangSet(_, result)
