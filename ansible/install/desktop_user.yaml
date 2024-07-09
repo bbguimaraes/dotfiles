@@ -107,6 +107,8 @@
       - .config/mutt/mailcap
     - - newsboat
       - .config/newsboat/config
+    - - offlineimap/offlineimap.py
+      - .config/offlineimap/offlineimap.py
     - - offlineimap/offlineimap@.service
       - .local/share/systemd/user/offlineimap@.service
     - - redshift.conf
