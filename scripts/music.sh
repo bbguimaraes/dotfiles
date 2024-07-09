@@ -7,6 +7,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    archive) archive "$@";;
     rnd) rnd "$@";;
     *) usage;;
     esac
@@ -18,9 +19,16 @@ Usage: $0 CMD ARG...
 
 Commands:
 
+    archive
     rnd album
 EOF
     return 1
+}
+
+archive() {
+    [[ "$#" -eq 0 ]] || usage
+    cd "$DIR"
+    find -type f -printf '%P\n' | sort | sponge ~/n/archivum/musica/musica.txt
 }
 
 rnd() {
