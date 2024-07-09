@@ -23,9 +23,7 @@ localfolders = ~/.local/share/offlineimap/redhat
 [Repository redhat_remote]
 type = Gmail
 remoteuser = bbarcaro@redhat.com
-remotepasseval = \
-    __import__('subprocess').check_output(
-        ('pass', 'show', 'redhat/bbarcaro@redhat.com'))
+remotepasseval = exec_pass('redhat/bbarcaro@redhat.com')
 holdconnectionopen = yes
 keepalive = 60
 folderfilter = lambda x: x not in ('[Gmail]/All Mail', '[Gmail]/Trash')
