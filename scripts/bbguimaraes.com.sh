@@ -12,6 +12,7 @@ main() {
     push-img) push_img "$@";;
     local) _local "$@";;
     remote) remote "$@";;
+    synapse) synapse "$@";;
     *) usage;;
     esac
 }
@@ -30,6 +31,7 @@ Commands:
     remote pull [force]
     remote compare-files
     remote sync-files [ARG...]
+    synapse mount
 EOF
     return 1
 }
@@ -125,6 +127,29 @@ remote_sync_files() {
     exec rsync \
         --archive --chown 0:0 \
         "$src" "$host:$dst" "$@"
+}
+
+synapse() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    mount) synapse_mount "$@";;
+    *) usage;;
+    esac
+}
+
+synapse_mount() {
+    [[ "$#" -eq 0 ]] || usage
+    local d=$HOME/synpase
+    mkdir --parent "$d"
+    if ! [[ -s "$d" ]]; then
+        echo >&2 "refusing to mount over non-empty directory $d"
+        return 1
+    fi
+    sshfs \
+        -o sftp_server='/usr/bin/sudo /usr/libexec/openssh/sftp-server' \
+        -o reconnect \
+        "bbguimaraes.com:$VOL/synapse" "$d"
 }
 
 main "$@"
