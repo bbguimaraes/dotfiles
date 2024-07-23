@@ -1,20 +1,7 @@
 - hosts: desktops:&work
   become: yes
   vars:
-    certificates:
-    - - https://password.corp.redhat.com/legacy.crt
-      - legacy.crt
-      - Red Hat IS CA
-    - - https://password.corp.redhat.com/RH-IT-Root-CA.crt
-      - RH-IT-Root-CA.crt
-      - Red Hat IT Root CA
     pkgs:
-    - >-
-      krb5 openvpn
-    - >- # logs
-      aws-cli python-tabulate
-    - >- # slack
-      python-websocket-client
     - >- # vagrant
       dnsmasq iptables-nft libvirt openbsd-netcat vagrant
   tasks:
@@ -30,65 +17,6 @@
     loop:
     - libvirtd
     - virtlogd
-  - name: create configuration directories
-    file:
-      state: directory
-      path: "{{ item }}"
-    loop:
-    - /etc/krb5.conf.d
-  - name: initialize Kerberos configuration file
-    copy:
-      content: |
-        includedir /etc/krb5.conf.d
-      dest: /etc/krb5.conf
-  - name: copy configuration files
-    copy:
-      src: "{{ item }}"
-      dest: "{{ item }}"
-      mode: preserve
-    loop:
-    - /etc/krb5.conf.d/redhat.conf
-    - /etc/openvpn/RH-IT-Root-CA.crt
-  - name: copy OpenVPN configuration file
-    copy:
-      src: ../work/openvpn.conf
-      dest: /etc/openvpn/client/redhat_brq.conf
-      mode: preserve
-  - name: copy VPN sudoer script
-    copy:
-      src: ../work/openvpn.sh
-      dest: /usr/local/bin/openvpn.sh
-      mode: preserve
-  - name: allow wheel to start a VPN connection without a password
-    copy:
-      dest: /etc/sudoers.d/openvpn
-      owner: root
-      group: root
-      mode: 0440
-      validate: visudo -cf %s
-      content: |
-        %wheel ALL=(ALL) NOPASSWD: /usr/local/bin/openvpn.sh *
-  - name: list trusted certificates
-    command:
-      argv:
-      - trust
-      - list
-    register: trust
-    changed_when: false
-  - name: download certificates
-    get_url:
-      url: "{{ item.0 }}"
-      dest: /tmp/{{ item.1 }}
-    when: "item.2 not in trust.stdout"
-    loop: "{{ certificates }}"
-  - name: trust certificates
-    command:
-      argv:
-      - trust
-      - anchor
-      - /tmp/{{ item.1 }}
-    when: "item.2 not in trust.stdout"
-    loop: "{{ certificates }}"
   - name: place vagrant script in /usr/local/bin
     copy:
       src: '{{ playbook_dir }}/../work/vagrant.sh'
@@ -106,54 +34,6 @@
       content: |
         %wheel ALL=(ALL) NOPASSWD: /usr/local/bin/vagrant *
 - hosts: desktops:&work
-  vars:
-    home: '{{ ansible_env.HOME }}'
-    src_dir: '{{ ansible_env.HOME }}/src'
-  tasks:
-  - name: setup dotfile symlinks
-    file:
-      state: link
-      src: '{{ src_dir }}/dotfiles/{{ item.0 }}'
-      dest: '{{ home }}/{{ item.1 }}'
-    loop:
-    - ['mutt/muttrc_redhat', '.config/mutt/muttrc_redhat']
-    - ['offlineimap/redhat', '.config/offlineimap/redhat']
-  - name: setup other symlinks
-    file:
-      state: link
-      src: '{{ home }}/{{ item.0 }}'
-      dest: '{{ home }}/{{ item.1 }}'
-    loop:
-    - ['src/dotfiles/scripts/dev.sh', '.local/bin/d']
-    - ['n/archivum/work/redhat', 'rh']
-    - ['rh/scripts/gotestsum.sh', '.local/bin/gotestsum']
-    - ['rh/scripts/redhat.sh', '.local/bin/rh']
-  - name: enable and start services
-    systemd:
-      enabled: true
-      state: started
-      name: '{{ item }}'
-      scope: user
-      daemon_reload: true
-    loop:
-    - offlineimap@redhat
-  - name: make scripts in Nextcloud executable
-    file:
-      state: file
-      path: "{{ home }}/{{ item }}"
-      mode: "0755"
-    loop:
-    - rh/scripts/gotestsum.sh
-    - rh/scripts/redhat.sh
-- hosts: desktops:&work:&arch
-  tasks:
-  - import_tasks: aur.yaml
-    vars: {"pkg": "google-cloud-sdk"}
-  - import_tasks: aur.yaml
-    vars: {"pkg": "gotags"}
-  - import_tasks: aur.yaml
-    vars: {"pkg": "golangci-lint"}
-- hosts: desktops:&work_dds
   vars:
     home: '{{ ansible_env.HOME }}'
     src_dir: '{{ ansible_env.HOME }}/src'
