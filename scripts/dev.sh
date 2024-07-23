@@ -80,7 +80,8 @@ completion() {
         local last=${line[1]:-}
         local opts=(
             "${CMDS[@]}"
-            $(cd "$SCRIPTS" && { ls | sed 's/\.[^.]\+$//'; }))
+            $(list_scripts | sed 's/\.[^.]\+$//')
+        )
         compgen -W "${opts[*]}" "$last";;
     *)
         local whitelist=(bbguimaraes.com dotfiles git init subs ws)
@@ -95,9 +96,17 @@ completion() {
     esac
 }
 
+list_scripts() {
+    find -L \
+        "$SCRIPTS/" \
+        -mindepth 1 -maxdepth 1 \
+        -type f -executable \
+         -printf  '%f\n' \
+        "$@"
+}
+
 in_dotfiles() {
-    (cd "$SCRIPTS/" && ls) \
-        | grep --max-count 1 --line-regexp "$1\.\w\+"
+    list_scripts | grep --max-count 1 --line-regexp "$1\.\w\+"
 }
 
 blue() {
