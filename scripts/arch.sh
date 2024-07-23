@@ -1,6 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
+PKG_PATH_FMT=/var/cache/pacman/pkg/linux-%s.pkg.tar.zst
+ARCHIVE_URL_FMT=https://archive.archlinux.org/packages/l/linux/linux-%s.pkg.tar.zst
+
 main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
@@ -57,13 +60,29 @@ kernel() {
 }
 
 kernel_revert() {
-    local cmd v
+    local cmd v f
+    v=$(kernel_version)
+    cmd=()
+    [[ "$UID" -eq 0 ]] || cmd=(sudo)
+    f=$(kernel_revert_download "$v")
+    "${cmd[@]}" pacman -U "$f"
+}
+
+kernel_version() {
+    local v
     v=$(uname -r)
     v=${v/-/.}-$(uname -m)
     echo "$v"
-    cmd=()
-    [[ "$UID" -eq 0 ]] || cmd=("${cmd[@]}" sudo)
-    "${cmd[@]}" pacman -U /var/cache/pacman/pkg/linux-$v.pkg.tar.zst
+}
+
+kernel_revert_download() {
+    local v=$1 url; shift
+    local f=$(printf "$PKG_PATH_FMT" "$v")
+    if [[ ! -f "$f" ]]; then
+        url=$(printf "$ARCHIVE_URL_FMT" "$v")
+        "$@" curl "$url" -o "$f"
+    fi
+    echo "$f"
 }
 
 img() {
