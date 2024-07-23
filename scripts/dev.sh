@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+DIR=$HOME/src/dotfiles
+SCRIPTS=$DIR/scripts
 CMDS=(
     analog beep blue c cx cal complete compose every fmt hdmi http keyboard
     liber lock mail man mutt nosuspend office p passmenu paste pause pecunia
@@ -52,7 +54,7 @@ main() {
     *)
         local f
         f=$(in_dotfiles "$cmd") || (echo "$f"; usage)
-        exec ~/src/dotfiles/scripts/"$f" "$@";;
+        exec "$SCRIPTS/$f" "$@";;
     esac
 }
 
@@ -78,7 +80,7 @@ completion() {
         local last=${line[1]:-}
         local opts=(
             "${CMDS[@]}"
-            $(cd ~/src/dotfiles/scripts && { ls | sed 's/\.[^.]\+$//'; }))
+            $(cd "$SCRIPTS" && { ls | sed 's/\.[^.]\+$//'; }))
         compgen -W "${opts[*]}" "$last";;
     *)
         local whitelist=(bbguimaraes.com dotfiles git init subs ws)
@@ -89,12 +91,12 @@ completion() {
         COMP_LINE=${COMP_LINE## }
         COMP_POINT=$((COMP_POINT + ${#COMP_LINE} - ${#old_line}))
         script=$(in_dotfiles "${line[1]}")
-        compgen -W "$(~/src/dotfiles/scripts/"$script" complete)";;
+        compgen -W "$("$SCRIPTS/$script" complete)";;
     esac
 }
 
 in_dotfiles() {
-    (cd ~/src/dotfiles/scripts/ && ls) \
+    (cd "$SCRIPTS/" && ls) \
         | grep --max-count 1 --line-regexp "$1\.\w\+"
 }
 
