@@ -15,10 +15,21 @@
       aws-cli python-tabulate
     - >- # slack
       python-websocket-client
+    - >- # vagrant
+      dnsmasq iptables-nft libvirt openbsd-netcat vagrant
   tasks:
   - name: install packages
     package:
       name: '{{ (pkgs|join(" ")).split(" ") }}'
+  - name: enable and start services
+    systemd:
+      enabled: true
+      state: started
+      name: '{{ item }}'
+      daemon_reload: true
+    loop:
+    - libvirtd
+    - virtlogd
   - name: create configuration directories
     file:
       state: directory
@@ -78,6 +89,22 @@
       - /tmp/{{ item.1 }}
     when: "item.2 not in trust.stdout"
     loop: "{{ certificates }}"
+  - name: place vagrant script in /usr/local/bin
+    copy:
+      src: '{{ playbook_dir }}/../work/vagrant.sh'
+      dest: /usr/local/bin/vagrant
+      owner: root
+      group: root
+      mode: 0755
+  - name: enable unprivileged vagrant execution
+    copy:
+      dest: /etc/sudoers.d/vagrant
+      owner: root
+      group: root
+      mode: 0440
+      validate: visudo -cf %s
+      content: |
+        %wheel ALL=(ALL) NOPASSWD: /usr/local/bin/vagrant *
 - hosts: desktops:&work
   vars:
     home: '{{ ansible_env.HOME }}'
