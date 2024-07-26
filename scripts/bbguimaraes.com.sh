@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-CMDS=(complete push-img local remote)
+CMDS=(complete image local remote)
 VOL=/mnt/bbguimaraes1-vol
 
 main() {
@@ -9,7 +9,7 @@ main() {
     local cmd=$1; shift
     case "$cmd" in
     complete) cmd_complete;;
-    push-img) push_img "$@";;
+    image) image "$@";;
     local) _local "$@";;
     remote) remote "$@";;
     synapse) synapse "$@";;
@@ -25,7 +25,7 @@ Commands:
 
     complete
     files ARG...
-    push-img NAME
+    image pull NAME
     local [sync-docs]
     remote git
     remote pull [force]
@@ -45,7 +45,17 @@ cmd_complete() {
     esac
 }
 
-push_img() {
+image() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    push) image_push "$@";;
+    *) usage;;
+    esac
+}
+
+image_push() {
+    [[ "$#" -eq 1 ]] || usage
     local cmd=(podman save "$1")
     [[ "$UID" -eq 0 ]] || cmd=(sudo "${cmd[@]}")
     "${cmd[@]}" \
