@@ -25,7 +25,7 @@ Commands:
 
     complete
     files ARG...
-    image pull NAME
+    image pull|push NAME
     local [sync-docs]
     remote git
     remote pull [force]
@@ -49,9 +49,16 @@ image() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    pull) image_pull "$@";;
     push) image_push "$@";;
     *) usage;;
     esac
+}
+
+image_pull() {
+    [[ "$#" -eq 1 ]] || usage
+    ssh bbguimaraes.com sudo podman save --format oci-archive "$1" \
+        | pv | sudo podman load
 }
 
 image_push() {
