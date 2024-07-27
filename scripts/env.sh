@@ -3,10 +3,12 @@ set -euo pipefail
 
 SESSION_MAIN=0
 SESSION_SCRATCH=1
+SESSION_WORK=dds
 
 main() {
     session_main
     session_scratch
+    session_work
     exec tmux attach -t "$SESSION_MAIN"
 }
 
@@ -38,6 +40,16 @@ session_scratch() {
     respawn_pane "$target:0" vim
     split_window "$target:0.0"
     select_layout "$target:0" even-vertical
+}
+
+session_work() {
+    local target=$SESSION_WORK
+    has_session "$target" && return
+    new_session "$target" -d
+    rename_window "$target" ''
+    respawn_pane "$target:0" -c dds/ vim n/dds.md
+    split_window "$target:0.0" d mutt dds
+    select_layout "$target:0" main-vertical
 }
 
 has_session() {
