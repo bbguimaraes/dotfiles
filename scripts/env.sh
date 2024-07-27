@@ -2,9 +2,11 @@
 set -euo pipefail
 
 SESSION_MAIN=0
+SESSION_SCRATCH=1
 
 main() {
     session_main
+    session_scratch
     exec tmux attach -t "$SESSION_MAIN"
 }
 
@@ -26,6 +28,16 @@ session_main() {
     select_layout "$target:1" main-horizontal
     new_window "$target:2" subs tui
     rename_window "$target:2" v
+}
+
+session_scratch() {
+    local target=$SESSION_SCRATCH
+    has_session "$target" && return
+    new_session "$target"
+    rename_window "$target" ''
+    respawn_pane "$target:0" vim
+    split_window "$target:0.0"
+    select_layout "$target:0" even-vertical
 }
 
 has_session() {
