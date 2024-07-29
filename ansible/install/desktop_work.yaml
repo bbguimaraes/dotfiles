@@ -2,6 +2,8 @@
   become: yes
   vars:
     pkgs:
+    - >- # infra
+      aws-cli cloud-init hcloud kubectl opentofu python-ruamel-yaml
     - >- # vagrant
       dnsmasq iptables-nft libvirt openbsd-netcat vagrant
   tasks:
