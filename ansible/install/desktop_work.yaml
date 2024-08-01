@@ -57,3 +57,8 @@
       daemon_reload: true
     loop:
     - offlineimap@dds
+  - name: enable Slack weechat plugin
+    file:
+      state: link
+      src: /usr/share/weechat/python/wee_slack.py
+      path: '{{ home }}/dds/weechat/python/autoload/wee_slack.py'
