@@ -69,7 +69,7 @@ week_month() {
     local date=$1 today=$2 month
     if [[ "$today" -lt 8 ]]; then
         month=$(date +%m --date "$date")
-        echo "- ${MENSES[$((month - 1))]}"
+        echo "- ${MENSES[$((${month##0} - 1))]}"
         sed 's/^/  /' "$DIR/mensis.txt"
     fi
 }
