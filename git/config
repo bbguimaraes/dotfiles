@@ -5,6 +5,8 @@
     defaultBranch = master
 [user]
     name = Bruno Barcarol Guimarães
+[rebase]
+    updateRefs = true
 [push]
     default = simple
 [pull]
