@@ -5,7 +5,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
-    test) cmd_test;;
+    test) cmd_test "$@";;
     *) usage;;
     esac
 }
