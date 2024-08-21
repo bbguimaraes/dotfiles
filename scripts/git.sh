@@ -11,6 +11,7 @@ main() {
     authors) authors "$@";;
     backport) backport "$@";;
     bbguimaraes) bbguimaraes "$@";;
+    branch) branch "$@";;
     diff) cmd_diff "$@";;
     graph) graph "$@";;
     pull) pull "$@";;
@@ -29,6 +30,8 @@ Commands:
     authors file ARG...
     authors weekday ARG...
     backport REV
+    branch
+    branch split NAME BASE REV
     diff log [DIFF_ARG...] REV0 REV1
     graph
     graph branch-diff B0 B1
@@ -121,6 +124,27 @@ bbguimaraes_exec() {
     done
 }
 
+branch() {
+    [[ "$#" -eq 0 ]] && { git rev-parse --abbrev-ref HEAD && return; }
+    local cmd=$1; shift
+    case "$cmd" in
+    split) branch_split "$@";;
+    *) usage;;
+    esac
+}
+
+branch_split() {
+    [[ "$#" -eq 3 ]] || usage
+    local name=$1
+    local base=$2
+    local rev=$3
+    base=$(git rev-parse "$base")
+    rev=$(git rev-parse "$rev")
+    git branch "$name"
+    git reset --hard "$rev"
+    git rebase --onto "$base" "$rev" "$name"
+}
+
 cmd_diff() {
     local cmd
     [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
@@ -174,7 +198,7 @@ rebase() {
 
 rebase_branches() {
     local base rev x n=0
-    base=$(git rev-parse --abbrev-ref HEAD)
+    base=$(branch)
     [[ "$#" -eq 0 ]] && set -- $(git branch --no-merged)
     for x; do
         git merge-base --is-ancestor "$base" "$x" && continue
