@@ -74,6 +74,7 @@ img_build() {
     local cmd=(bash -s "$dir")
     [[ "$UID" -eq 0 ]] || cmd=(sudo "${cmd[@]}")
     "${cmd[@]}" <<'EOF'
+set -euo pipefail
 mkdir "$1/"
 pacstrap -c "$1/" base
 size=$(du -sb "$1/" | cut -f 1)
