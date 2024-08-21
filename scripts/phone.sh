@@ -31,6 +31,7 @@ Commands:
     [camera] ls PATH...
     [camera] push PATH...
     [camera] pull PATH...
+    camera pull today
     send audio FILE...
 EOF
     return 1
@@ -62,6 +63,10 @@ camera_ls() {
 }
 
 camera_pull() {
+    if [[ "$1" == today ]]; then
+        camera_pull_today
+        return
+    fi
     local d=$CAMERA l x
     if [[ "$#" -eq 0 ]]; then
         l=$(request --list-only "$(url_for_file "$d/")")
@@ -70,6 +75,13 @@ camera_pull() {
     for x; do
         echo "$x"
         pull_file "$(url_for_file "$d/$x")"
+    done
+}
+
+camera_pull_today() {
+    local x p=$(printf '\(IMG\|VID\)_%(%Y%m%d)T_.*.\(jpg\|mp4\)$')
+    for x in $(camera_ls | grep --only-matching "$p"); do
+        camera_pull "$x"
     done
 }
 
