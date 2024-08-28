@@ -3,7 +3,7 @@
   vars:
     pkgs:
     - >- # infra
-      aws-cli cloud-init hcloud kubectl opentofu python-ruamel-yaml
+      aws-cli cloud-init hcloud k9s kubectl opentofu python-ruamel-yaml
     - >- # vagrant
       dnsmasq iptables-nft libvirt openbsd-netcat vagrant
   tasks:
