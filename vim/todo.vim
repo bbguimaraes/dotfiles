@@ -2,9 +2,60 @@ let g:todo_time_pattern = "\\d\\d:\\d\\d"
 let g:todo_inc_pattern = "^" . g:todo_time_pattern . "$"
 let g:todo_hour_pattern = "^  - " . g:todo_time_pattern . " "
 let g:todo_day_pattern = "^- \\d\\d "
+let g:todo_top_level_pattern = "^- "
 let g:todo_line_pattern =
 \   "\\v^  - (" .. g:todo_time_pattern .. ") \\[(\\d*½?)\\]%( (.+))?"
 let g:todo_inc = 30
+
+let g:todo_menu_entries = ["dies"]
+let g:todo_menu_fns = ["TodoMenuDies"]
+
+function! TodoMenu()
+    call popup_menu(
+\       g:todo_menu_entries,
+\       #{
+\           callback: "TodoMenuCallback",
+\           filter: "PopUpInput",
+\           highlight: "TodoPopupColor",
+\           padding: [0, 1, 0, 1],
+\       }
+\   )
+endfunction
+
+function! TodoMenuCallback(_, result)
+    if a:result <= 0
+        return
+    endif
+    execute "call " . g:todo_menu_fns[a:result - 1] . "()"
+endfunction
+
+function! TodoMenuDies()
+    let l:l = []
+    let l:i = 1
+    let l:e = line("$")
+    while l:i <= l:e
+        let l:text = getline(l:i)
+        if match(l:text, g:todo_top_level_pattern) != -1
+            call add(l:l, l:i . ": " . l:text[2:])
+        endif
+        let l:i += 1
+    endwhile
+    call popup_menu(
+\       l:l,
+\       #{
+\           callback: "TodoMenuDiesCallback",
+\           filter: "PopUpInput",
+\           highlight: "TodoPopupColor",
+\           padding: [0, 1, 0, 1],
+\       }
+\   )
+endfunction
+
+function! TodoMenuDiesCallback(id, result)
+    let l:sel = getbufoneline(winbufnr(a:id), getcurpos(a:id)[1])
+    let l:line = l:sel[0:stridx(l:sel, ":")]
+    call setpos(".", [0, l:line, 0])
+endfunction
 
 function! TodoInc(d = v:null, col = v:null, line = v:null)
     let l:d = a:d is v:null ? v:count1 : a:d
@@ -149,6 +200,8 @@ function! TodoDayEnd(line)
     return l:i
 endfunction
 
+highlight TodoPopupColor ctermbg=black ctermfg=NONE
+
 command -nargs=* -range TodoInc <line1>,<line2>call TodoInc(<f-args>)
 command -nargs=? TodoIncAll call TodoIncAll(<f-args>)<cr>
 command TodoGraph echo system("feh -", TodoGraph(line(".")))
@@ -158,6 +211,7 @@ nnoremap <c-x> :<c-u>execute printf("TodoInc %d %d", -v:count1, col("."))<cr>
 vnoremap <c-a> :<c-u>execute printf("'<,'>TodoInc %d",  v:count1)<cr>
 vnoremap <c-x> :<c-u>execute printf("'<,'>TodoInc %d", -v:count1)<cr>
 nnoremap <leader>g :TodoGraph<cr>
+nnoremap <leader>m :call TodoMenu()<cr>
 
 setlocal tabstop=2 smartindent
 setlocal foldmethod=indent foldlevel=9 nowrap
