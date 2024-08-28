@@ -10,7 +10,7 @@ main() {
     for-ref) for_ref "$@";;
     status) status "$@";;
     watch) watch "$@";;
-    *) usage;;
+    *) pr "$@";;
     esac
 }
 
@@ -38,7 +38,7 @@ pr() {
     helper='!f() { printf password=; pass show comp/github/oauth_token; }; f'
     pass show test > /dev/null
     git -c "credential.helper=$helper" push --set-upstream github "$branch"
-    hub pull-request
+    hub pull-request "$@"
 }
 
 comment() {
