@@ -17,8 +17,9 @@
     - >- # graphical
       arandr blender breeze calibre celluloid chromium dmenu dunst feh firefox
       geeqie gimp i3lock i3status i3-wm imagemagick inkscape kdenlive
-      libreoffice-fresh mednafen mupdf picom qt5ct redshift rxvt-unicode scrot
-      simplescreenrecorder ttf-dejavu ttf-junicode urxvt-perls xclip xdotool
+      libreoffice-fresh mednafen mupdf picom qt5ct redshift rxvt-unicode
+      screenkey scrot simplescreenrecorder ttf-dejavu ttf-junicode urxvt-perls
+      xclip xdotool
     - >- # audio
       alsa-utils ardour audacity guitarix hydrogen mpv musescore pavucontrol
       pipewire pulsemixer

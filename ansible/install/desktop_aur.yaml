@@ -23,10 +23,18 @@
   - import_tasks: aur.yaml
     vars: {"pkg": "task-spooler"}
   - import_tasks: aur.yaml
+    vars: {"pkg": "ttf-aquiline-two"}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "ttf-marcellus"}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "ttf-sbl-greek"}
+  - import_tasks: aur.yaml
     vars: {"pkg": "urxvt-resize-font-git"}
   - import_tasks: aur.yaml
     vars: {"pkg": "vim-diffchar"}
   - import_tasks: aur.yaml
     vars: {"pkg": "vim-dispatch", "keys": ["E09E474A404A3A45"]}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "vim-vimtex"}
   - import_tasks: aur.yaml
     vars: {"pkg": "vul-git"}
