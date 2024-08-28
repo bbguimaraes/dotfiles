@@ -3,11 +3,12 @@ let g:spell_lang_choices = [
 \]
 
 function! SpellLangSet(_, result)
-    if 0 < a:result
-        let l:l = (a:result < 0) ? "" : g:spell_lang_choices[a:result - 1]
-        setlocal spell
-        execute "setlocal spelllang=" . l:l
+    if a:result <= 0
+        return
     endif
+    let l:l = (a:result < 0) ? "" : g:spell_lang_choices[a:result - 1]
+    setlocal spell
+    execute "setlocal spelllang=" . l:l
 endfunction
 
 function! SpellLangShowMenu()
