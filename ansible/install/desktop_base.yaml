@@ -6,7 +6,7 @@
     pkgs:
     - >- # dev
       ansible arm-none-eabi-gcc base-devel busybox ccache cjson clang cloc cmake
-      colordiff ctags dash delta devtools distcc doxygen emacs encfs gdb go
+      colordiff ctags dash delta devtools distcc doxygen emacs encfs fzf gdb go
       graphviz hub ipython libc++ llvm meson musl mypy opengl-man-pages pocl
       podman premake python-pip python-virtualenv qemu-base qemu-ui-sdl
       qt6-scxml rust tidy tig valgrind

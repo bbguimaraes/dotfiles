@@ -35,6 +35,8 @@
   - import_tasks: aur.yaml
     vars: {"pkg": "vim-dispatch", "keys": ["E09E474A404A3A45"]}
   - import_tasks: aur.yaml
+    vars: {"pkg": "vim-fzf"}
+  - import_tasks: aur.yaml
     vars: {"pkg": "vim-vimtex"}
   - import_tasks: aur.yaml
     vars: {"pkg": "vul-git"}

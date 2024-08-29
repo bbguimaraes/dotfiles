@@ -8,6 +8,9 @@ alias ls='ls --color=auto'
 PS1='$ '
 complete -C 'd completion' d
 
+. /usr/share/fzf/completion.bash
+. /usr/share/fzf/key-bindings.bash
+
 function d() {
     [[ "$#" -eq 0 ]] && exec d
     case "$1" in
