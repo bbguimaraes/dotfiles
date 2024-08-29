@@ -14,9 +14,9 @@ URxvt.reverseVideo: on
 URxvt.scrollBar: false
 URxvt.urgentOnBell: true
 URxvt.font: xft:DejaVu Sans Mono:pixelsize=16
-URxvt.letterSpace: 0
+URxvt.letterSpace: -1
 URxvt.print-pipe: cat > "$(TMPDIR=$HOME mktemp urxvt.XXXXXX)"
-URxvt.perl-ext-common: clipboard,resize-font,url-select
+URxvt.perl-ext-common: clipboard,resize-font,url-picker
 URxvt.resize-font.smaller: C-minus
 URxvt.resize-font.bigger: C-plus
 URxvt.iso14755: false

@@ -19,6 +19,8 @@
   - import_tasks: aur.yaml
     vars: {"pkg": "renderdoc", "keys": ["AC612C3120C34695"]}
   - import_tasks: aur.yaml
+    vars: {"pkg": "rxvt-unicode-truecolor-wide-glyphs"}
+  - import_tasks: aur.yaml
     vars: {"pkg": "stellarium", "keys": ["9380E47C0374E169"]}
   - import_tasks: aur.yaml
     vars: {"pkg": "task-spooler"}
@@ -29,7 +31,11 @@
   - import_tasks: aur.yaml
     vars: {"pkg": "ttf-sbl-greek"}
   - import_tasks: aur.yaml
+    vars: {"pkg": "urxvt-clipboard"}
+  - import_tasks: aur.yaml
     vars: {"pkg": "urxvt-resize-font-git"}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "urxvt-url-picker-git"}
   - import_tasks: aur.yaml
     vars: {"pkg": "vim-diffchar"}
   - import_tasks: aur.yaml
