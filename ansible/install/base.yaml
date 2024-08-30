@@ -100,7 +100,7 @@
   tags: swap
   vars:
     swapfile_path: /var/swapfile
-    swapfile_size_mb: 16384
+    swapfile_size_mb: 8192
   tasks:
   - include_tasks: swap.yaml
 - hosts: all
