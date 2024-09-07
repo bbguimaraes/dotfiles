@@ -23,8 +23,13 @@ EOF
 
 clean() {
     rm -rf "$HOME/.ansible/cp/" "$HOME/.ansible/tmp/"
+    rm -rf "$HOME/.cargo/"
+    rm -rf "$HOME/.config/chromium/Default/Service Worker/CacheStorage/"
     rm -f "$HOME/.gnuplot_history"
+    rm -rf "$HOME/.kube/cache/"
     rm -f "$HOME/.units_history"
+    [[ -d "$HOME/go" ]] && chmod --recursive 777 "$HOME/go/"
+    rm -rf "$HOME/go/"
 }
 
 main "$@"
