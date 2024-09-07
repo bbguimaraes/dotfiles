@@ -84,9 +84,13 @@ _local() {
 }
 
 local_sync_docs() {
-    local out=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
-    rsync --archive --delete ~/src/codex/docs/html/ "$out/codex/docs" "$@"
-    rsync --archive --delete ~/src/nngn/docs/html/ "$out/nngn/docs" "$@"
+    local dst=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
+    local src=$HOME/src
+    local cmd=(rsync --archive --delete)
+    local x
+    for x in codex nngn; do
+        "${cmd[@]}" "$src/$x/docs/html/" "$dst/$x/docs" "$@"
+    done
 }
 
 remote() {
