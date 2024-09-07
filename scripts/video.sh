@@ -13,6 +13,7 @@ main() {
     compress) compress "$@";;
     playlist) playlist "$@";;
     poster) poster "$@";;
+    stabilize) stabilize "$@";;
     subtitles) subtitles "$@";;
     *) usage;;
     esac
@@ -32,6 +33,7 @@ Commands:
     playlist urls URL
     playlist txt NAME URL
     poster TIME SRC DST ARG...
+    stabilize FILE [ARG...]
     subtitles URL
 EOF
     return 1
@@ -103,6 +105,13 @@ poster() {
     ffmpeg \
         -threads "$(nproc)" -i "$input" \
         -cpu-used 0 -ss "$t" -vframes 1 "$@" "$output"
+}
+
+stabilize() {
+    [[ "$#" -eq 0 ]] && usage
+    local f=$1; shift
+    [[ -e transforms.trf ]] || ffmpeg -i "$f" -vf vidstabdetect -f null -
+    ffmpeg -i "$f" -vf vidstabtransform "$@"
 }
 
 subtitles() {
