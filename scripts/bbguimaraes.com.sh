@@ -88,7 +88,7 @@ local_sync_docs() {
     local src=$HOME/src
     local cmd=(rsync --archive --delete)
     local x
-    for x in codex nngn; do
+    for x in codex machinatrix nngn; do
         "${cmd[@]}" "$src/$x/docs/html/" "$dst/$x/docs" "$@"
     done
 }
