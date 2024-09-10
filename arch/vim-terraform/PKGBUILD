@@ -1,0 +1,14 @@
+pkgname=vim-terraform
+pkgver=v0.0.1
+pkgrel=1
+arch=(any)
+url=https://github.com/hashivim/vim-terraform.git
+source=("git+${url}")
+md5sums=('SKIP')
+
+package() {
+  cd "$srcdir/$pkgname"
+  install -D \
+    --target-directory "$pkgdir/usr/share/vim/vimfiles/syntax" \
+    syntax/*
+}
