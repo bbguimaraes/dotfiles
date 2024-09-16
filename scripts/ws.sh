@@ -8,6 +8,8 @@ main() {
     local cmd=$1; shift
     case "$cmd" in
     complete) cmd_complete;;
+    editor) cmd_editor "$@";;
+    shell) cmd_shell "$@";;
     *) cmd_ws "$cmd" "$@";;
     esac
 }
@@ -31,6 +33,16 @@ dir() {
     echo "$ret"
 }
 
+process_opts() {
+    local x ret=()
+    for x; do
+        case "$x" in
+        *) usage;;
+        esac
+    done
+    echo "${ret[@]}"
+}
+
 cmd_complete() {
     local line=($COMP_LINE)
     local n=${#line[@]}
@@ -41,17 +53,19 @@ cmd_complete() {
 }
 
 cmd_ws() {
-    local dir=$1
+    local dir=$1; shift
     local name=${dir##*/}
     tmux rename-window "$name"
-    tmux split-window d ws shell "$dir"
+    tmux split-window d ws shell "$dir" "$@"
     tmux select-layout main-vertical
-    cmd_editor "$dir"
+    cmd_editor "$dir" "$@"
 }
 
 cmd_editor() {
-    [[ "$#" -eq 1 ]] || usage
-    local dir=$1 cmd=(vim)
+    [[ "$#" -gt 0 ]] || usage
+    local dir=$1; shift
+    local opts cmd=(vim)
+    opts=$(process_opts "$@")
     dir=$(dir "$dir")
     [[ -e "$dir/.git" ]] && cmd=("${cmd[@]}" -c 'call GitTab()')
     eval "$(d cd "$dir")"
@@ -60,8 +74,10 @@ cmd_editor() {
 }
 
 cmd_shell() {
-    [[ "$#" -eq 1 ]] || usage
-    local dir=$1 cmd=(bash -i)
+    [[ "$#" -gt 0 ]] || usage
+    local dir=$1; shift
+    local opts cmd=(bash -i)
+    opts=$(process_opts "$@")
     dir=$(dir "$dir")
     if [[ -e "$dir/.git" ]]; then
         git -C "$dir" branch
