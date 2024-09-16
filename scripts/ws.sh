@@ -19,6 +19,8 @@ Usage: $0 DIR|CMD
 Commands:
 
     complete
+    editor DIR
+    shell DIR
 EOF
     return 1
 }
@@ -41,17 +43,32 @@ cmd_complete() {
 cmd_ws() {
     local dir=$1
     local name=${dir##*/}
+    tmux rename-window "$name"
+    tmux split-window d ws shell "$dir"
+    tmux select-layout main-vertical
+    cmd_editor "$dir"
+}
+
+cmd_editor() {
+    [[ "$#" -eq 1 ]] || usage
+    local dir=$1 cmd=(vim)
     dir=$(dir "$dir")
-    local cmd=(vim)
     [[ -e "$dir/.git" ]] && cmd=("${cmd[@]}" -c 'call GitTab()')
     eval "$(d cd "$dir")"
-    tmux rename-window "$name"
-    tmux split-window -c "$dir" "$(printf '%s;' \
-        "eval \"\$(d cd "$dir")\"" \
-        'git branch' 'git status' 'exec bash -i')"
-    tmux select-layout main-vertical
     cd "$dir"
-    sleep 1
+    exec "${cmd[@]}"
+}
+
+cmd_shell() {
+    [[ "$#" -eq 1 ]] || usage
+    local dir=$1 cmd=(bash -i)
+    dir=$(dir "$dir")
+    if [[ -e "$dir/.git" ]]; then
+        git -C "$dir" branch
+        git -C "$dir" status
+    fi
+    eval "$(d cd "$dir")"
+    cd "$dir"
     exec "${cmd[@]}"
 }
 
