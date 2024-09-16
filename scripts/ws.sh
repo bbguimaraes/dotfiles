@@ -23,6 +23,12 @@ EOF
     return 1
 }
 
+dir() {
+    local ret=$1
+    [[ ! -e "$ret" && -e "$DEFAULT_DIR/$ret" ]] && ret=$DEFAULT_DIR/$ret
+    echo "$ret"
+}
+
 cmd_complete() {
     local line=($COMP_LINE)
     local n=${#line[@]}
@@ -33,9 +39,9 @@ cmd_complete() {
 }
 
 cmd_ws() {
-    local dir=$1 name
-    [[ ! -e "$dir" && -e "$DEFAULT_DIR/$dir" ]] && dir=$DEFAULT_DIR/$dir
-    name=${1##*/}
+    local dir=$1
+    local name=${dir##*/}
+    dir=$(dir "$dir")
     local cmd=(vim)
     [[ -e "$dir/.git" ]] && cmd=("${cmd[@]}" -c 'call GitTab()')
     eval "$(d cd "$dir")"
