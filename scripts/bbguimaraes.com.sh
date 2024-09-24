@@ -146,7 +146,7 @@ remote_sync_files() {
     local src=$HOME/src/bbguimaraes.com/bbguimaraes.com/files
     local dst=$VOL/bbguimaraes.com/bbguimaraes.com/
     exec rsync \
-        --archive --chown 0:0 \
+        --archive --delete --chown 0:0 \
         "$src" "$host:$dst" "$@"
 }
 
