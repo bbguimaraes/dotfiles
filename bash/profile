@@ -1,6 +1,7 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 export HISTFILE=~/.local/share/bash/history
+export HISTFILESIZE=100000
 export HISTTIMEFORMAT='%FT%H:%M:%S '
 export VISUAL=vim
 export EDITOR=$VISUAL
