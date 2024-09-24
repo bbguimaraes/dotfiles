@@ -22,11 +22,16 @@ EOF
 }
 
 pop() {
-    local i
-    i=$(tsp -l | awk '$2 == "finished" { print $1; exit }')
+    local i f
+    i=$(finished_ids | head -1)
     [[ "$i" ]] || return
-    tsp -c "$i" || true
+    f=$(tsp -o "$i")
+    cat "$f"
     tsp -r "$i"
+}
+
+finished_ids() {
+    tsp -l | awk '$2 == "finished" { print $1 }'
 }
 
 main "$@"
