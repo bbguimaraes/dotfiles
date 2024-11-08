@@ -15,7 +15,7 @@ main() {
     case "$cmd" in
     analog) exec d sink analog-stereo;;
     beep) printf \\a; exec d ping;;
-    blue) blue;;
+    blue) blue "$@";;
     c) exec bc -ql;;
     cal) exec systemctl --user restart vdirsyncer;;
     completion) completion "$@";;
@@ -110,12 +110,27 @@ in_dotfiles() {
 }
 
 blue() {
+    local d
+    if [[ "$#" -eq 0 ]]; then
+        local l
+        l=$(cat  <<'EOF'
+EOF
+)
+        d=$(dmenu -l "$(wc -l <<< $l)" <<< $l)
+        if [[ ! "$d" ]]; then
+            return
+        fi
+        d=$(cut -d ' ' -f 1 <<< $d)
+    elif [[ "$#" -eq 1 ]]; then
+        d=$1
+    else
+        usage
+    fi
     if tty --silent; then
         bluetoothctl power on
-        until bluetoothctl connect B8:F6:53:C4:6B:53; do :; done
-        d sink set bluez
+        until bluetoothctl connect "$d"; do :; done
     else
-        exec urxvt -e d blue
+        exec urxvt -e d blue "$d"
     fi
 }
 
