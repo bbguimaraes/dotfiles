@@ -20,7 +20,8 @@ Usage: $0 CMD ARG...
 Commands:
 
     archive
-    rnd album
+    rnd [ARG...]
+    rnd [album
 EOF
     return 1
 }
@@ -32,12 +33,16 @@ archive() {
 }
 
 rnd() {
-    [[ "$#" -eq 0 ]] && usage
+    [[ "$#" -eq 0 ]] && rnd_args "$@"
     local cmd=$1; shift
     case "$cmd" in
     album) find "$DIR" -mindepth 2 -type d | shuf -n 1;;
-    *) usage;;
+    *) rnd_args "$cmd" "$@";;
     esac
+}
+
+rnd_args() {
+    exec mpv --shuffle "$DIR" "$@"
 }
 
 main "$@"
