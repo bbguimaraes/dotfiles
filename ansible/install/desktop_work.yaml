@@ -3,9 +3,9 @@
   vars:
     pkgs:
     - >- # dev
-      act
+      uv
     - >- # infra
-      aws-cli cloud-init hcloud k9s kubectl opentofu python-ruamel-yaml
+      act aws-cli cloud-init helm hcloud k9s kubectl opentofu python-ruamel-yaml
     - >- # vagrant
       dnsmasq iptables-nft libvirt openbsd-netcat vagrant
   tasks:
@@ -64,3 +64,5 @@
       state: link
       src: /usr/share/weechat/python/wee_slack.py
       path: '{{ home }}/dds/weechat/python/autoload/wee_slack.py'
+  - import_tasks: aur.yaml
+    vars: {"pkg": "1password-cli"}
