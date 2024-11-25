@@ -2,7 +2,7 @@ set from = "Bruno Barcarol Guimarães <bruno@d-d-s.ch>"
 set sendmail = "/usr/bin/msmtp --account bruno@d-d-s.ch"
 set mbox_type = Maildir
 set folder = ~/.local/share/offlineimap/dds
-source ~/.config/mutt/dds_mailboxes
+source ~/.config/mutt/dds.mb
 set spoolfile = +INBOX
 set postponed = +[Gmail]/Drafts
 unset record
