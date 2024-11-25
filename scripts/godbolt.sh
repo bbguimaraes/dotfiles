@@ -143,6 +143,27 @@ fn main() {
 EOF
 )
 
+EPISTOLA_PROG=$(cat <<'EOF'
+% xelatex test.tex
+\documentclass{letter}
+\signature{Bruno}
+\begin{document}
+\begin{letter}{}
+\opening{}
+\closing{}
+\end{letter}
+\end{document}
+EOF
+)
+
+EPISTOLA_WRITE_POST=$(cat <<'EOF'
+function! WritePost()
+    execute "!" .. getline(1)[2:]
+    if filereadable("test.pdf") | execute "!mupdf test.pdf" | endif
+endfunction
+EOF
+)
+
 TIKZ_PROG=$(cat <<'EOF'
 % xelatex test.tex && convert test.pdf test.png && feh --image-bg white test.png
 \documentclass{article}
@@ -195,7 +216,7 @@ Languages/modes:
     c includes
     cpp includes|obj
     go
-    latex tikz
+    latex epistola|tikz
     py [plot]
     rs
 EOF
@@ -259,6 +280,7 @@ latex() {
     local cmd=$1; shift
     local prog post
     case "$cmd" in
+    epistola) prog=$EPISTOLA_PROG; post=$EPISTOLA_WRITE_POST;;
     tikz) prog=$TIKZ_PROG; post=$TIKZ_WRITE_POST;;
     *) usage;;
     esac
