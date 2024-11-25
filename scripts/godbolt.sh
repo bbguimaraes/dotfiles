@@ -166,7 +166,6 @@ function! WritePost()
     execute "!" .. getline(1)[2:]
     if filereadable("output.png") | execute "!xdg-open output.png" | endif
 endfunction
-'
 EOF
 )
 
@@ -180,9 +179,9 @@ main() {
     c) c "$@";;
     c++) cpp "$@";;
     go) go "$@";;
+    latex) latex "$@";;
     py) python "$@";;
     rs) rs "$@";;
-    tikz) tikz "$@";;
     *) usage;;
     esac
 }
@@ -196,9 +195,9 @@ Languages/modes:
     c includes
     cpp includes|obj
     go
+    latex tikz
     py [plot]
     rs
-    tikz
 EOF
     return 1
 }
@@ -255,10 +254,16 @@ go() {
     vim "${cmds[@]}"
 }
 
-tikz() {
-    local cmds
-    cmds=(-c "$TIKZ_WRITE_POST" -c "$WRITE_POST_CMD")
-    echo "$TIKZ_PROG" > test.tex
+latex() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    local prog post
+    case "$cmd" in
+    tikz) prog=$TIKZ_PROG; post=$TIKZ_WRITE_POST;;
+    *) usage;;
+    esac
+    local cmds=(-c "$post" -c "$WRITE_POST_CMD")
+    echo "$prog" > test.tex
     nix-shell \
         ~/n/comp/latex.nix \
         --command "$(printf '%q ' vim "${cmds[@]}" test.tex "$@")"
