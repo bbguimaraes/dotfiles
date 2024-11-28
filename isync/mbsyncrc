@@ -1,7 +1,7 @@
 IMAPAccount bbguimaraes
 Host 127.0.0.1
 Port 1143
-SSLType STARTTLS
+TLSType STARTTLS
 CertificateFile ~/.config/protonmail/bridge/cert.pem
 User bbguimaraes@bbguimaraes.com
 PassCmd cat
