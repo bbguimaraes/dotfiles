@@ -5,8 +5,8 @@ DIR=$HOME/src/dotfiles
 SCRIPTS=$DIR/scripts
 CMDS=(
     analog beep blue c cx cal complete compose every fmt hdmi http keyboard
-    liber lock mail man mutt nosuspend office p passmenu paste pause pecunia
-    picom ping sshfs suspend terminal ts until vtr w
+    liber lock mail man mutt noise nosuspend office p passmenu paste pause
+    pecunia picom ping sshfs suspend terminal ts until vtr w
 )
 
 main() {
@@ -31,6 +31,9 @@ main() {
     mail) mail "$@";;
     man) cmd_man "$@";;
     mutt) cmd_mutt "$@";;
+    noise) exec mpv \
+        --loop --force-window --script-opts=osc-visibility=always \
+        "$HOME/n/archivum/audio/noise.ogg";;
     nosuspend) nosuspend "$@";;
     office) office "$@";;
     p) p "$@";;
