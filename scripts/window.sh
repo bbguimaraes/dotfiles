@@ -11,6 +11,7 @@ main() {
     corner) corner "$@";;
     bl|br|tl|tr|double|halve|qtr|quarter) window "$cmd" "$@";;
     vtr) vtr "$@";;
+    vqtr) vqtr "$@";;
     window) window "$@";;
     *) usage;;
     esac
@@ -23,6 +24,7 @@ Usage: $0 CMD ARG...
 Commands:
 
     vtr [-s]
+    qvtr [-s]
     window [-s] tr|tl|double|halve|htr|qtr|quarter...
 EOF
     return 1
@@ -64,6 +66,17 @@ vtr() {
     float_window
     read -r ww wh < <(window_size "$w")
     read -r ww wh < <(resize_to "$((sw / 2))" "$((sh / 2))" "$ww" "$wh")
+    resize_move_window "$w" "$ww" "$wh" "$(right "$sw" "$ww")" "$(top)"
+}
+
+vqtr() {
+    [[ "$#" -gt 1 ]] && usage
+    local w ww wh sw sh
+    read -r sw sh < <(screen_size)
+    w=$(select_window "$@")
+    float_window
+    read -r ww wh < <(window_size "$w")
+    read -r ww wh < <(resize_to "$((sw / 4))" "$((sh / 4))" "$ww" "$wh")
     resize_move_window "$w" "$ww" "$wh" "$(right "$sw" "$ww")" "$(top)"
 }
 
