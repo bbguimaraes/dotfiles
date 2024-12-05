@@ -28,6 +28,20 @@ EOF
     return 1
 }
 
+screen_size() {
+    local w h
+    IFS=x read -r w h < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
+    echo "$w" "$h"
+}
+
+window_size() {
+    local w h
+    read -r w h < <(
+        xdotool getwindowgeometry --shell "$1" \
+            | awk -F = 'NR==4||NR==5{printf("%s ",$2)}END{print"\n"}')
+    echo "$w" "$h"
+}
+
 right() {
     local sw=$1 ww=$2
     echo "$((sw - ww - PAD - BORDER))"
@@ -45,24 +59,18 @@ bottom() {
 vtr() {
     [[ "$#" -gt 1 ]] && usage
     local w ww wh sw sh
-    IFS=x read -r sw sh < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
+    read -r sw sh < <(screen_size)
     w=$(select_window "$@")
-    i3-msg --quiet 'floating enable; sticky toggle; border pixel'
-    read -r ww wh < <(
-        xdotool getwindowgeometry --shell "$w" \
-            | awk -F = 'NR==4||NR==5{printf("%s ",$2)}END{print"\n"}')
-    while [[ $ww -gt $((sw / 2)) || $wh -gt $((sh / 2)) ]]; do
-        ww=$((ww / 2)); wh=$((wh / 2))
-    done
-    xdotool \
-        windowsize "$w" "$ww" "$wh" \
-        windowmove "$w" "$(right "$sw" "$ww")" "$(top)"
+    float_window
+    read -r ww wh < <(window_size "$w")
+    read -r ww wh < <(resize_to "$((sw / 2))" "$((sh / 2))" "$ww" "$wh")
+    resize_move_window "$w" "$ww" "$wh" "$(right "$sw" "$ww")" "$(top)"
 }
 
 window() {
     local w ww wh sw sh cmd=
     w=$(select_window "$@")
-    IFS=x read -r sw sh < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
+    read -r sw sh < <(screen_size)
     read -r w _ _ ww wh _ < <( \
         xdotool windowfocus "$w" getwindowgeometry --shell "$w" \
             | sed 's/^.*=//' \
@@ -110,9 +118,17 @@ window() {
     xdotool - <<< "$cmd"
 }
 
+resize_to() {
+    local sw=$1 sh=$2 ww=$3 wh=$4
+    while [[ "$ww" -gt "$sw" || "$wh" -gt "$sh" ]]; do
+        ww=$((ww / 2)); wh=$((wh / 2))
+    done
+    echo "$ww" "$wh"
+}
+
 corner() {
     local w sw sh x y ww wh l r b t
-    IFS=x read -r sw sh < <(xdpyinfo | awk '/^  dimensions:/{print$2}')
+    read -r sw sh < <(screen_size)
     w=$(select_window "$@")
     read -r w l t ww wh _ < <( \
         xdotool windowfocus "$w" getwindowgeometry --shell "$w" \
@@ -141,6 +157,17 @@ select_window() {
     else
         xdotool getwindowfocus
     fi
+}
+
+float_window() {
+    i3-msg --quiet 'floating enable; sticky toggle; border pixel'
+}
+
+resize_move_window() {
+    local w=$1 ww=$2 wh=$3 wx=$4 wy=$5
+    xdotool \
+        windowsize "$w" "$ww" "$wh" \
+        windowmove "$w" "$wx" "$wy"
 }
 
 main "$@"
