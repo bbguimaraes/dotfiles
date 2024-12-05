@@ -6,7 +6,7 @@ SCRIPTS=$DIR/scripts
 CMDS=(
     analog beep blue c cx cal complete compose every fmt hdmi http keyboard
     liber lock mail man mutt noise nosuspend office p passmenu paste pause
-    pecunia picom ping sshfs suspend terminal ts until vtr w
+    pecunia picom ping sshfs suspend terminal ts until vqtr vtr w
 )
 
 main() {
@@ -51,6 +51,7 @@ main() {
     terminal) terminal "$@";;
     ts) exec ts '%Y-%m-%dT%H:%M:%S';;
     until) cmd_until "$@";;
+    vqtr) exec d window vqtr;;
     vtr) exec d window vtr;;
     w) exec d 'do' watch "$@";;
     wifi) exec urxvt -e sudo wifi-menu;;
