@@ -4,9 +4,9 @@ set -euo pipefail
 DIR=$HOME/src/dotfiles
 SCRIPTS=$DIR/scripts
 CMDS=(
-    analog beep blue c cx cal complete compose every fmt hdmi http keyboard
-    liber lock mail man mutt noise nosuspend office p passmenu paste pause
-    pecunia picom ping sshfs suspend terminal ts until vqtr vtr w
+    analog beep blue c cx cal complete compose every fmt github hdmi http
+    keyboard liber lock mail man mutt noise nosuspend office p passmenu paste
+    pause pecunia picom ping sshfs suspend terminal ts until vqtr vtr w
 )
 
 main() {
@@ -23,6 +23,7 @@ main() {
     cx) xclip -out | xargs "$@";;
     every) every "$@";;
     fmt) cmd_fmt "$@";;
+    github) exec d git github "$@";;
     hdmi) exec d sink hdmi-stereo;;
     http) exec python -m http.server "$@";;
     keyboard) keyboard "$@";;
