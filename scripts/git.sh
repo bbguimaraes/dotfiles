@@ -13,6 +13,7 @@ main() {
     bbguimaraes) bbguimaraes "$@";;
     branch) branch "$@";;
     diff) cmd_diff "$@";;
+    github) github "$@";;
     graph) graph "$@";;
     pull) pull "$@";;
     rebase) rebase "$@";;
@@ -33,6 +34,7 @@ Commands:
     branch
     branch split NAME BASE REV
     diff log [DIFF_ARG...] REV0 REV1
+    github pr branch ID
     graph
     graph branch-diff B0 B1
     bbguimaraes exec CMD...
@@ -162,6 +164,30 @@ diff_log() {
         "${args[@]:0:$n - 2}" \
         <(git log --format=%s "${args[$n - 2]}" --) \
         <(git log --format=%s "${args[$n - 1]}" --)
+}
+
+github() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    pr) github_pr "$@";;
+    *) usage;;
+    esac
+}
+
+github_pr() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    branch) github_pr_branch "$@";;
+    *) usage;;
+    esac
+}
+
+github_pr_branch() {
+    [[ "$#" -eq 1 ]] || usage
+    git fetch origin "refs/pull/$1/head"
+    git switch FETCH_HEAD --create "pull_$1"
 }
 
 graph() {
