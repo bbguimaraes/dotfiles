@@ -7,7 +7,7 @@ main() {
     case "$cmd" in
     booklet) booklet "$@";;
     join) join "$@";;
-    split) split "$@";;
+    pages) pages "$@";;
     *) usage;;
     esac
 }
@@ -20,8 +20,8 @@ Commands:
 
     booklet INPUT N_PAGES
     join OUTPUT INPUT...
+    pages split INPUT FIRST LAST
     split images [ARG...]
-    split pages INPUT FIRST LAST
 EOF
     return 1
 }
@@ -34,12 +34,21 @@ join() {
         -sOutputFile="$f" "$@"
 }
 
+pages() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    extract) pages_extract "$@";;
+    split) pages_split "$@";;
+    *) usage;;
+    esac
+}
+
 split() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
     images) split_images "$@";;
-    pages) split_pages "$@";;
     *) usage;;
     esac
 }
@@ -48,7 +57,7 @@ split_images() {
     exec convert -verbose -density 150 -quality 100 -sharpen 0x1.0 "$@"
 }
 
-split_pages() {
+pages_split() {
     [[ "$#" -eq 3 ]] || usage
     local f=$1 first=$2 last=$3 base ext
     base=${f%.*}
