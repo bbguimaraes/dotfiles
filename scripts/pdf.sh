@@ -6,6 +6,7 @@ main() {
     local cmd=$1; shift
     case "$cmd" in
     booklet) booklet "$@";;
+    join) join "$@";;
     split) split "$@";;
     *) usage;;
     esac
@@ -18,10 +19,19 @@ Usage: pdf CMD [ARG...]
 Commands:
 
     booklet INPUT N_PAGES
+    join OUTPUT INPUT...
     split images [ARG...]
     split pages INPUT FIRST LAST
 EOF
     return 1
+}
+
+join() {
+    [[ "$#" -lt 2 ]] && usage
+    local f=$1; shift
+    gs \
+        -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite \
+        -sOutputFile="$f" "$@"
 }
 
 split() {
