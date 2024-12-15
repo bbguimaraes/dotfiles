@@ -20,6 +20,7 @@ Commands:
 
     booklet INPUT N_PAGES
     join OUTPUT INPUT...
+    pages extract INPUT FIRST LAST
     pages split INPUT FIRST LAST
     split images [ARG...]
 EOF
@@ -55,6 +56,11 @@ split() {
 
 split_images() {
     exec convert -verbose -density 150 -quality 100 -sharpen 0x1.0 "$@"
+}
+
+pages_extract() {
+    [[ "$#" -eq 4 ]] || usage
+    pages_extract_common "$@"
 }
 
 pages_split() {
