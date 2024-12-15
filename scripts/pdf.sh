@@ -62,10 +62,15 @@ pages_split() {
     local f=$1 first=$2 last=$3 base ext
     base=${f%.*}
     ext=${f##*.}
+    pages_extract_common "$f" "$first" "$last" "${base}_%d.$ext"
+}
+
+pages_extract_common() {
+    local input=$1 first=$2 last=$3 output=$4
     gs \
         -sDEVICE=pdfwrite -dSAFER \
         "-dFirstPage=$first" "-dLastPage=$last" \
-        -o "${base}_%d.$ext" "$f"
+        -o "$output" "$input"
 }
 
 booklet() {
