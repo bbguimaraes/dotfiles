@@ -17,6 +17,7 @@ main() {
     graph) graph "$@";;
     pull) pull "$@";;
     rebase) rebase "$@";;
+    upstream) upstream "$@";;
     *) usage;;
     esac
 }
@@ -40,6 +41,7 @@ Commands:
     bbguimaraes exec CMD...
     pull
     rebase branches [BRANCH...]
+    upstream
 EOF
     return 1
 }
@@ -232,6 +234,15 @@ rebase_branches() {
         git rebase --rebase-merges "$base" "$x"
     done
     git switch "$base"
+}
+
+upstream() {
+    local b
+    if ! b=$(branch); then
+        echo >&2 failed to determine current branch
+        return 1
+    fi
+    git config "branch.$b.merge"
 }
 
 main "$@"
