@@ -15,6 +15,7 @@ main() {
     diff) cmd_diff "$@";;
     github) github "$@";;
     graph) graph "$@";;
+    pr) pr "$@";;
     pull) pull "$@";;
     rebase) rebase "$@";;
     upstream) upstream "$@";;
@@ -39,6 +40,7 @@ Commands:
     graph
     graph branch-diff B0 B1
     bbguimaraes exec CMD...
+    pr log
     pull
     rebase branches [BRANCH...]
     upstream
@@ -207,6 +209,23 @@ graph_branch_diff() {
     local b0=$1 b1=$2 m
     m=$(git merge-base "$b0" "$b1")
     exec git log --oneline --graph "$b0" "$b1" ^"$m"^
+}
+
+pr() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    log) pr_log "$@";;
+    *) usage;;
+    esac
+}
+
+pr_log() {
+    [[ "$#" -eq 0 ]] || usage
+    local upstream
+    upstream=$(upstream) || true
+    [[ "$upstream" ]] || upstream=master
+    git log --reverse --oneline --format='- %s' "${upstream}.."
 }
 
 pull() {
