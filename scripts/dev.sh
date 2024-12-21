@@ -45,7 +45,7 @@ main() {
     picom) exec picom \
         --backend glx --vsync --no-fading-openclose \
         --fade-in-step 1 --fade-out-step 1 --inactive-opacity 1;;
-    ping) exec mpv --no-terminal ~/n/archive/ping.flac;;
+    ping) exec mpv --no-terminal ~/n/archive/audio/ping.flac;;
     pull) d git pull && d git rebase branches;;
     sshfs) cmd_sshfs "$@";;
     suspend) (d lock) & exec systemctl suspend;;
