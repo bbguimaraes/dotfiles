@@ -195,7 +195,7 @@ mail() {
 
 cmd_man() {
     [[ "$#" -eq 0 ]] && exec vim ~/n/comp/man.txt
-    exec xdg-open https://manned.org/browse/search?q="$*"
+    exec xdg-open "https://man.archlinux.org/search?go=Go&q=$*"
 }
 
 cmd_mutt() {
