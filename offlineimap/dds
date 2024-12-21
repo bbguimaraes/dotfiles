@@ -5,7 +5,7 @@ socktimeout = 60
 
 [mbnames]
 enabled = yes
-filename = ~/.config/mutt/dds_mailboxes
+filename = ~/.config/mutt/dds.mb
 header = 'mailboxes '
 peritem = '+%(foldername)s'
 sep = ' '
