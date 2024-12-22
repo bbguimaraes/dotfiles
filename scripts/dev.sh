@@ -48,7 +48,7 @@ main() {
     ping) exec mpv --no-terminal ~/n/archive/audio/ping.flac;;
     pull) d git pull && d git rebase branches;;
     sshfs) cmd_sshfs "$@";;
-    suspend) (d lock) & exec systemctl suspend;;
+    suspend) suspend "$@";;
     terminal) terminal "$@";;
     ts) exec ts '%Y-%m-%dT%H:%M:%S';;
     until) cmd_until "$@";;
@@ -272,6 +272,13 @@ cmd_sshfs() {
     fi
     [[ -e "$dst" ]] || mkdir --parents "$dst"
     exec sshfs -o ServerAliveInterval=15 -o reconnect "$@"
+}
+
+suspend() {
+    case "$#" in
+    0) (d lock) & sleep 1; exec systemctl suspend;;
+    *) usage;;
+    esac
 }
 
 has_terminal() {
