@@ -277,8 +277,17 @@ cmd_sshfs() {
 suspend() {
     case "$#" in
     0) (d lock) & sleep 1; exec systemctl suspend;;
+    2) usage;;
+    esac
+    has_terminal || exec_in_terminal d suspend "$@"
+    local cmd=$1 svc; shift
+    case "$cmd" in
+    redshift) svc=redshift;;
     *) usage;;
     esac
+    systemctl --user stop "$svc.service"
+    cat
+    systemctl --user start "$svc.service"
 }
 
 has_terminal() {
