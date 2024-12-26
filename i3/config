@@ -179,6 +179,7 @@ bindsym $mod+q exec d window corner
 bindsym $mod+u [urgent="latest"] focus
 bindsym $mod+Shift+p exec d passmenu
 bindsym $mod+t exec d window vtr
+bindsym $mod+x exec d window mouse center
 bindsym $mod+Shift+v exec i3-sensible-terminal -e pulsemixer
 bindsym $mod+Shift+w exec mpv /dev/video0
 bindsym $mod+minus scratchpad show
