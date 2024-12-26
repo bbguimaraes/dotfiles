@@ -37,7 +37,10 @@ pop() {
     i=$(finished_ids | head -1)
     [[ "$i" ]] || return
     f=$(tsp -o "$i")
-    cat "$f"
+    if [[ -e "$f" ]]; then
+        cat "$f"
+        rm "$f"
+    fi
     tsp -r "$i"
 }
 
