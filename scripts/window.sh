@@ -10,6 +10,7 @@ main() {
     case "$cmd" in
     corner) corner "$@";;
     bl|br|tl|tr|double|halve|qtr|quarter) window "$cmd" "$@";;
+    mouse) mouse "$@";;
     vtr) vtr "$@";;
     vqtr) vqtr "$@";;
     window) window "$@";;
@@ -25,6 +26,7 @@ Commands:
 
     vtr [-s]
     qvtr [-s]
+    mouse center
     window [-s] tr|tl|double|halve|htr|qtr|quarter...
 EOF
     return 1
@@ -54,6 +56,21 @@ top() {
 bottom() {
     local sh=$1 wh=$2
     echo "$((sh - wh - 19 - PAD))"
+}
+
+mouse() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    center) mouse_center "$@";;
+    *) usage;;
+    esac
+}
+
+mouse_center() {
+    local x y w h
+    read -r x y w h < <(window_dimensions getwindowfocus)
+    xdotool mousemove "$((x + w / 2))" "$((y + h / 2))"
 }
 
 vtr() {
