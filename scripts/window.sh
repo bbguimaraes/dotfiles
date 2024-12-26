@@ -39,7 +39,7 @@ screen_size() {
 window_size() {
     local w h
     read -r w h < <(
-        xdotool getwindowgeometry --shell "$1" \
+        xdotool "$@" getwindowgeometry --shell \
             | awk -F = 'NR==4||NR==5{printf("%s ",$2)}END{print"\n"}')
     echo "$w" "$h"
 }
@@ -64,7 +64,7 @@ vtr() {
     read -r sw sh < <(screen_size)
     w=$(select_window "$@")
     float_window
-    read -r ww wh < <(window_size "$w")
+    read -r ww wh < <(window_size windowfocus "$w" getwindowfocus)
     read -r ww wh < <(resize_to "$((sw / 2))" "$((sh / 2))" "$ww" "$wh")
     resize_move_window "$w" "$ww" "$wh" "$(right "$sw" "$ww")" "$(top)"
 }
@@ -75,7 +75,7 @@ vqtr() {
     read -r sw sh < <(screen_size)
     w=$(select_window "$@")
     float_window
-    read -r ww wh < <(window_size "$w")
+    read -r ww wh < <(window_size windowfocus "$w" getwindowfocus)
     read -r ww wh < <(resize_to "$((sw / 4))" "$((sh / 4))" "$ww" "$wh")
     resize_move_window "$w" "$ww" "$wh" "$(right "$sw" "$ww")" "$(top)"
 }
