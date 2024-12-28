@@ -274,10 +274,20 @@ cmd_sshfs() {
     exec sshfs -o ServerAliveInterval=15 -o reconnect "$@"
 }
 
+has_terminal() {
+    tty --quiet
+}
+
+exec_in_terminal() {
+    exec "$TERMINAL" -e "$@"
+}
+
 terminal() {
-    local cmd=("$@")
-    tty --quiet || cmd=("$TERMINAL" -e "${cmd[@]}")
-    exec "${cmd[@]}"
+    if has_terminal; then
+        exec "$@"
+    else
+        exec_in_terminal "$@"
+    fi
 }
 
 cmd_until() {
