@@ -37,10 +37,19 @@ process_opts() {
     local x ret=()
     for x; do
         case "$x" in
+        nix) ret+=(nix);;
         *) usage;;
         esac
     done
     echo "${ret[@]}"
+}
+
+fmt_shell_arg() {
+    local x v=()
+    for x; do
+        v+=("$(printf '%q\n' "$x")")
+    done
+    OFS=' ' echo "${v[@]}"
 }
 
 cmd_complete() {
@@ -68,6 +77,8 @@ cmd_editor() {
     opts=$(process_opts "$@")
     dir=$(dir "$dir")
     [[ -e "$dir/.git" ]] && cmd=("${cmd[@]}" -c 'call GitTab()')
+    [[ " ${opts[*]} " =~ [[:space:]]nix[[:space:]] ]] \
+        && cmd=(nix-shell --command "$(fmt_shell_arg "${cmd[@]}")")
     eval "$(d cd "$dir")"
     cd "$dir"
     exec "${cmd[@]}"
@@ -83,6 +94,8 @@ cmd_shell() {
         git -C "$dir" branch
         git -C "$dir" status
     fi
+    [[ " ${opts[*]} " =~ [[:space:]]nix[[:space:]] ]] \
+        && cmd=(nix-shell --command "$(fmt_shell_arg "${cmd[@]}")")
     eval "$(d cd "$dir")"
     cd "$dir"
     exec "${cmd[@]}"
