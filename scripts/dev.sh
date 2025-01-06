@@ -189,7 +189,7 @@ liber() {
 
 mail() {
     local p
-    pkill -USR1 --uid "$USER" offlineimap && return
+    pkill -USR1 --uid "$USER" offlineimap
     p=$(pgrep --uid "$USER" mbsync.sh) && pkill -INT --parent "$p" sleep
 }
 
