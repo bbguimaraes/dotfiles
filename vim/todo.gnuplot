@@ -10,10 +10,11 @@ arrow_a = -2 * pi * (arrow_perc - 0.25);
 
 set arrow \
     from 0, 0 \
-    to 1.2 * cos(arrow_a), 1.2 * sin(arrow_a) \
-    linewidth 2 linecolor black front;
+    to 0.7 * cos(arrow_a), 0.7 * sin(arrow_a) \
+    linewidth 4 linecolor rgb "white" front;
 
-set term png \
+set terminal png \
+    background rgb "black" \
     font "Palatino, 20" \
     size 1920, 1080;
 set margin 32, 32;
@@ -47,11 +48,12 @@ label(x) = sprintf("%s\n%s", strcol(3), strcol(4));
 plot \
     $d using (start($1)):(0.75):(end($1, $2)):(0.25) \
         with sectors \
-        linecolor "gray" \
+        linecolor "dark-gray" \
         fill solid, \
     '' using (start($1)):(0.75):(end($1, $2)):(0.25) \
         with sectors \
         linewidth 3 \
-        linecolor 0, \
+        linecolor "gray30", \
     '' using (start($1)):(dist($1, strcol(4))):(label(0)) \
-        with labels;
+        with labels \
+        textcolor rgb "white";
