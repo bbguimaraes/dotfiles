@@ -4,9 +4,11 @@ endif
 let b:did_ftplugin = 1
 
 let g:fugitive_menu_entries = [
+\   "fetch",
 \   "tig",
 \]
 let g:fugitive_menu_fns = [
+\   "FugitiveMenuFetch",
 \   "FugitiveMenuTig",
 \]
 
@@ -27,6 +29,10 @@ function! FugitiveMenuCallback(_, result)
         return
     endif
     execute "call " . g:fugitive_menu_fns[a:result - 1] . "()"
+endfunction
+
+function! FugitiveMenuFetch()
+    G fetch --all --prune
 endfunction
 
 function! FugitiveMenuTig()
