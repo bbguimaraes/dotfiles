@@ -5,10 +5,12 @@ let b:did_ftplugin = 1
 
 let g:fugitive_menu_entries = [
 \   "fetch",
+\   "fast-forward",
 \   "tig",
 \]
 let g:fugitive_menu_fns = [
 \   "FugitiveMenuFetch",
+\   "FugitiveMenuFastForward",
 \   "FugitiveMenuTig",
 \]
 
@@ -33,6 +35,10 @@ endfunction
 
 function! FugitiveMenuFetch()
     G fetch --all --prune
+endfunction
+
+function! FugitiveMenuFastForward()
+    G merge --ff-only @{upstream}
 endfunction
 
 function! FugitiveMenuTig()
