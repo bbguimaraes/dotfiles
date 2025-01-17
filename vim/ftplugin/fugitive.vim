@@ -3,8 +3,12 @@ if exists('b:did_ftplugin')
 endif
 let b:did_ftplugin = 1
 
-let g:fugitive_menu_entries = []
-let g:fugitive_menu_fns = []
+let g:fugitive_menu_entries = [
+\   "tig",
+\]
+let g:fugitive_menu_fns = [
+\   "FugitiveMenuTig",
+\]
 
 function! FugitiveMenu()
     let g:fugitive_menu_executing = 1
@@ -25,6 +29,10 @@ function! FugitiveMenuCallback(_, result)
         return
     endif
     execute "call " . g:fugitive_menu_fns[a:result - 1] . "()"
+endfunction
+
+function! FugitiveMenuTig()
+    !tig
 endfunction
 
 nnoremap <buffer> <leader>mm :call FugitiveMenu()<cr>
