@@ -4,11 +4,13 @@ endif
 let b:did_ftplugin = 1
 
 let g:fugitive_menu_entries = [
+\   "branch",
 \   "fetch",
 \   "fast-forward",
 \   "tig",
 \]
 let g:fugitive_menu_fns = [
+\   "FugitiveMenuBranch",
 \   "FugitiveMenuFetch",
 \   "FugitiveMenuFastForward",
 \   "FugitiveMenuTig",
@@ -31,6 +33,11 @@ function! FugitiveMenuCallback(_, result)
         return
     endif
     execute "call " . g:fugitive_menu_fns[a:result - 1] . "()"
+endfunction
+
+function! FugitiveMenuBranch()
+    let l:name = input("branch name: ")
+    execute "G switch --track --create " .. l:name
 endfunction
 
 function! FugitiveMenuFetch()
