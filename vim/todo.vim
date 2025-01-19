@@ -167,6 +167,10 @@ function! TodoGraph(line)
                 let l:dur = l:dur[:-3] + 0.5
             endif
             let l:start = l:h * 60 + l:m
+            let l:c = match(l:text, ":")
+            if l:c != -1
+                let l:text = l:text[:l:c - 1]
+            endif
             call add(l:data, printf(
 \               '%d %d "%s" "%s"',
 \               l:start, l:start + float2nr(l:dur * 60), l:time, l:text))
