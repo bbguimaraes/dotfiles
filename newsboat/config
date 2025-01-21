@@ -14,6 +14,7 @@ reload-time 30
 feed-sort-order unreadarticlecount
 article-sort-order date
 show-read-feeds no
+show-read-articles no
 # keys
 bind-key j down
 bind-key k up
