@@ -10,6 +10,7 @@ suppress-first-reload yes
 auto-reload yes
 reload-threads 8
 reload-time 30
+prepopulate-query-feeds yes
 # lists
 feed-sort-order unreadarticlecount
 article-sort-order date
