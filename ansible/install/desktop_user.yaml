@@ -107,6 +107,8 @@
       - .config/mutt/mailcap
     - - newsboat/config
       - .config/newsboat/config
+    - - newsboat/urls
+      - .config/newsboat/urls
     - - offlineimap/offlineimap.py
       - .config/offlineimap/offlineimap.py
     - - offlineimap/offlineimap@.service
