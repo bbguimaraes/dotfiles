@@ -189,6 +189,7 @@ bindsym $mod+Tab focus next
 bindsym $mod+Shift+Tab focus prev
 bindsym $mod+grave workspace next
 bindsym $mod+Shift+grave workspace prev
+bindsym $mod+BackSpace workspace back_and_forth
 
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
