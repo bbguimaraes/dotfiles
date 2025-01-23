@@ -299,7 +299,7 @@ python() {
     plot) prog=$PYTHON_PLOT_PROG;;
     *) usage;;
     esac
-    cmds=(-c 'edit test.py')
+    cmds=(-c "$WRITE_POST" -c "$WRITE_POST_CMD" -c 'edit test.py')
     echo "$prog" > test.py
     vim "${cmds[@]}"
 }
