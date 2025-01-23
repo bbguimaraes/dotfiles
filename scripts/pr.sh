@@ -8,6 +8,7 @@ main() {
     comment) comment "$@";;
     for-file) for_file "$@";;
     for-ref) for_ref "$@";;
+    merge) merge "$@";;
     status) status "$@";;
     watch) watch "$@";;
     *) usage;;
@@ -22,10 +23,24 @@ Commands:
 
     for-file PATH...
     for-ref REF...
+    merge BRANCH
     status HUB_ARG...
     watch HUB_ARG...
 EOF
     return 1
+}
+
+branch_exists() {
+    git branch \
+        | awk -v "b=$1" '
+BEGIN { e = 1 }
+$1 == b { e = 0; exit }
+END { exit e }
+'
+}
+
+has_local_changes() {
+    [[ "$(git status --short --untracked-files=no)" ]]
 }
 
 pr() {
@@ -81,6 +96,27 @@ for_ref() {
             echo
         fi
     done
+}
+
+merge() {
+    [[ "$#" -eq 1 ]] || usage
+    local b=$1
+    if has_local_changes; then
+        echo >&2 refusing to start without a clean working tree
+        return 1
+    fi
+    git fetch --all
+    git switch master
+    git pull
+    if branch_exists "$b"; then
+        git switch "$b"
+        git pull
+    else
+        git switch "origin/$b" --create "$b"
+    fi
+    git rebase --autosquash master "$b"
+    git switch master
+    git merge --no-ff "$b"
 }
 
 status() {
