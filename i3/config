@@ -165,8 +165,6 @@ client.focused_inactive  #767676 #585858 #ffffff #ffffff   #585858
 client.focused_tab_title #949494 #767676 #ffffff #ffffff   #767676
 client.unfocused         #b2b2b2 #949494 #ffffff #ffffff   #ffffff
 
-bindsym $mod+0x60 workspace next
-bindsym $mod+Shift+0x60 workspace prev
 bindsym $mod+Shift+h move left 4
 bindsym $mod+Shift+j move down 4
 bindsym $mod+Shift+k move up 4
@@ -189,6 +187,8 @@ bindsym $mod+equal exec d keyboard
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+Tab focus next
 bindsym $mod+Shift+Tab focus prev
+bindsym $mod+grave workspace next
+bindsym $mod+Shift+grave workspace prev
 
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
