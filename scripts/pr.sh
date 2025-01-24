@@ -100,11 +100,13 @@ for_ref() {
 
 merge() {
     [[ "$#" -eq 1 ]] || usage
-    local b=$1
+    local b=$1 dst
     if has_local_changes; then
         echo >&2 refusing to start without a clean working tree
         return 1
     fi
+    dst=$(git branch --remotes | awk '$1 == "origin/HEAD" { print $3 }')
+    dst=${dst#origin/}
     git fetch --all
     git switch master
     git pull
@@ -118,6 +120,12 @@ merge() {
     git switch master
     git merge --no-ff "$b"
     git log --oneline --graph origin/HEAD^..
+    read -p 'Push (y/N)? '
+    [[ "$REPLY" == y ]] || return 0
+    git push origin "$b" --force-with-lease
+    git push origin "master:$dst"
+    git push origin :"$b"
+    git branch --delete "$b"
 }
 
 status() {
