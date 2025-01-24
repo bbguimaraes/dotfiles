@@ -117,6 +117,7 @@ merge() {
     git rebase --autosquash master "$b"
     git switch master
     git merge --no-ff "$b"
+    git log --oneline --graph origin/HEAD^..
 }
 
 status() {
