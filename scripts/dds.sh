@@ -24,7 +24,7 @@ Usage: $0 CMD ARG...
 
 Commands:
 
-    k8s dev|prod
+    k8s [dev|prod]
     ssh dev|prod ARG...
     weechat [ARG...]
 EOF
@@ -32,12 +32,12 @@ EOF
 }
 
 k8s() {
-    [[ "$#" -eq 0 ]] && usage
-    local cmd=$1; shift
     local env
-    case "$cmd" in
-    prod);;
-    dev) env=$cmd;;
+    case "$#" in
+    0) ;;
+    1) case "$1" in
+        dev) env=$cmd;;
+    esac;;
     *) usage;;
     esac
     export KUBECONFIG=$HOME/.kube/dds${env+-$env}
