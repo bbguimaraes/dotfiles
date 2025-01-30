@@ -177,7 +177,9 @@ liber() {
     local f
     f=$(cd && find \
         n/archivum/libri/ \
+        n/musica/ \
         n/tmp/libri/ \
+        n/tmp/musica/ \
         src/codex/ \
         src/ephemeris/ \
         src/libri/ \
