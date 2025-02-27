@@ -73,7 +73,6 @@
     - .local/share/subs
     - .local/share/systemd/user
     - .local/share/tig
-    - .vim/colors
     - .vim/spell
   - name: setup dotfile symlinks
     file:
@@ -123,6 +122,8 @@
       - .local/share/systemd/user/weather.timer
     - - user-dirs.dirs
       - .config/user-dirs.dirs
+    - - vim/syntax
+      - .vim/syntax
     - - xorg/xinitrc
       - .xinitrc
     - - xorg/Xresources
