@@ -60,13 +60,13 @@ function! TodoMenuDiesCallback(id, result)
     call setpos(".", [0, l:line, 0])
 endfunction
 
-function! TodoMenuTime()
+function! TodoMenuTime(h, m)
     let l:l = []
     for i in range(24)
         call add(l:l, printf("%02d:00", i))
         call add(l:l, printf("%02d:30", i))
     endfor
-    call popup_menu(
+    let l:id = popup_menu(
 \       l:l,
 \       #{
 \           callback: "TodoMenuTimeCallback",
@@ -75,6 +75,8 @@ function! TodoMenuTime()
 \           padding: [0, 1, 0, 1],
 \       }
 \   )
+    let l:i = 1 + a:h * 2 + (a:m != 0)
+    call win_execute(l:id, "call cursor(" . l:i . ", 1)")
 endfunction
 
 function! TodoMenuTimeCallback(id, result)
@@ -233,10 +235,11 @@ function! TodoDayEnd(line)
 endfunction
 
 function! TodoEnter()
-    if !(TodoGetTime(expand("<cWORD>")) is v:null)
+    let l:cur = TodoGetTime(expand("<cWORD>"))
+    if !(l:cur is v:null)
         let l:col = col(".") - 1
         if match(getline(line(".")), "\[0-9:\]", l:col) == l:col
-            return TodoMenuTime()
+            return TodoMenuTime(l:cur[0], l:cur[1])
         endif
     endif
     execute "normal! \<cr>"
