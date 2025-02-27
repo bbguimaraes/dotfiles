@@ -52,9 +52,37 @@ function! TodoMenuDies()
 endfunction
 
 function! TodoMenuDiesCallback(id, result)
-    let l:sel = getbufoneline(winbufnr(a:id), getcurpos(a:id)[1])
+    if a:result <= 0
+        return
+    endif
+    let l:sel = getbufoneline(winbufnr(a:id), a:result)
     let l:line = l:sel[0:stridx(l:sel, ":")]
     call setpos(".", [0, l:line, 0])
+endfunction
+
+function! TodoMenuTime()
+    let l:l = []
+    for i in range(24)
+        call add(l:l, printf("%02d:00", i))
+        call add(l:l, printf("%02d:30", i))
+    endfor
+    call popup_menu(
+\       l:l,
+\       #{
+\           callback: "TodoMenuTimeCallback",
+\           filter: "PopUpInput",
+\           highlight: "TodoPopupColor",
+\           padding: [0, 1, 0, 1],
+\       }
+\   )
+endfunction
+
+function! TodoMenuTimeCallback(id, result)
+    if a:result <= 0
+        return
+    endif
+    let l:sel = getbufoneline(winbufnr(a:id), a:result)
+    execute "normal ciW" . l:sel . "\<esc>"
 endfunction
 
 function! TodoInc(d = v:null, col = v:null, line = v:null)
@@ -204,12 +232,23 @@ function! TodoDayEnd(line)
     return l:i
 endfunction
 
+function! TodoEnter()
+    if !(TodoGetTime(expand("<cWORD>")) is v:null)
+        let l:col = col(".") - 1
+        if match(getline(line(".")), "\[0-9:\]", l:col) == l:col
+            return TodoMenuTime()
+        endif
+    endif
+    execute "normal! \<cr>"
+endfunction
+
 highlight TodoPopupColor ctermbg=black ctermfg=NONE
 
 command -nargs=* -range TodoInc <line1>,<line2>call TodoInc(<f-args>)
 command -nargs=? TodoIncAll call TodoIncAll(<f-args>)<cr>
 command TodoGraph echo system("feh -", TodoGraph(line(".")))
 
+nnoremap <cr> :call TodoEnter()<cr>
 nnoremap <c-a> :<c-u>execute printf("TodoInc %d %d",  v:count1, col("."))<cr>
 nnoremap <c-x> :<c-u>execute printf("TodoInc %d %d", -v:count1, col("."))<cr>
 vnoremap <c-a> :<c-u>execute printf("'<,'>TodoInc %d",  v:count1)<cr>
