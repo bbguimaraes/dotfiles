@@ -11,7 +11,7 @@ arrow_a = -2 * pi * (arrow_perc - 0.25);
 set arrow \
     from 0, 0 \
     to 0.7 * cos(arrow_a), 0.7 * sin(arrow_a) \
-    linewidth 4 linecolor rgb "white" front;
+    linewidth 4 linecolor rgb "dark-gray" front;
 
 set terminal png \
     background rgb "black" \
