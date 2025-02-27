@@ -28,8 +28,11 @@ EOF
 }
 
 todo() {
+    local ut=300000 # milliseconds (5 min)
     exec "$VISUAL" \
-        -c "source $HOME/src/dotfiles/vim/todo.vim" \
+        -c "setlocal updatetime=$ut" \
+        -c 'set filetype=todo' \
+        -c 'autocmd CursorHold <buffer> update' \
         ~/n/todo.txt
 }
 
