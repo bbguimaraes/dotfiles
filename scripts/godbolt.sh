@@ -143,6 +143,22 @@ fn main() {
 EOF
 )
 
+LATEX_PROG=$(cat <<'EOF'
+% xelatex test.tex
+\documentclass{book}
+\begin{document}
+\end{document}
+EOF
+)
+
+LATEX_WRITE_POST=$(cat <<'EOF'
+function! WritePost()
+    execute "!" .. getline(1)[2:]
+    if filereadable("test.pdf") | execute "!mupdf test.pdf" | endif
+endfunction
+EOF
+)
+
 EPISTOLA_PROG=$(cat <<'EOF'
 % xelatex test.tex
 \documentclass{letter}
@@ -153,14 +169,6 @@ EPISTOLA_PROG=$(cat <<'EOF'
 \closing{}
 \end{letter}
 \end{document}
-EOF
-)
-
-EPISTOLA_WRITE_POST=$(cat <<'EOF'
-function! WritePost()
-    execute "!" .. getline(1)[2:]
-    if filereadable("test.pdf") | execute "!mupdf test.pdf" | endif
-endfunction
 EOF
 )
 
@@ -216,7 +224,7 @@ Languages/modes:
     c includes
     cpp includes|obj
     go
-    latex epistola|tikz
+    latex [epistola|tikz]
     py [plot]
     rs
 EOF
@@ -276,12 +284,16 @@ go() {
 }
 
 latex() {
-    [[ "$#" -eq 0 ]] && usage
-    local cmd=$1; shift
-    local prog post
-    case "$cmd" in
-    epistola) prog=$EPISTOLA_PROG; post=$EPISTOLA_WRITE_POST;;
-    tikz) prog=$TIKZ_PROG; post=$TIKZ_WRITE_POST;;
+    local prog=$LATEX_PROG post=$LATEX_WRITE_POST
+    case "$#" in
+    0) ;;
+    1)
+        local cmd=$1; shift
+        case "$cmd" in
+        epistola) prog=$EPISTOLA_PROG;;
+        tikz) prog=$TIKZ_PROG; post=$TIKZ_WRITE_POST;;
+        *) usage;;
+        esac;;
     *) usage;;
     esac
     local cmds=(-c "$post" -c "$WRITE_POST_CMD")
