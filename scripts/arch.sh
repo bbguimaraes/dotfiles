@@ -97,13 +97,17 @@ img_push() {
 }
 
 mirrorlist() {
-    local f=/etc/pacman.d/mirrorlist
-#    sed --in-place \
-    if ! grep --quiet '^## Czechia$' "$f"; then
-        echo >&2 "line not found"
-        exit 1
-    fi
-    sed --in-place '/^## Czechia$/,/^$/s/^#//' "$f"
+    local f=/etc/pacman.d/mirrorlist x
+    local l=(Italy 'United States')
+    for x in "${l[@]}"; do
+        if ! grep --quiet "^## $x$" "$f"; then
+            echo >&2 "line not found: $x"
+            exit 1
+        fi
+    done
+    for x in "${l[@]}"; do
+        sed --in-place "/^## $x$/"',/^$/s/^#//' "$f"
+    done
 }
 
 main "$@"
