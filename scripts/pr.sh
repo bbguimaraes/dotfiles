@@ -5,6 +5,7 @@ main() {
     [[ "$#" -eq 0 ]] && { pr; return; }
     local cmd=$1; shift
     case "$cmd" in
+    approve) approve "$@";;
     comment) comment "$@";;
     for-file) for_file "$@";;
     for-ref) for_ref "$@";;
@@ -21,6 +22,7 @@ Usage: $0 [CMD ARG...]
 
 Commands:
 
+    approve NUMBER
     for-file PATH...
     for-ref REF...
     merge BRANCH
@@ -54,6 +56,14 @@ pr() {
     pass show test > /dev/null
     git -c "credential.helper=$helper" push --set-upstream github "$branch"
     hub pull-request
+}
+
+approve() {
+    [[ "$#" -eq 1 ]] || usage
+    hub api \
+        --method POST \
+        "repos/{owner}/{repo}/pulls/$1/reviews" \
+        --field event=APPROVE
 }
 
 comment() {
