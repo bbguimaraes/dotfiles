@@ -40,3 +40,5 @@
     vars: {"pkg": "vim-vimtex"}
   - import_tasks: aur.yaml
     vars: {"pkg": "vul-git"}
+  - import_tasks: aur.yaml
+    vars: {"pkg": "weechat-matrix-rs"}

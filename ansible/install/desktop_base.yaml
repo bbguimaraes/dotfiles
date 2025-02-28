@@ -6,8 +6,8 @@
     pkgs:
     - >- # dev
       ansible arm-none-eabi-gcc base-devel busybox ccache cjson clang cloc cmake
-      colordiff ctags dash delta devtools distcc doxygen emacs encfs fzf gdb go
-      graphviz hub ipython libc++ llvm meson musl mypy opengl-man-pages pocl
+      colordiff ctags dash delta devtools distcc doxygen emacs-nox encfs fzf gdb
+      go graphviz hub ipython libc++ llvm meson musl mypy opengl-man-pages pocl
       podman premake python-pip python-virtualenv qemu-base qemu-ui-sdl
       qt6-scxml rust tidy tig valgrind
     - >- # vim
@@ -17,7 +17,7 @@
     - >- # graphical
       arandr blender breeze calibre celluloid chromium dmenu dunst feh firefox
       geeqie gimp i3lock i3status i3-wm imagemagick inkscape kdenlive
-      libreoffice-fresh mednafen mupdf picom qt5ct redshift rxvt-unicode
+      libreoffice-fresh mednafen mupdf-gl picom qt5ct redshift rxvt-unicode
       screenkey scrot simplescreenrecorder ttf-dejavu ttf-junicode urxvt-perls
       xclip xdotool
     - >- # audio
@@ -34,7 +34,7 @@
       inotify-tools jq lsof ltrace lynx moreutils nix p7zip pacman-contrib pass
       perf pigz pixz poppler pv python-matplotlib qrencode ranger ripgrep rlwrap
       skopeo sshfs strace tesseract tesseract-data-eng units unrar unzip weechat
-      weechat-matrix words yt-dlp yq
+      words yt-dlp yq
     - >- # aurutils
       diffstat expac pacutils parallel wget
     - >- # wine
