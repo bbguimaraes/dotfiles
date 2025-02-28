@@ -44,18 +44,22 @@ window_dimensions() {
     printf '\n'
 }
 
+left() {
+    echo "$PAD"
+}
+
 right() {
     local sw=$1 ww=$2
     echo "$((sw - ww - PAD - BORDER))"
 }
 
 top() {
-    echo "$((2 * PAD + 3 * BORDER))"
+    echo "$((PAD + BORDER))"
 }
 
 bottom() {
     local sh=$1 wh=$2
-    echo "$((sh - wh - 19 - PAD))"
+    echo "$((sh - wh - PAD))"
 }
 
 mouse() {
@@ -107,7 +111,7 @@ window() {
         case "$x" in
         bl) cmd=$(printf '%s\nwindowmove %d %d %d' \
             "$cmd" "$w" \
-            "$PAD" \
+            "$(left)" \
             "$(bottom "$sh" "$wh")" \
         );;
         br) cmd=$(printf '%s\nwindowmove %d %d %d' \
@@ -121,7 +125,7 @@ window() {
             "$(top)" \
         );;
         tl) cmd=$(printf '%s\nwindowmove %d %d %d' \
-            "$cmd" "$w" "$PAD" "$(top)" \
+            "$cmd" "$w" "$(left)" "$(top)" \
         );;
         double)
             ww=$((ww * 2)); wh=$((wh * 2))
