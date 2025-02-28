@@ -20,6 +20,7 @@ quick = 10
 [Repository dds_local]
 type = Maildir
 localfolders = ~/.local/share/offlineimap/dds
+nametrans = lambda x: x.removeprefix("[Gmail]/")
 
 [Repository dds_remote]
 type = Gmail
@@ -27,7 +28,14 @@ remoteuser = bruno@d-d-s.ch
 remotepasseval = exec_pass('dds/bruno@d-d-s.ch')
 holdconnectionopen = yes
 keepalive = 60
-folderfilter = lambda x: x not in ('[Gmail]/All Mail', '[Gmail]/Trash')
+createfolders = false
+nametrans = lambda x: x.removeprefix("[Gmail]/")
+folderfilter = lambda x: x not in ( \
+        '[Gmail]/All Mail', \
+        '[Gmail]/Important', \
+        '[Gmail]/Starred', \
+        '[Gmail]/Trash', \
+    )
 sslcacertfile = ~/.config/offlineimap/tls_trust_file
 ssl_version = tls1_2
 
