@@ -1,9 +1,9 @@
 let s:start = '^\s*- '
 let s:start_pre = printf('(%s)@<=', s:start)
 
-syntax cluster items contains=day,week,month,year,time,check,url
+syntax cluster items contains=day,week,month,year,time,check
 execute printf(
-\   'syntax region item start="%s" end="$" oneline contains=@items',
+\   'syntax region item start="%s" end="$" oneline contains=@items,url',
 \   s:start)
 
 function s:match(name, start, pattern)
@@ -24,7 +24,7 @@ call s:match("time", s:start_pre, '\d\d:\d\d( @=|$)')
 call s:match("time", s:start_pre, '\[[0-9½/]+\]( @=|$)')
 call s:match("time", s:start_pre, '\d\d:\d\d> \[[0-9½/]+\]( @=|$)')
 call s:match("check", s:start_pre, '\[[x ]\]')
-syntax match url "\vhttps?://\S+" oneline contained contains=NONE
+syntax match url "\vhttps?://\S+" oneline contains=NONE
 
 highlight default link day Statement
 highlight default link week Statement
