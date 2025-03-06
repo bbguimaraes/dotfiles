@@ -46,9 +46,9 @@ dist(x, t) = ( \
 label(x) = sprintf("%s\n%s", strcol(3), strcol(4));
 
 plot \
-    $d using (start($1)):(0.75):(end($1, $2)):(0.25) \
+    $d using (start($1)):(0.75):(end($1, $2)):(0.25):5 \
         with sectors \
-        linecolor "dark-gray" \
+        linecolor rgb variable \
         fill solid, \
     '' using (start($1)):(0.75):(end($1, $2)):(0.25) \
         with sectors \
