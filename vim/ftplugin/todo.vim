@@ -201,9 +201,11 @@ function! TodoGraph(line)
             if l:c != -1
                 let l:text = l:text[:l:c - 1]
             endif
+            let l:text_color = 0xa0a0a0
             call add(l:data, printf(
-\               '%d %d "%s" "%s"',
-\               l:start, l:start + float2nr(l:dur * 60), l:time, l:text))
+\               '%d %d "%s" "%s" 0x%x',
+\               l:start, l:start + float2nr(l:dur * 60), l:time, l:text,
+\               l:text_color))
         endif
         let l:b += 1
     endwhile
