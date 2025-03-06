@@ -21,7 +21,7 @@ Commands:
 
     archive
     rnd [ARG...]
-    rnd [album
+    rnd album [N]
 EOF
     return 1
 }
@@ -36,13 +36,22 @@ rnd() {
     [[ "$#" -eq 0 ]] && rnd_args "$@"
     local cmd=$1; shift
     case "$cmd" in
-    album) find "$DIR" -mindepth 2 -type d | shuf -n 1;;
+    album) rnd_album "$@";;
     *) rnd_args "$cmd" "$@";;
     esac
 }
 
 rnd_args() {
     exec mpv --shuffle "$DIR" "$@"
+}
+
+rnd_album() {
+    case "$#" in
+    0) ;;
+    1) set -- -n "$@";;
+    *) usage;;
+    esac
+    find "$DIR" -mindepth 2 -type d | shuf "$@"
 }
 
 main "$@"
