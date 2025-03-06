@@ -52,7 +52,7 @@ plot \
         fill solid, \
     '' using (start($1)):(0.75):(end($1, $2)):(0.25) \
         with sectors \
-        linewidth 3 \
+        linewidth 1 \
         linecolor "gray30", \
     '' using (start($1)):(dist($1, strcol(4))):(label(0)) \
         with labels \

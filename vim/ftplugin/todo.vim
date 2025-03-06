@@ -10,6 +10,29 @@ let s:todo_inc = 30
 let s:todo_menu_entries = ["dies"]
 let s:todo_menu_fns = ["TodoMenuDies"]
 
+let s:graph_color_map = {
+\   "somnus":     0xa0a0a0,
+\   "labor":      0x884c88,
+\   "consilium":  0x005f00,
+\   "pecunia":    0x005f00,
+\   "lectio":     0x005f00,
+\   "scriptio":   0x005f00,
+\   "video":      0x005f00,
+\   "picturae":   0x005f00,
+\   "epistola":   0x005f00,
+\   "colloquium": 0x005f00,
+\   "iter":       0x005f00,
+\   "coctúra":    0x7fff7f,
+\   "caffaea":    0x7fff7f,
+\   "prandium":   0x7fff7f,
+\   "cena":       0x7fff7f,
+\   "mercatus":   0x7fff7f,
+\   "ambulatio":  0x2b2b93,
+\   "gymnasium":  0x2b2b93,
+\   "missa":      0xff4b4b,
+\   "musica":     0xff4b4b,
+\}
+
 function! TodoMenu()
     call popup_menu(
 \       s:todo_menu_entries,
@@ -201,7 +224,7 @@ function! TodoGraph(line)
             if l:c != -1
                 let l:text = l:text[:l:c - 1]
             endif
-            let l:text_color = 0xa0a0a0
+            let l:text_color = get(s:graph_color_map, l:text, 0xa0a0a0)
             call add(l:data, printf(
 \               '%d %d "%s" "%s" 0x%x',
 \               l:start, l:start + float2nr(l:dur * 60), l:time, l:text,
