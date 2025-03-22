@@ -59,6 +59,7 @@
     - .config/i3status
     - .config/impero
     - .config/khal
+    - .config/mpv
     - .config/msmtp
     - .config/mutt
     - .config/newsboat
@@ -98,6 +99,8 @@
       - .local/share/systemd/user/vdirsyncer.service
     - - khal/vdirsyncer.sh
       - .config/vdirsyncer/run.sh
+    - - mpv.conf
+      - .config/mpv/mpv.conf
     - - mutt/msmtprc
       - .config/msmtp/config
     - - mutt/muttrc
