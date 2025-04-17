@@ -12,6 +12,7 @@ main() {
     local cmd=$1; shift
     case "$cmd" in
     k8s) k8s "$@";;
+    postgresql) postgresql "$@";;
     ssh) cmd_ssh "$@";;
     weechat) exec weechat --dir ~/dds/weechat "$@";;
     *) usage;;
@@ -25,6 +26,7 @@ Usage: $0 CMD ARG...
 Commands:
 
     k8s [dev|prod]
+    postgresql [ARG...]
     ssh dev|prod ARG...
     weechat [ARG...]
 EOF
@@ -42,6 +44,10 @@ k8s() {
     esac
     export KUBECONFIG=$HOME/.kube/dds${env+-$env}
     exec bash --login -i
+}
+
+postgresql() {
+    exec postgres -D ~/dds/postgresql/data "$@"
 }
 
 cmd_ssh() {
