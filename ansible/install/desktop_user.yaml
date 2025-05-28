@@ -55,7 +55,6 @@
     - .config/custos
     - .config/gdb
     - .config/git
-    - .config/i3
     - .config/i3status
     - .config/impero
     - .config/khal
@@ -87,8 +86,8 @@
       - .config/gdb/gdbinit
     - - git/tigrc
       - .config/tig/config
-    - - i3/config
-      - .config/i3/config
+    - - i3
+      - .config/i3
     - - i3/status
       - .config/i3status/config
     - - khal/khal.conf
