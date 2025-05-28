@@ -1,0 +1,4 @@
+bar {
+        mode hide
+        status_command i3status
+}
