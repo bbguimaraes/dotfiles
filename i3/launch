@@ -1,0 +1,24 @@
+set $mode_launcher \
+[a]rdour [c]hromium [f]irefox [g]imp [h]ydrogen [l]ibreoffice [m]usescore \
+[p]avucontrol a[r]andr [s]implescreenrecorder a[u]dacity [w]webcam
+
+mode "$mode_launcher" {
+    bindsym a exec ardour8
+    bindsym c exec chromium
+    bindsym f exec firefox
+    bindsym g exec gimp
+    bindsym h exec hydrogen
+    bindsym k exec kdenlive
+    bindsym l exec libreoffice
+    bindsym m exec mscore
+    bindsym p exec pavucontrol
+    bindsym r exec arandr
+    bindsym s exec simplescreenrecorder
+    bindsym u exec audacity
+    bindsym w exec mpv --no-pause /dev/video0
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+o mode "$mode_launcher"
