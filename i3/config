@@ -6,6 +6,9 @@ floating_modifier $mod
 default_border normal 0
 hide_edge_borders both
 
+for_window [all] title_window_icon on
+for_window [all] title_window_icon padding 4
+
 # class                  border  backgr. text    indicator child_border
 client.focused           #3a3a3a #303030 #ffffff #ffffff   #3a3a3a
 client.focused_inactive  #767676 #585858 #ffffff #ffffff   #585858
