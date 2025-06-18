@@ -28,7 +28,7 @@ EOF
 }
 
 clean() {
-    local cmd cmds
+    local cmd cmds orphan
     cmd='bash -s'
     [[ "$(id -u)" -ne 0 ]] && cmd='sudo -s'
     cmds=$(cat <<EOF
@@ -36,6 +36,12 @@ paccache --remove --keep 1
 paccache --remove --uninstalled --keep 0
 EOF
 )
+    orphan=$(pacman -Qqtd | paste --serial --delimiter ' ')
+    if [[ "$orphan" ]]; then
+        cmds="$cmds
+pacman --noconfirm -Rsu $orphan
+"
+    fi
     exec $cmd <<EOF
 $cmds
 EOF
