@@ -28,11 +28,16 @@ EOF
 }
 
 clean() {
-    local cmd='bash -s'
+    local cmd cmds
+    cmd='bash -s'
     [[ "$(id -u)" -ne 0 ]] && cmd='sudo -s'
-    exec $cmd <<EOF
+    cmds=$(cat <<EOF
 paccache --remove --keep 1
 paccache --remove --uninstalled --keep 0
+EOF
+)
+    exec $cmd <<EOF
+$cmds
 EOF
 }
 
