@@ -4,7 +4,7 @@ set -euo pipefail
 DIR=$HOME/src/dotfiles
 SCRIPTS=$DIR/scripts
 CMDS=(
-    analog beep blue c cx cal complete compose every fmt github hdmi http
+    analog beep blue c cx cal complete compose copy every fmt github hdmi http
     keyboard liber lock mail man mutt noise nosuspend office p passmenu paste
     pause pecunia picom ping sshfs suspend terminal ts until vqtr vtr w
 )
@@ -20,6 +20,7 @@ main() {
     cal) exec systemctl --user restart vdirsyncer;;
     completion) completion "$@";;
     compose) exec less /usr/share/X11/locale/en_US.UTF-8/Compose;;
+    copy) copy "$@";;
     cx) xclip -out | xargs "$@";;
     every) every "$@";;
     fmt) cmd_fmt "$@";;
@@ -99,6 +100,15 @@ completion() {
         script=$(in_dotfiles "${line[1]}")
         compgen -W "$("$SCRIPTS/$script" complete)";;
     esac
+}
+
+copy() {
+    local l n text
+    l=$(<~/n/comp/copy.txt)
+    n=$(wc --lines <<< $l)
+    text=$(dmenu -l "$n" <<< $l)
+    text=${text#* | }
+    xclip <<< $text
 }
 
 list_scripts() {
