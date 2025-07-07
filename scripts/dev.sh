@@ -117,11 +117,10 @@ in_dotfiles() {
 blue() {
     local d
     if [[ "$#" -eq 0 ]]; then
-        local l
-        l=$(cat  <<'EOF'
-EOF
-)
-        d=$(dmenu -l "$(wc -l <<< $l)" <<< $l)
+        local l n
+        l=$(<~/n/comp/blue.txt)
+        n=$(wc --lines <<< $l)
+        d=$(dmenu -l "$n" <<< $l)
         if [[ ! "$d" ]]; then
             return
         fi
