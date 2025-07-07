@@ -1,3 +1,5 @@
+Xcursor.size: 16
+
 *VT100.colorBDMode: true
 *VT100.colorBD: red
 *VT100.colorULMode: true
