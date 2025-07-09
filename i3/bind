@@ -90,6 +90,7 @@ bindsym $mod+t exec d window vtr
 bindsym $mod+x exec d window mouse center
 bindsym $mod+Shift+x exec xdotool click 1
 bindsym $mod+Shift+v exec i3-sensible-terminal -e pulsemixer
+bindsym $mod+Shift+w exec d displays swap
 bindsym $mod+minus scratchpad show
 bindsym $mod+equal exec d keyboard
 bindsym $mod+Shift+minus move scratchpad

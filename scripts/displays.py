@@ -31,6 +31,8 @@ def main(*args):
         return cmd_120hz(*args)
     elif cmd == "4k":
         return cmd_4k(*args)
+    elif cmd == "swap":
+        return cmd_swap(*args)
     elif cmd == "workspaces":
         return cmd_workspaces(*args)
     else:
@@ -45,6 +47,7 @@ Commands:
     list
     single|dual|mirror|tv|120hz|4k
     toggle
+    swap
     workspaces
 """, end='', file=sys.stderr)
     return 1
@@ -136,6 +139,22 @@ def cmd_4k():
     if active == 2:
         return
     return single(secondary, primary, "--mode", "4096x2160")
+
+def cmd_swap(*args):
+    if args:
+        return usage()
+    s = create_ipc_socket()
+    send_msg(s, MSG_GET_WORKSPACES)
+    l = recv_msg(s, MSG_GET_WORKSPACES)
+    cmd = []
+    for w in l:
+        cmd.append(f"workspace {w['num']}".encode())
+        cmd.append(b"move workspace to output next")
+    for w in l:
+        if w["visible"]:
+            cmd.append(f"workspace {w['num']}".encode())
+            break
+    send_cmd(s, b"; ".join(cmd))
 
 def cmd_workspaces(*args):
     if args:
