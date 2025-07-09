@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
+import json
+import os
+import socket
 import subprocess
 import sys
 
 RESOLUTION = "1920x1080"
 RATE = "60"
+
+MSG_RUN_COMMAND = 0
+MSG_GET_WORKSPACES = 1
 
 def main(*args):
     if not args:
@@ -42,6 +48,30 @@ Commands:
     workspaces
 """, end='', file=sys.stderr)
     return 1
+
+def send_msg(s, t, m=None):
+    o = sys.byteorder
+    n = len(m) if m is not None else 0
+    l = [b"i3-ipc", n.to_bytes(4, o), t.to_bytes(4, o)]
+    if m is not None:
+        l.append(m)
+    s.send(b"".join(l))
+
+def recv_msg(s, t):
+    o = sys.byteorder
+    m = s.recv(6)
+    assert m == b"i3-ipc"
+    m = s.recv(4)
+    n = int.from_bytes(m, o)
+    m = s.recv(4)
+    assert int.from_bytes(m, o) == t
+    return json.loads(s.recv(n))
+
+def send_cmd(s, m):
+    send_msg(s, MSG_RUN_COMMAND, m)
+    j = json.loads(recv_msg(s, MSG_RUN_COMMAND))
+    for x in j:
+        assert x["success"]
 
 def cmd_list(*args):
     if args:
@@ -150,18 +180,28 @@ def dual(primary, secondary, *args):
     ))
 
 def workspaces(primary, secondary):
-    return any(map(exec_cmd, (
-        ("i3-msg", "workspace", "1"),
-        ("i3-msg", "move", "workspace", "to", "output", primary),
-        ("i3-msg", "workspace", "2"),
-        ("i3-msg", "move", "workspace", "to", "output", primary),
-        ("i3-msg", "workspace", "3"),
-        ("i3-msg", "move", "workspace", "to", "output", secondary),
-        ("i3-msg", "workspace", "4"),
-        ("i3-msg", "move", "workspace", "to", "output", primary),
-        ("i3-msg", "workspace", "4"),
-        ("i3-msg", "workspace", "1"),
-    ))) or None
+    s = socket.socket(socket.AF_UNIX)
+    s.connect(os.environ["I3SOCK"])
+    send_msg(s, MSG_GET_WORKSPACES)
+    l = sorted(
+        recv_msg(s, MSG_GET_WORKSPACES),
+        key=lambda x: int(x["num"]))
+    l.pop()
+    cmd = []
+    for w in l:
+        if w["output"] == primary:
+            continue
+        cmd.append(f"workspace {w['num']}".encode())
+        cmd.append(f"move workspace to output {primary}".encode())
+    for w in l:
+        if w["visible"]:
+            cmd.append(f"workspace {w['num']}".encode())
+            break
+    w = l[-1]
+    if w["output"] != secondary:
+        cmd.append(f"workspace {w['num']}".encode())
+        cmd.append(f"move workspace to output {secondary}".encode())
+    send_cmd(s, b"; ".join(cmd))
 
 def exec_cmd(*args):
     out = subprocess.run(*args)
