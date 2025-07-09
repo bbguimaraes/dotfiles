@@ -23,7 +23,7 @@ Usage: $0 CMD ARG...
 Commands:
 
     clean
-    kernel revert
+    kernel [revert]
     img [build|push]
     mirrorlist
 EOF
@@ -51,12 +51,19 @@ EOF
 }
 
 kernel() {
-    local cmd=
-    [[ "$#" -gt 0 ]] && { cmd=$1; shift; }
+    [[ "$#" -eq 0 ]] && { kernel_print_version; return; }
+    local cmd=$1; shift
     case "$cmd" in
     revert) kernel_revert "$@";;
     *) echo >&2 "invalid command: kernel $cmd"; return 1;;
     esac
+}
+
+kernel_print_version() {
+    printf %s 'uname:   '
+    uname -r
+    printf %s 'package: '
+    pacman -Q linux | awk '{print $2}'
 }
 
 kernel_revert() {
