@@ -49,6 +49,11 @@ Commands:
 """, end='', file=sys.stderr)
     return 1
 
+def create_ipc_socket():
+    s = socket.socket(socket.AF_UNIX)
+    s.connect(os.environ["I3SOCK"])
+    return s
+
 def send_msg(s, t, m=None):
     o = sys.byteorder
     n = len(m) if m is not None else 0
@@ -69,7 +74,7 @@ def recv_msg(s, t):
 
 def send_cmd(s, m):
     send_msg(s, MSG_RUN_COMMAND, m)
-    j = json.loads(recv_msg(s, MSG_RUN_COMMAND))
+    j = recv_msg(s, MSG_RUN_COMMAND)
     for x in j:
         assert x["success"]
 
@@ -132,7 +137,9 @@ def cmd_4k():
         return
     return single(secondary, primary, "--mode", "4096x2160")
 
-def cmd_workspaces():
+def cmd_workspaces(*args):
+    if args:
+        return usage()
     primary, secondary, _ = set_common()
     workspaces(primary, secondary)
 
@@ -180,15 +187,14 @@ def dual(primary, secondary, *args):
     ))
 
 def workspaces(primary, secondary):
-    s = socket.socket(socket.AF_UNIX)
-    s.connect(os.environ["I3SOCK"])
+    s = create_ipc_socket()
     send_msg(s, MSG_GET_WORKSPACES)
     l = sorted(
         recv_msg(s, MSG_GET_WORKSPACES),
         key=lambda x: int(x["num"]))
     l.pop()
     cmd = []
-    for w in l:
+    for w in l[:-1]:
         if w["output"] == primary:
             continue
         cmd.append(f"workspace {w['num']}".encode())
