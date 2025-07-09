@@ -11,6 +11,7 @@ main() {
     [[ "$#" -eq 0 ]] && usage
     local cmd=$1; shift
     case "$cmd" in
+    brightway) brightway "$@";;
     k8s) k8s "$@";;
     postgresql) postgresql "$@";;
     ssh) cmd_ssh "$@";;
@@ -25,12 +26,35 @@ Usage: $0 CMD ARG...
 
 Commands:
 
+    brightway restore-project FILE [NAME]
     k8s [dev|prod]
     postgresql [ARG...]
     ssh dev|prod ARG...
     weechat [ARG...]
 EOF
     return 1
+}
+
+brightway() {
+    [[ "$#" -eq 0 ]] && usage
+    local cmd=$1; shift
+    case "$cmd" in
+    restore-project) restore_project "$@";;
+    *) usage;;
+    esac
+}
+
+restore_project() {
+    [[ "$#" -gt 0 ]] || usage
+    local prog='
+import sys, bw2io
+a = sys.argv
+bw2io.restore_project_directory(
+    fp=a[1],
+    project_name=a[2] if 2 <= len(a) else None,
+)
+'
+    python -c "$prog" "$@"
 }
 
 k8s() {
