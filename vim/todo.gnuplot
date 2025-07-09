@@ -16,8 +16,7 @@ set arrow \
 set terminal png \
     background rgb "black" \
     font "Palatino, 20" \
-    size 1920, 1080;
-set margin 32, 32;
+    size 1080, 1080;
 set border 0;
 set polar;
 set theta top cw;
