@@ -15,6 +15,7 @@ main() {
     poster) poster "$@";;
     stabilize) stabilize "$@";;
     subtitles) subtitles "$@";;
+    webcam) exec mpv --no-pause /dev/video0;;
     *) usage;;
     esac
 }
@@ -35,6 +36,7 @@ Commands:
     poster TIME SRC DST ARG...
     stabilize FILE [ARG...]
     subtitles URL
+    webcam
 EOF
     return 1
 }
