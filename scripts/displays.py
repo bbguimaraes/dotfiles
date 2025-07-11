@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
+import dataclasses
 import json
 import os
 import socket
 import subprocess
 import sys
+from typing import List
 
 RESOLUTION = "1920x1080"
 RATE = "60"
 
 MSG_RUN_COMMAND = 0
 MSG_GET_WORKSPACES = 1
+
+@dataclasses.dataclass
+class Display:
+    name: str = ""
+    active: bool = False
+    primary: bool = False
 
 def main(*args):
     if not args:
@@ -85,10 +93,10 @@ def cmd_list(*args):
     if args:
         return usage()
     for x in list_displays():
-        print(x["name"], end='')
-        if x.get("active"):
+        print(x.name, end='')
+        if x.active:
             print(" active", end='')
-        if x["primary"]:
+        if x.primary:
             print(" primary", end='')
         print()
 
@@ -162,18 +170,20 @@ def cmd_workspaces(*args):
     primary, secondary, _ = set_common()
     workspaces(primary, secondary)
 
-def list_displays():
+def list_displays() -> List[Display]:
     out = subprocess.check_output(("xrandr", "--query"))
-    ret, cur = [], {}
+    ret, cur = [], Display()
     for line in out.splitlines():
         line = line.decode("utf-8")
         f = line.split()
         if f[1] == "connected":
-            if cur:
+            if cur.name:
                 ret.append(cur)
-            cur = {"name": f[0], "primary": f[2] == "primary"}
+            cur = Display()
+            cur.name = f[0]
+            cur.primary = f[2] == "primary"
         elif "*" in line:
-            cur["active"] = True
+            cur.active = True
     if cur:
         ret.append(cur)
     return ret
@@ -181,13 +191,13 @@ def list_displays():
 def set_common():
     active, secondary = 0, {}
     for x in list_displays():
-        if x.get("active"):
+        if x.active:
             active += 1
-        if x["primary"]:
+        if x.primary:
             primary = x
         else:
             secondary = x
-    return primary["name"], secondary.get("name", ""), active
+    return primary.name, secondary.name, active
 
 def single(primary, secondary, *args):
     return exec_cmd((
